@@ -1,4 +1,5 @@
 extends CharacterBody2D
+@export var attack_scene: PackedScene
 var health: int = 100
 const speed: int = 150
 const acceleration: int = 15
@@ -14,6 +15,16 @@ func _physics_process(delta: float) -> void:
 	var lerp_weight = delta *(acceleration if input else friction)
 	velocity = lerp(velocity, input * speed, lerp_weight)
 	move_and_slide()
+
+func _input(event):
+	if event.is_action_pressed("Attack"):
+		spawn_attack()
+		
+func spawn_attack():
+	var attack_instance = attack_scene.instantiate()
+	
+	get_parent().add_child(attack_instance)
+	attack_instance.global_position = global_position + Vector2(40,0)
 
 func take_damage(damage:int):
 	health -= damage

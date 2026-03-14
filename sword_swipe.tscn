@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d36qts1hky2id"]
+
+[ext_resource type="Script" uid="uid://hdcgq1r2ibq" path="res://attack.gd" id="1_pkgl8"]
+[ext_resource type="Texture2D" uid="uid://n4id1nqohuyr" path="res://attack_base.png" id="2_nwaai"]
+
+[node name="Node2D" type="Node2D" unique_id=1809607383]
+
+[node name="Attack" type="Area2D" parent="." unique_id=98787370]
+script = ExtResource("1_pkgl8")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Attack" unique_id=1424937670]
+rotation = 1.5707964
+scale = Vector2(0.2751679, 0.2486164)
+polygon = PackedVector2Array(616, 404, 639, 312, 687, 259, 708.6582, 268.12793, 742, 314, 765, 404, 689.5045, 404)
+
+[node name="AttackBase" type="Sprite2D" parent="." unique_id=1721567006]
+rotation = 1.5707964
+scale = Vector2(0.19388196, 0.3038095)
+texture = ExtResource("2_nwaai")
+
+[connection signal="body_entered" from="Attack" to="Attack" method="_on_area_entered"]
