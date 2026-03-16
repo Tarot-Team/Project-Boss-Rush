@@ -11,7 +11,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_ref = body
 		print("Player Collided with Hazard!")
-		player_ref.take_damage(damage)
+		player_ref.take_damage(10)
 		$Timer.start()
 	
 
@@ -23,11 +23,11 @@ func _on_body_exited(body: Node2D) -> void:
 		player_ref = null
 		$Timer.stop()
 		
-		print("Player left the bad guy!")
+		print("Player left the area!")
 
 
 func _on_timer_timeout() -> void:
 	if player_ref:
 		player_ref.take_damage(damage)
-		print("player took " + str(damage) + " damage!")
+		print("player took {damage} damage!")
 	
