@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://b8tr23l4qbvvc"]
+
+[ext_resource type="Script" uid="uid://b078vc7cn36e3" path="res://mob.gd" id="1_b3mxk"]
+[ext_resource type="Texture2D" uid="uid://xiy6860tv857" path="res://Mushroom-Hit1.png" id="1_s5nov"]
+[ext_resource type="Texture2D" uid="uid://ctw8ukgdg48ub" path="res://Mushroom-Hit2.png" id="2_b3mxk"]
+[ext_resource type="Texture2D" uid="uid://dql4pcb1i2681" path="res://Mushroom-Hit3.png" id="3_1qmh0"]
+[ext_resource type="Texture2D" uid="uid://pbjcsiwhchdm" path="res://Mushroom-Hit4.png" id="4_gfurk"]
+[ext_resource type="Texture2D" uid="uid://bmrr8f4bun8i0" path="res://Mushroom-Hit5.png" id="5_ieysi"]
+[ext_resource type="Texture2D" uid="uid://0b8g82jpagqh" path="res://Mushroom-Run1.png" id="7_yscv0"]
+[ext_resource type="Texture2D" uid="uid://b1a8vqtk63kyi" path="res://Mushroom-Run2.png" id="8_eqsov"]
+[ext_resource type="Texture2D" uid="uid://d3lteo58b5pax" path="res://Mushroom-Run3.png" id="9_wvrms"]
+[ext_resource type="Texture2D" uid="uid://opjco6deb7wx" path="res://Mushroom-Run4.png" id="10_h0ign"]
+[ext_resource type="Texture2D" uid="uid://j7hy65c6m1mg" path="res://Mushroom-Run5.png" id="11_6ak38"]
+[ext_resource type="Texture2D" uid="uid://dove8s0l3grap" path="res://Mushroom-Run6.png" id="12_rxhkm"]
+[ext_resource type="Texture2D" uid="uid://cn3kbw871lvjx" path="res://Mushroom-Run7.png" id="13_mhy1y"]
+[ext_resource type="Texture2D" uid="uid://eb3oqie0aveh" path="res://Mushroom-Run8.png" id="14_gy8bd"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cixyi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_s5nov")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_b3mxk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1qmh0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gfurk")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_ieysi")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_yscv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_eqsov")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_wvrms")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_h0ign")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_6ak38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_rxhkm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_mhy1y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_gy8bd")
+}],
+"loop": true,
+"name": &"run",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1qmh0"]
+size = Vector2(30, 32.5)
+
+[node name="Mob" type="Area2D" unique_id=927771302 groups=["enemies"]]
+scale = Vector2(2, 2)
+script = ExtResource("1_b3mxk")
+flee_speed = 200
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=340976674]
+sprite_frames = SubResource("SpriteFrames_cixyi")
+animation = &"run"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1651190419 groups=["enemies"]]
+position = Vector2(0, 1.25)
+shape = SubResource("RectangleShape2D_1qmh0")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

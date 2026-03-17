@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://4kbv155vflf6"]
+
+[ext_resource type="Script" uid="uid://xwxssf4qat1d" path="res://Heart.gd" id="1_8f18l"]
+[ext_resource type="Texture2D" uid="uid://dfckxkdm3cu21" path="res://Heart0.png" id="2_j5vpe"]
+[ext_resource type="Texture2D" uid="uid://4guhw7e28g4r" path="res://Heart4.png" id="3_okyln"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_71wxp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_j5vpe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_okyln")
+}],
+"loop": true,
+"name": &"basic",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_j5vpe")
+}],
+"loop": true,
+"name": &"empty",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_okyln")
+}],
+"loop": true,
+"name": &"full",
+"speed": 5.0
+}]
+
+[node name="Heart" type="Control" unique_id=739581028]
+custom_minimum_size = Vector2(17, 17)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_8f18l")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1140823570]
+sprite_frames = SubResource("SpriteFrames_71wxp")
+animation = &"basic"
