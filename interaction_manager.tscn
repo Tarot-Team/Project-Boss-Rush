@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://diferrbl25p61"]
+
+[ext_resource type="Script" uid="uid://cs8tyqcv3mqpt" path="res://interaction_manager.gd" id="1_6yrmf"]
+
+[node name="InteractionManager" type="Node2D" unique_id=1008589565]
+script = ExtResource("1_6yrmf")
+
+[node name="Label" type="Label" parent="." unique_id=329766105]
+z_index = 20
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.0
+offset_top = -1.0
+offset_right = 32.0
+offset_bottom = 22.0
+grow_horizontal = 2
+text = "press \"E\""
+horizontal_alignment = 1
+vertical_alignment = 1
