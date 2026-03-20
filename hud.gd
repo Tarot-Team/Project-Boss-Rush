@@ -26,7 +26,6 @@ func setup_health(max_hp: int):
 		heart_container.add_child(h)
 
 func update_health(current_hp: int):
-	print ("hi! " + str(current_hp))
 	var hearts = heart_container.get_children()
 	
 	for i in range(hearts.size()):

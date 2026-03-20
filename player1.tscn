@@ -60,7 +60,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cmdsw"]
 size = Vector2(46, 50)
 
-[node name="Player1" type="Area2D" unique_id=774817887 groups=["player"]]
+[node name="Player1" type="CharacterBody2D" unique_id=644555451 groups=["player"]]
 process_mode = 1
 script = ExtResource("1_c5mkm")
 attack_swing_scene = ExtResource("2_s33xd")
@@ -76,6 +76,3 @@ shape = SubResource("RectangleShape2D_cmdsw")
 
 [node name="SwingCooldown" type="Timer" parent="." unique_id=709334574]
 one_shot = true
-
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

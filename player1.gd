@@ -1,4 +1,4 @@
-extends Area2D
+extends CharacterBody2D
 
 signal health_changed(new_health)
 signal died
@@ -59,10 +59,11 @@ func reset():
 	health = max_health
 	health_changed.emit(max_health)
 
-func _on_area_entered(area):
-	if area.is_in_group("enemies"):
-		take_damage(1)
-		#$CollisionShape2D.set_deferred("disabled", true)
+#func _on_area_entered(area):
+	#if area.is_in_group("enemies"):
+		#take_damage(1)
+		#print("working")
+		##$CollisionShape2D.set_deferred("disabled", true)
 
 func take_damage(damage):
 	if is_invincible or health <= 0:

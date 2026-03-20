@@ -15,6 +15,5 @@ offset_top = -1.0
 offset_right = 32.0
 offset_bottom = 22.0
 grow_horizontal = 2
-text = "press \"E\""
 horizontal_alignment = 1
 vertical_alignment = 1
