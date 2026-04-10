@@ -1,12 +1,15 @@
 extends CharacterBody2D
 
 signal health_changed(new_health)
+signal money_changed(new_balace)
 signal died
 @export var speed: int = 400
 @export var max_health: int = 5
+@export var start_money: int = 10
 @export var attack_swing_scene: PackedScene
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
+var money
 var health
 var is_invincible = false
 var screen_size
@@ -15,6 +18,7 @@ var flipped
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	health = max_health
+	money = start_money
 	hide()
 	screen_size = get_viewport_rect().size
 
@@ -58,6 +62,8 @@ func _process(delta: float) -> void:
 func reset():
 	health = max_health
 	health_changed.emit(max_health)
+	money = start_money
+	money_changed.emit(start_money)
 
 #func _on_area_entered(area):
 	#if area.is_in_group("enemies"):
@@ -76,6 +82,11 @@ func take_damage(damage):
 		died.emit()
 	else:
 		start_invincibility()
+		
+func change_money(mula):
+	money += mula
+	money_changed.emit(money) 
+	print(money)
 
 func start_invincibility():
 	is_invincible = true
