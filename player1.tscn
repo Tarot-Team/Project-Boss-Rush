@@ -2,14 +2,81 @@
 
 [ext_resource type="Script" uid="uid://m1c32mq35kk" path="res://player1.gd" id="1_c5mkm"]
 [ext_resource type="PackedScene" uid="uid://bw6mxs5qlt7ey" path="res://swing.tscn" id="2_s33xd"]
-[ext_resource type="Texture2D" uid="uid://oi0ygdtaod05" path="res://assets/player/Mercury Man sprite idle 1.png" id="3_bjfdx"]
-[ext_resource type="Texture2D" uid="uid://vyhis6mjjrak" path="res://assets/player/Mercury Man sprite walk 1.png" id="4_hfcs4"]
-[ext_resource type="Texture2D" uid="uid://lnl53hcu11q0" path="res://assets/player/Mercury Man sprite walk 2.png" id="5_c5mkm"]
-[ext_resource type="Texture2D" uid="uid://caidbmnpiodj8" path="res://assets/player/Mercury Man sprite walk 3.png" id="6_sl0af"]
-[ext_resource type="Texture2D" uid="uid://cujjf462t208y" path="res://assets/player/Mercury Man sprite walk 4.png" id="7_s33xd"]
+[ext_resource type="Texture2D" uid="uid://bkt0mnamun1j7" path="res://moon attack 1.png" id="3_fa6cf"]
+[ext_resource type="Texture2D" uid="uid://4t22stwd6e6q" path="res://moon attack 2.png" id="4_cuhtx"]
+[ext_resource type="Texture2D" uid="uid://dsfh24hm462ad" path="res://Moon walk 1.png" id="4_lyl3y"]
+[ext_resource type="Texture2D" uid="uid://tc5sljd7v02" path="res://Moon walk 2.png" id="5_ak627"]
+[ext_resource type="Texture2D" uid="uid://ck4bhlu7t0l2p" path="res://moon attack 3.png" id="5_dy5cj"]
+[ext_resource type="Texture2D" uid="uid://bbu0jq2owuouy" path="res://Moon walk 3.png" id="6_6flp4"]
+[ext_resource type="Texture2D" uid="uid://1gtpp6003iyx" path="res://moon attack 4.png" id="6_s04jg"]
+[ext_resource type="Texture2D" uid="uid://c8wm28i6vrb4c" path="res://moon attack 5.png" id="7_o0sl6"]
+[ext_resource type="Texture2D" uid="uid://d1cpg0gyjpgu4" path="res://Moon walk 4.png" id="7_y0uv2"]
+[ext_resource type="Texture2D" uid="uid://dl343v0jgbm51" path="res://Moon walk 5.png" id="8_0aqdq"]
+[ext_resource type="Texture2D" uid="uid://ug67uyr172kn" path="res://moon attack 6.png" id="8_b361f"]
+[ext_resource type="Texture2D" uid="uid://chkd8bcrvhgrb" path="res://moon attack 7.png" id="9_7jo5i"]
+[ext_resource type="Texture2D" uid="uid://bcfe5ydua4ise" path="res://Moon walk 6.png" id="9_cmdsw"]
+[ext_resource type="Texture2D" uid="uid://dshtc2vsldklx" path="res://Moon walk 7.png" id="10_bu4je"]
+[ext_resource type="Texture2D" uid="uid://drdidp8iwo12k" path="res://moon attack 8.png" id="10_gn7c4"]
+[ext_resource type="Texture2D" uid="uid://3osjmbrrw8ro" path="res://moon attack 9.png" id="11_hbwf8"]
+[ext_resource type="Texture2D" uid="uid://bp5y2ao8hixn5" path="res://Moon walk 8.png" id="11_yjsgn"]
+[ext_resource type="Texture2D" uid="uid://cycg6ryvxf7j4" path="res://moon attack 10.png" id="12_x1hxe"]
+[ext_resource type="Texture2D" uid="uid://cs5dcpl7mr7o4" path="res://moon attack 11.png" id="13_hk0ub"]
+[ext_resource type="Texture2D" uid="uid://hulu2j6ywjha" path="res://moon attack 12.png" id="14_v4q56"]
+[ext_resource type="Texture2D" uid="uid://bjig14ut6ahdu" path="res://moon attack 13.png" id="15_vhdl0"]
+[ext_resource type="Texture2D" uid="uid://do3rfms8i65gy" path="res://moon attack 14.png" id="16_q6qsd"]
+[ext_resource type="Texture2D" uid="uid://3y7mmn4ygaxw" path="res://moon attack 7.1.png" id="17_dy5cj"]
+[ext_resource type="Texture2D" uid="uid://cmsegtjyhwtk3" path="res://moon attack 7.2.png" id="18_s04jg"]
+[ext_resource type="Texture2D" uid="uid://dhpwybdfuxp0q" path="res://moon attack 7.3.png" id="19_o0sl6"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0aqdq"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_fa6cf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_cuhtx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_dy5cj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_s04jg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_o0sl6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_b361f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7jo5i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_gn7c4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_hbwf8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_x1hxe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_hk0ub")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_v4q56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_vhdl0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_q6qsd")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
 "frames": [],
 "loop": true,
 "name": &"death",
@@ -17,28 +84,88 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_bjfdx")
+"texture": ExtResource("3_fa6cf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_cuhtx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_dy5cj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_s04jg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_o0sl6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_b361f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_dy5cj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_s04jg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_o0sl6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7jo5i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_gn7c4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_hbwf8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_x1hxe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_hk0ub")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_v4q56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_vhdl0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_q6qsd")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 5.3
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_hfcs4")
+"texture": ExtResource("4_lyl3y")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_c5mkm")
+"texture": ExtResource("5_ak627")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_sl0af")
+"texture": ExtResource("6_6flp4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_s33xd")
+"texture": ExtResource("7_y0uv2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_0aqdq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_cmdsw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_bu4je")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_yjsgn")
 }],
 "loop": true,
 "name": &"run",
-"speed": 14.0
+"speed": 7.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cmdsw"]
@@ -46,16 +173,17 @@ size = Vector2(46, 50)
 
 [node name="Player1" type="CharacterBody2D" unique_id=644555451 groups=["player"]]
 process_mode = 1
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.6, 0.6)
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_c5mkm")
+max_speed = 300
 attack_swing_scene = ExtResource("2_s33xd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1482088666]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_0aqdq")
-animation = &"death"
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1124068240]
 position = Vector2(0, 1)

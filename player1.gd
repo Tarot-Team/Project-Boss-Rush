@@ -15,8 +15,9 @@ signal died
 var health
 var is_invincible = false
 var screen_size
-var flipped = false
+var flipped = true
 var on_swing_cooldown = false
+var attacking = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -26,6 +27,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if attacking: return
 	# Grab Inputs
 	var input_direction = Vector2.ZERO
 	input_direction.x = Input.get_axis("move_left", "move_right")
@@ -38,13 +40,15 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2)
 		
 		# Animation Stuff
-		$AnimatedSprite2D.play("run")
-		flipped = input_direction.x > 0
+		if not attacking:
+			$AnimatedSprite2D.play("run")
+		flipped = input_direction.x < 0
 		$AnimatedSprite2D.flip_h = flipped
 	else:
 		# Decelerate
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-		$AnimatedSprite2D.play("idle")
+		if not attacking:
+			$AnimatedSprite2D.play("idle")
 	
 	if Input.is_action_just_pressed("attack_swing"):
 		attack_swing()
@@ -93,15 +97,18 @@ func attack_swing():
 	
 	add_child(swing)
 	swing.global_position = global_position
-	
+	$AnimatedSprite2D.play("attack")
+	#attacking = true
+	#$AnimatedSprite2D.animation_finished.connect()
+	#get_tree().create_timer(0.2).timeout.connect(queue_free)
 	if flipped:
 		swing.global_position.x += offset
 		swing.scale *= -1
 	else:
 		swing.global_position.x -= offset
 		swing.scale *= 1
-		
-	await get_tree().create_timer(swing_cooldown).timeout
+	await $AnimatedSprite2D.animation_finished
+	#await get_tree().create_timer(swing_cooldown).timeout
 	on_swing_cooldown = false
 
 func reset():
