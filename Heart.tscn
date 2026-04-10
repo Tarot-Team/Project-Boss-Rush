@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://4kbv155vflf6"]
 
 [ext_resource type="Script" uid="uid://xwxssf4qat1d" path="res://Heart.gd" id="1_8f18l"]
-[ext_resource type="Texture2D" uid="uid://dfckxkdm3cu21" path="res://Heart0.png" id="2_j5vpe"]
-[ext_resource type="Texture2D" uid="uid://4guhw7e28g4r" path="res://Heart4.png" id="3_okyln"]
+[ext_resource type="Texture2D" uid="uid://dfckxkdm3cu21" path="res://assets/top_bar/Heart0.png" id="2_j5vpe"]
+[ext_resource type="Texture2D" uid="uid://4guhw7e28g4r" path="res://assets/top_bar/Heart4.png" id="3_okyln"]
+
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_71wxp"]
 animations = [{

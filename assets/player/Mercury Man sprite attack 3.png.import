@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xiy6860tv857"
-path="res://.godot/imported/Mushroom-Hit1.png-eb65859aa71a0cb5bf28be43a6c4279d.ctex"
+uid="uid://baj7rthnpvicl"
+path="res://.godot/imported/Mercury Man sprite attack 3.png-631bdb437f4fa5ac54c14644a56a7aa6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Mushroom-Hit1.png"
-dest_files=["res://.godot/imported/Mushroom-Hit1.png-eb65859aa71a0cb5bf28be43a6c4279d.ctex"]
+source_file="res://assets/player/Mercury Man sprite attack 3.png"
+dest_files=["res://.godot/imported/Mercury Man sprite attack 3.png-631bdb437f4fa5ac54c14644a56a7aa6.ctex"]
 
 [params]
 

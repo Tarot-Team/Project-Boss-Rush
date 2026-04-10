@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://byw06076f60po"
-path="res://.godot/imported/sword temp -30.png-00f69b9718b7269c2f7d690038b55373.ctex"
+uid="uid://xiy6860tv857"
+path="res://.godot/imported/Mushroom-Hit1.png-a1918abf5a13144dacfe1da0073d32bf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sword temp -30.png"
-dest_files=["res://.godot/imported/sword temp -30.png-00f69b9718b7269c2f7d690038b55373.ctex"]
+source_file="res://assets/temp_enemy/Mushroom-Hit1.png"
+dest_files=["res://.godot/imported/Mushroom-Hit1.png-a1918abf5a13144dacfe1da0073d32bf.ctex"]
 
 [params]
 

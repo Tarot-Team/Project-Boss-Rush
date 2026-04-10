@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bhufguxrcdfoe"]
+
+[ext_resource type="Script" uid="uid://lyt6wm6igxlf" path="res://room_types/room_base.gd" id="1_2sogh"]
+
+[sub_resource type="TileSet" id="TileSet_5tog5"]
+
+[node name="BaseRoom" type="Node2D" unique_id=714955676]
+script = ExtResource("1_2sogh")
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=1995960252]
+
+[node name="Walls" type="TileMapLayer" parent="." unique_id=1858789759]
+tile_set = SubResource("TileSet_5tog5")
+
+[node name="Doors" type="Node2D" parent="." unique_id=1822172611]
+
+[node name="NorthDoor" type="Area2D" parent="Doors" unique_id=1749660032]
+
+[node name="EastDoor" type="Area2D" parent="Doors" unique_id=1414992150]
+
+[node name="SouthDoor" type="Area2D" parent="Doors" unique_id=1571652698]
+
+[node name="WestDoor" type="Area2D" parent="Doors" unique_id=583053749]
+
+[node name="EnemySpawnPoints" type="Node2D" parent="." unique_id=483688714]
+
+[node name="Marker2D" type="Marker2D" parent="EnemySpawnPoints" unique_id=2022462911]
+
+[node name="Marker2D2" type="Marker2D" parent="EnemySpawnPoints" unique_id=1881890219]
+
+[node name="Marker2D3" type="Marker2D" parent="EnemySpawnPoints" unique_id=1554817485]

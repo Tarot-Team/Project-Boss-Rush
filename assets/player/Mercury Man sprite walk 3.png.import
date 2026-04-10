@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dove8s0l3grap"
-path="res://.godot/imported/Mushroom-Run6.png-8997721d3474279879936642021091f6.ctex"
+uid="uid://caidbmnpiodj8"
+path="res://.godot/imported/Mercury Man sprite walk 3.png-c885ef4ef44056e400e220a79606b5e6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Mushroom-Run6.png"
-dest_files=["res://.godot/imported/Mushroom-Run6.png-8997721d3474279879936642021091f6.ctex"]
+source_file="res://assets/player/Mercury Man sprite walk 3.png"
+dest_files=["res://.godot/imported/Mercury Man sprite walk 3.png-c885ef4ef44056e400e220a79606b5e6.ctex"]
 
 [params]
 

@@ -1,16 +1,12 @@
 [gd_scene format=3 uid="uid://di5768wov3v7b"]
 
 [ext_resource type="Script" uid="uid://m1c32mq35kk" path="res://player1.gd" id="1_c5mkm"]
-[ext_resource type="Texture2D" uid="uid://0b8g82jpagqh" path="res://Mushroom-Run1.png" id="1_hfcs4"]
-[ext_resource type="Texture2D" uid="uid://b1a8vqtk63kyi" path="res://Mushroom-Run2.png" id="2_c5mkm"]
 [ext_resource type="PackedScene" uid="uid://bw6mxs5qlt7ey" path="res://swing.tscn" id="2_s33xd"]
-[ext_resource type="Texture2D" uid="uid://xiy6860tv857" path="res://Mushroom-Hit1.png" id="2_sl0af"]
-[ext_resource type="Texture2D" uid="uid://d3lteo58b5pax" path="res://Mushroom-Run3.png" id="3_sl0af"]
-[ext_resource type="Texture2D" uid="uid://opjco6deb7wx" path="res://Mushroom-Run4.png" id="4_s33xd"]
-[ext_resource type="Texture2D" uid="uid://j7hy65c6m1mg" path="res://Mushroom-Run5.png" id="5_lyl3y"]
-[ext_resource type="Texture2D" uid="uid://dove8s0l3grap" path="res://Mushroom-Run6.png" id="6_ak627"]
-[ext_resource type="Texture2D" uid="uid://cn3kbw871lvjx" path="res://Mushroom-Run7.png" id="7_6flp4"]
-[ext_resource type="Texture2D" uid="uid://eb3oqie0aveh" path="res://Mushroom-Run8.png" id="8_y0uv2"]
+[ext_resource type="Texture2D" uid="uid://oi0ygdtaod05" path="res://assets/player/Mercury Man sprite idle 1.png" id="3_bjfdx"]
+[ext_resource type="Texture2D" uid="uid://vyhis6mjjrak" path="res://assets/player/Mercury Man sprite walk 1.png" id="4_hfcs4"]
+[ext_resource type="Texture2D" uid="uid://lnl53hcu11q0" path="res://assets/player/Mercury Man sprite walk 2.png" id="5_c5mkm"]
+[ext_resource type="Texture2D" uid="uid://caidbmnpiodj8" path="res://assets/player/Mercury Man sprite walk 3.png" id="6_sl0af"]
+[ext_resource type="Texture2D" uid="uid://cujjf462t208y" path="res://assets/player/Mercury Man sprite walk 4.png" id="7_s33xd"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0aqdq"]
 animations = [{
@@ -21,7 +17,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_sl0af")
+"texture": ExtResource("3_bjfdx")
 }],
 "loop": true,
 "name": &"idle",
@@ -29,28 +25,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_hfcs4")
+"texture": ExtResource("4_hfcs4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_c5mkm")
+"texture": ExtResource("5_c5mkm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_sl0af")
+"texture": ExtResource("6_sl0af")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_s33xd")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_lyl3y")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_ak627")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_6flp4")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_y0uv2")
+"texture": ExtResource("7_s33xd")
 }],
 "loop": true,
 "name": &"run",
@@ -62,6 +46,9 @@ size = Vector2(46, 50)
 
 [node name="Player1" type="CharacterBody2D" unique_id=644555451 groups=["player"]]
 process_mode = 1
+scale = Vector2(0.5, 0.5)
+collision_mask = 3
+motion_mode = 1
 script = ExtResource("1_c5mkm")
 attack_swing_scene = ExtResource("2_s33xd")
 
