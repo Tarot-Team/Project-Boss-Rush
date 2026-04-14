@@ -75,13 +75,14 @@ animations = [{
 size = Vector2(30.5, 34)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1qmh0"]
-size = Vector2(30.5, 34.625)
+size = Vector2(30.5, 34)
 
 [node name="Mob" type="CharacterBody2D" unique_id=1309360483 groups=["enemies"]]
-scale = Vector2(2, 2)
+scale = Vector2(0.9, 0.9)
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_b3mxk")
+top_speed = 90
 flee_speed = 200
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=340976674]
@@ -96,7 +97,7 @@ position = Vector2(0.25, 0.5)
 shape = SubResource("RectangleShape2D_jbnni")
 
 [node name="PhysicsShape" type="CollisionShape2D" parent="." unique_id=1651190419 groups=["enemies"]]
-position = Vector2(-0.25, -0.1875)
+position = Vector2(0.25, 0.5)
 shape = SubResource("RectangleShape2D_1qmh0")
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]

@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 		attack_swing()
 	
 	move_and_slide() # Somehow applies movement, idrk :shrug:
-	position = position.clamp(Vector2.ZERO, screen_size)
+	#position = position.clamp(Vector2.ZERO, screen_size)
 	
 	# Handle bouncing/collisions
 	for i in get_slide_collision_count():
@@ -93,7 +93,7 @@ func attack_swing():
 	if on_swing_cooldown: return
 	on_swing_cooldown = true
 	var swing = attack_swing_scene.instantiate()
-	var offset = 43
+	var offset = 67
 	
 	add_child(swing)
 	swing.global_position = global_position
@@ -101,14 +101,14 @@ func attack_swing():
 	#attacking = true
 	#$AnimatedSprite2D.animation_finished.connect()
 	#get_tree().create_timer(0.2).timeout.connect(queue_free)
-	if flipped:
+	if not flipped:
 		swing.global_position.x += offset
 		swing.scale *= -1
 	else:
 		swing.global_position.x -= offset
 		swing.scale *= 1
-	await $AnimatedSprite2D.animation_finished
-	#await get_tree().create_timer(swing_cooldown).timeout
+	#await $AnimatedSprite2D.animation_finished
+	await get_tree().create_timer(swing_cooldown).timeout
 	on_swing_cooldown = false
 
 func reset():

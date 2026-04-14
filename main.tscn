@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://b8tr23l4qbvvc" path="res://mob.tscn" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://qog1v2jgchh8" path="res://hud.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://6lwbo6qn28um" path="res://item.tscn" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://lqty81vuys2y" path="res://level_manager.gd" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://bhufguxrcdfoe" path="res://room_types/room_base.tscn" id="7_272bh"]
 
 [sub_resource type="Curve2D" id="Curve2D_h2yge"]
 _data = {
@@ -40,6 +42,18 @@ rotation = -1.5707964
 
 [node name="item" parent="." unique_id=1655212561 instance=ExtResource("5_lquwl")]
 position = Vector2(581, 342)
+
+[node name="LevelManager" type="Node2D" parent="." unique_id=826775714]
+script = ExtResource("6_7mycd")
+room_scenes = Array[PackedScene]([ExtResource("7_272bh")])
+start_room_scene = ExtResource("7_272bh")
+
+[node name="RoomContainer" type="Node2D" parent="LevelManager" unique_id=209205632]
+
+[node name="Camera2D" type="Camera2D" parent="LevelManager" unique_id=832315287]
+offset = Vector2(288, 167)
+
+[node name="BaseRoom" parent="." unique_id=714955676 instance=ExtResource("7_272bh")]
 
 [connection signal="died" from="Player1" to="." method="game_over"]
 [connection signal="health_changed" from="Player1" to="HUD" method="update_health"]

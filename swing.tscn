@@ -3,20 +3,20 @@
 [ext_resource type="Texture2D" uid="uid://n4id1nqohuyr" path="res://assets/attacks/attack_base.png" id="1_is03c"]
 [ext_resource type="Script" uid="uid://c2d3b0g72cp2d" path="res://swing.gd" id="1_v36oi"]
 [ext_resource type="Texture2D" uid="uid://cdrqgrukdlsdj" path="res://assets/attacks/attack.png" id="2_v36oi"]
-[ext_resource type="Texture2D" uid="uid://bkt0mnamun1j7" path="res://moon attack 1.png" id="2_x8har"]
-[ext_resource type="Texture2D" uid="uid://4t22stwd6e6q" path="res://moon attack 2.png" id="3_br5ob"]
-[ext_resource type="Texture2D" uid="uid://ck4bhlu7t0l2p" path="res://moon attack 3.png" id="4_xm2vo"]
-[ext_resource type="Texture2D" uid="uid://1gtpp6003iyx" path="res://moon attack 4.png" id="5_51w1t"]
-[ext_resource type="Texture2D" uid="uid://c8wm28i6vrb4c" path="res://moon attack 5.png" id="6_i8npf"]
-[ext_resource type="Texture2D" uid="uid://ug67uyr172kn" path="res://moon attack 6.png" id="7_g8p25"]
-[ext_resource type="Texture2D" uid="uid://chkd8bcrvhgrb" path="res://moon attack 7.png" id="8_4eu5y"]
-[ext_resource type="Texture2D" uid="uid://drdidp8iwo12k" path="res://moon attack 8.png" id="9_1kole"]
-[ext_resource type="Texture2D" uid="uid://3osjmbrrw8ro" path="res://moon attack 9.png" id="10_r23ow"]
-[ext_resource type="Texture2D" uid="uid://cycg6ryvxf7j4" path="res://moon attack 10.png" id="11_x4neq"]
-[ext_resource type="Texture2D" uid="uid://cs5dcpl7mr7o4" path="res://moon attack 11.png" id="12_mgcai"]
-[ext_resource type="Texture2D" uid="uid://hulu2j6ywjha" path="res://moon attack 12.png" id="13_dfa1o"]
-[ext_resource type="Texture2D" uid="uid://bjig14ut6ahdu" path="res://moon attack 13.png" id="14_dotd6"]
-[ext_resource type="Texture2D" uid="uid://do3rfms8i65gy" path="res://moon attack 14.png" id="15_v4jfo"]
+[ext_resource type="Texture2D" uid="uid://bkt0mnamun1j7" path="res://assets/player/moon/moon_attacks/moon attack 1.png" id="2_x8har"]
+[ext_resource type="Texture2D" uid="uid://4t22stwd6e6q" path="res://assets/player/moon/moon_attacks/moon attack 2.png" id="3_br5ob"]
+[ext_resource type="Texture2D" uid="uid://ck4bhlu7t0l2p" path="res://assets/player/moon/moon_attacks/moon attack 3.png" id="4_xm2vo"]
+[ext_resource type="Texture2D" uid="uid://1gtpp6003iyx" path="res://assets/player/moon/moon_attacks/moon attack 4.png" id="5_51w1t"]
+[ext_resource type="Texture2D" uid="uid://c8wm28i6vrb4c" path="res://assets/player/moon/moon_attacks/moon attack 5.png" id="6_i8npf"]
+[ext_resource type="Texture2D" uid="uid://ug67uyr172kn" path="res://assets/player/moon/moon_attacks/moon attack 6.png" id="7_g8p25"]
+[ext_resource type="Texture2D" uid="uid://chkd8bcrvhgrb" path="res://assets/player/moon/moon_attacks/moon attack 7.png" id="8_4eu5y"]
+[ext_resource type="Texture2D" uid="uid://drdidp8iwo12k" path="res://assets/player/moon/moon_attacks/moon attack 8.png" id="9_1kole"]
+[ext_resource type="Texture2D" uid="uid://3osjmbrrw8ro" path="res://assets/player/moon/moon_attacks/moon attack 9.png" id="10_r23ow"]
+[ext_resource type="Texture2D" uid="uid://cycg6ryvxf7j4" path="res://assets/player/moon/moon_attacks/moon attack 10.png" id="11_x4neq"]
+[ext_resource type="Texture2D" uid="uid://cs5dcpl7mr7o4" path="res://assets/player/moon/moon_attacks/moon attack 11.png" id="12_mgcai"]
+[ext_resource type="Texture2D" uid="uid://hulu2j6ywjha" path="res://assets/player/moon/moon_attacks/moon attack 12.png" id="13_dfa1o"]
+[ext_resource type="Texture2D" uid="uid://bjig14ut6ahdu" path="res://assets/player/moon/moon_attacks/moon attack 13.png" id="14_dotd6"]
+[ext_resource type="Texture2D" uid="uid://do3rfms8i65gy" path="res://assets/player/moon/moon_attacks/moon attack 14.png" id="15_v4jfo"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wefpt"]
 animations = [{
@@ -76,23 +76,23 @@ animations = [{
 }],
 "loop": true,
 "name": &"swing",
-"speed": 2.0
+"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_is03c"]
 radius = 116.666664
-height = 253.33333
+height = 260.0
 
 [node name="Swing" type="Area2D" unique_id=464157870 groups=["swing"]]
 rotation = 1.5707964
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.9, 0.9)
 collision_mask = 2
 script = ExtResource("1_v36oi")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2008510559 groups=["swing"]]
 scale = Vector2(-1, -1)
 sprite_frames = SubResource("SpriteFrames_wefpt")
-animation = &"moon_blast"
+animation = &"swing"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1590202066 groups=["swing"]]
 position = Vector2(-1.1920929e-06, -29.999996)
