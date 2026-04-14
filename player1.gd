@@ -95,6 +95,13 @@ func attack_swing():
 	var swing = attack_swing_scene.instantiate()
 	var offset = 67
 	
+	if swing.has_method("set_player_info"):
+		swing.set_player_info(velocity, global_position)
+	
+	# Lil lunge effect:
+	var lunge_dir = Vector2.LEFT if flipped else Vector2.RIGHT
+	velocity += lunge_dir * 300
+	
 	add_child(swing)
 	swing.global_position = global_position
 	$AnimatedSprite2D.play("attack")
