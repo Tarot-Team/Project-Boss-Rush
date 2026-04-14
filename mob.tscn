@@ -74,9 +74,6 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jbnni"]
 size = Vector2(30.5, 34)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1qmh0"]
-size = Vector2(30.5, 34)
-
 [node name="Mob" type="CharacterBody2D" unique_id=1309360483 groups=["enemies"]]
 scale = Vector2(0.9, 0.9)
 collision_layer = 2
@@ -96,9 +93,8 @@ collision_layer = 2
 position = Vector2(0.25, 0.5)
 shape = SubResource("RectangleShape2D_jbnni")
 
-[node name="PhysicsShape" type="CollisionShape2D" parent="." unique_id=1651190419 groups=["enemies"]]
-position = Vector2(0.25, 0.5)
-shape = SubResource("RectangleShape2D_1qmh0")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1767886761 groups=["enemies"]]
+polygon = PackedVector2Array(-14.444445, -2.2222223, -14.444445, -6.666667, -12.222223, -11.111112, -8.888889, -14.444445, -5.555556, -15.555556, -3.3333335, -16.666668, 3.3333335, -16.666668, 5.555556, -15.555556, 8.888889, -14.444445, 12.222223, -11.111112, 13.333334, -8.888889, 14.444445, -5.555556, 14.444445, -1.1111112, 5.555556, -1.1111112, 5.555556, 3.3333335, 6.666667, 4.4444447, 6.666667, 10, 5.555556, 12.222223, 8.888889, 12.222223, 8.888889, 15.555556, 3.3333335, 15.555556, 1.1111112, 12.222223, -3.3333335, 17.777779, -7.777778, 17.777779, -7.777778, 15.555556, -3.3333335, 12.222223, -4.4444447, 11.111112, -4.4444447, 10, -5.555556, 10, -5.555556, -1.1111112, -14.444445, -1.1111112)
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]
 [connection signal="area_shape_entered" from="Hitbox" to="." method="_on_hitbox_area_shape_entered"]

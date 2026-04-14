@@ -6,17 +6,13 @@ extends CharacterBody2D
 @export var friction = 600
 
 @export_group("Knockback")
-@export var health = 2
-@export var knockback_resistance = 0.2 # range from 0-1
-@export var knockback_decel: float = 320.0
-## Min knockback speed before enemy-enemy "bowling" transfer runs (above normal chase speed).
-@export var bowling_knockback_threshold: float = 200.0
-@export var bowling_transfer_ratio: float = 0.55
-@export var bowling_self_retention: float = 0.2
-@export var max_knockback_speed: float = 950.0
-## Below this knockback magnitude we clamp slide velocity to chase cap (stops idle slingshots).
-@export var knockback_cap_blend: float = 90.0
+@export var knockback_resistance = 0.5
+@export var knockback_decay: float = 10.0 # Using linear interpolation for smoother feel
+@export var bowling_transfer_ratio: float = 0.8 # Higher = more chain reaction
+@export var bowling_bounce_factor: float = 0.4 # How much the "ball" bounces off the "pin"
+@export var bowling_threshold: float = 150.0
 
+@export var health = 2
 var player = null
 var knockback_velocity = Vector2.ZERO
 
@@ -31,8 +27,10 @@ func _ready():
 
 # Called when the node enters the scene tree for the first time.
 func _physics_process(delta: float) -> void:
-	# Knockback decays on its own curve so it isn't eaten by the same friction as movement.
-	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, knockback_decel * delta)
+	# Handles Knockback decay
+	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_decay * delta)
+	if knockback_velocity.length() < 10:
+		knockback_velocity = Vector2.ZERO
 	
 	# Directional Stuff
 	var direction = Vector2.ZERO
@@ -42,42 +40,51 @@ func _physics_process(delta: float) -> void:
 		direction = (player.global_position - global_position).normalized()
 
 	# Chase Velocity
-	var chase_speed = flee_speed if is_fleeing else top_speed	
-	var target_chase_velocity = direction * chase_speed
+	var target_chase_velocity = direction * top_speed
+	var move_velocity = velocity.lerp(target_chase_velocity, (acceleration / top_speed) * delta)
 	
-	var desired_velocity = target_chase_velocity + knockback_velocity
-	
-	velocity = velocity.move_toward(desired_velocity, acceleration * delta)
+	velocity = move_velocity + knockback_velocity
+	var velocity_before_collision = velocity
 	
 	move_and_slide()
 
 	# Bowling: transfer knockback through stacked mobs (must check collider, not KinematicCollision2D).
-	if knockback_velocity.length() > bowling_knockback_threshold:
-		for i in get_slide_collision_count():
-			var collision = get_slide_collision(i)
-			var collider = collision.get_collider()
-			if collider.is_in_group("enemies") and collider.has_method("receive_bowling_knockback"):
-				var transfer = knockback_velocity * bowling_transfer_ratio
-				collider.receive_bowling_knockback(transfer)
-				knockback_velocity *= bowling_self_retention
-
-	# Idle enemy contact can build tangent speed from slide resolution; clamp unless knockback is active.
-	var chase_cap = flee_speed if is_fleeing else top_speed
-	var speed_cap = chase_cap
-	if knockback_velocity.length() > knockback_cap_blend:
-		speed_cap = max(chase_cap, min(knockback_velocity.length(), max_knockback_speed))
-	if velocity.length() > speed_cap:
-		velocity = velocity.limit_length(speed_cap)
-
+	if knockback_velocity.length() > bowling_threshold:
+		handle_bowling_collisions(velocity_before_collision)
 	if velocity.x != 0:
 		$AnimatedSprite2D.flip_h = velocity.x < 0
+		
+func handle_bowling_collisions(pre_collision_vel: Vector2):
+	for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+			
+			if collider.is_in_group("enemies") and collider.has_method("receive_knockback"):
+				var impact_dir = (collider.global_position - global_position).normalized()
+				var transfer_energy = pre_collision_vel * bowling_transfer_ratio
+				collider.receive_knockback(transfer_energy)
+				
+				var bounce_dir = collision.get_normal()
+				knockback_velocity = knockback_velocity.bounce(collision.get_normal()) * bowling_bounce_factor
+				
+				if collider.has_method("punchy_scale"):
+					collider.punchy_scale()
+	## Idle enemy contact can build tangent speed from slide resolution; clamp unless knockback is active.
+	#var chase_cap = flee_speed if is_fleeing else top_speed
+	#var speed_cap = chase_cap
+	#if knockback_velocity.length() > knockback_cap_blend:
+		#speed_cap = max(chase_cap, min(knockback_velocity.length(), max_knockback_speed))
+	#if velocity.length() > speed_cap:
+		#velocity = velocity.limit_length(speed_cap)
+#
+	#if velocity.x != 0:
+		#$AnimatedSprite2D.flip_h = velocity.x < 0
 
-func receive_bowling_knockback(incoming: Vector2) -> void:
-	if incoming.length_squared() < 100.0:
-		return
-	knockback_velocity += incoming
-	if knockback_velocity.length() > max_knockback_speed:
-		knockback_velocity = knockback_velocity.limit_length(max_knockback_speed)
+func receive_knockback(impact_vector: Vector2) -> void:
+	var actual_force = impact_vector * (1.0 - knockback_resistance)
+	knockback_velocity += actual_force
+	
+	velocity += actual_force
 
 func take_damage(amount, source_pos, force = 800):
 	health -= amount
@@ -88,14 +95,19 @@ func take_damage(amount, source_pos, force = 800):
 	
 	velocity = knockback_velocity 
 	
-	$AnimatedSprite2D.modulate = Color.RED
-	await get_tree().create_timer(0.1).timeout
-	$AnimatedSprite2D.modulate = Color.WHITE
+	flash_sprite()
 	
 	if health <= 0: die()
 
+func flash_sprite():
+	var tween = create_tween()
+	$AnimatedSprite2D.modulate = Color.WHITE * 5 # Over-brighten if using HDR, or just use RED
+	tween.tween_property($AnimatedSprite2D, "modulate", Color.WHITE, 0.2)
+
 func die():
 	#$CollisionShape2D.set_deferred("disabled", true)
+	$CollisionPolygon2D.set_deferred("disabled", true)
+	set_physics_process(false) # Stop moving
 	$AnimatedSprite2D.play("hit")
 	velocity = Vector2.ZERO
 	await $AnimatedSprite2D.animation_finished
@@ -111,3 +123,13 @@ func start_fleeing(player_pos):
 
 func _on_game_over():
 	start_fleeing(player.global_position)
+
+func time_freeze():
+	Engine.time_scale = 0.05
+	await get_tree().create_timer(0.05, true, false, true).timeout
+	Engine.time_scale = 1.0
+
+func punchy_scale():
+	var tween = create_tween()
+	$AnimatedSprite2D.scale = Vector2(0.7, 1.3) # Squash
+	tween.tween_property($AnimatedSprite2D, "scale", Vector2(1, 1), 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
