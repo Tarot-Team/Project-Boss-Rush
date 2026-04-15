@@ -21,9 +21,9 @@ func setup_start_position():
 	if grid.has(Vector2.ZERO):
 		var start_room = grid[Vector2.ZERO]
 		
-		camera.global_position = start_room.global_position + (room_size / 2)
+		camera.global_position = start_room.global_position + (get_viewport_rect().size / 2)
 		player.global_position = start_room.global_position + (room_size / 2)
-		
+		#get_viewport_rect()
 		start_room.start_room()
 
 func generate_map():

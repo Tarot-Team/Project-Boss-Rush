@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 InteractionManager="*uid://diferrbl25p61"
 Events="*uid://cmmqv1vpfhqrf"
 
+[display]
+
+window/size/viewport_width=1140
+window/size/viewport_height=640
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/ai_assistant_hub/plugin.cfg")
