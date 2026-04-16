@@ -75,14 +75,17 @@ layout_mode = 2
 
 [node name="restart" type="Button" parent="PanelContainer/VBoxContainer" unique_id=273565361]
 layout_mode = 2
+size_flags_vertical = 3
 text = "restart"
 
 [node name="resume" type="Button" parent="PanelContainer/VBoxContainer" unique_id=231515165]
 layout_mode = 2
+size_flags_vertical = 3
 text = "resume"
 
 [node name="quit" type="Button" parent="PanelContainer/VBoxContainer" unique_id=324367403]
 layout_mode = 2
+size_flags_vertical = 3
 text = "quit"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=707624495]

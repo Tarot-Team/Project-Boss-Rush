@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b8tr23l4qbvvc" path="res://mob.tscn" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://qog1v2jgchh8" path="res://hud.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://6lwbo6qn28um" path="res://item.tscn" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://c201kqm66rjry" path="res://pause_menu.tscn" id="6_7mycd"]
 
 [sub_resource type="Curve2D" id="Curve2D_h2yge"]
 _data = {
@@ -40,6 +41,8 @@ rotation = -1.5707964
 
 [node name="item" parent="." unique_id=1655212561 instance=ExtResource("5_lquwl")]
 position = Vector2(581, 342)
+
+[node name="pause_menu" parent="." unique_id=448210501 instance=ExtResource("6_7mycd")]
 
 [connection signal="died" from="Player1" to="." method="game_over"]
 [connection signal="health_changed" from="Player1" to="HUD" method="update_health"]

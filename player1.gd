@@ -88,17 +88,24 @@ func start_invincibility():
 
 func attack_swing():
 	var swing = attack_swing_scene.instantiate()
-	var offset = 43
-	
 	add_child(swing)
+
+	# Position at player
 	swing.global_position = global_position
-	
-	if flipped == true:
-		swing.global_position.x += offset
-		swing.scale *= -1
-	else:
-		swing.global_position.x -= offset
-		swing.scale *= 1
+
+	# Get mouse position in world
+	var mouse_pos = get_global_mouse_position()
+
+	# Direction from player to mouse
+	var direction = (mouse_pos - global_position).normalized()
+
+	# Rotate swing to face cursor
+	swing.rotation = direction.angle() + deg_to_rad(-90)
+
+	# Optional: push the swing outward from player
+	var offset = 43
+	swing.global_position += direction * offset
+
 	await get_tree().create_timer(swing_cooldown).timeout
 
 func start(pos):
