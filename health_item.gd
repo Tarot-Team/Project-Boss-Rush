@@ -7,4 +7,4 @@ func _ready():
 	interaction_area.interact = Callable(self, "_on_interact")
 
 func _on_interact():
-		player.change_speed(50)
+		player.take_damage(-1)

@@ -68,7 +68,9 @@ func reset():
 func take_damage(damage):
 	if is_invincible or health <= 0:
 		return
-	health -= damage
+	var new_health: int  = health - damage
+	if max_health < new_health: return
+	health = new_health
 	health_changed.emit(health)
 	print(health)
 	
@@ -76,6 +78,15 @@ func take_damage(damage):
 		died.emit()
 	else:
 		start_invincibility()
+
+func change_max_health(change):
+	max_health += change
+	print(max_health)
+
+func change_speed(change):
+	speed += change
+	print(speed)
+
 
 func start_invincibility():
 	is_invincible = true
