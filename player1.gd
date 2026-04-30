@@ -1,12 +1,14 @@
 extends CharacterBody2D
 
-signal health_changed(new_health)
+signal health_changed(max_health, health)
 signal died
 @export var speed: int = 400
-@export var max_health: int = 5
+@export var original_health: int = 5
 @export var attack_swing_scene: PackedScene
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
+var original_speed = 400
+var max_health
 var health
 var is_invincible = false
 var screen_size
@@ -14,6 +16,7 @@ var flipped
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	max_health = original_health
 	health = max_health
 	hide()
 	screen_size = get_viewport_rect().size
@@ -56,8 +59,10 @@ func _process(delta: float) -> void:
 	
 
 func reset():
+	speed = original_speed
+	max_health = original_health
 	health = max_health
-	health_changed.emit(max_health)
+	health_changed.emit(max_health, health)
 
 #func _on_area_entered(area):
 	#if area.is_in_group("enemies"):
@@ -71,9 +76,7 @@ func take_damage(damage):
 	var new_health: int  = health - damage
 	if max_health < new_health: return
 	health = new_health
-	health_changed.emit(health)
-	print(health)
-	
+	health_changed.emit(max_health, health)
 	if health <= 0:
 		died.emit()
 	else:
@@ -81,7 +84,9 @@ func take_damage(damage):
 
 func change_max_health(change):
 	max_health += change
-	print(max_health)
+	health_changed.emit(max_health, health)
+	take_damage(-change) 
+	print("Max:", max_health, "Current:", health)
 
 func change_speed(change):
 	speed += change

@@ -5,9 +5,9 @@ var score
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$HUD.update_health($Player1.max_health, $Player1.health)
 	$Player1.health_changed.connect($HUD.update_health)
-	$HUD.setup_health($Player1.max_health)
-	$HUD.update_health($Player1.max_health)
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -29,6 +29,7 @@ func new_game():
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
 	get_tree().call_group("enemies", "queue_free")
+	get_tree().call_group("items", "reset")
 
 
 func _on_mob_timer_timeout() -> void:

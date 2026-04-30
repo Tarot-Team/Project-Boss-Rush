@@ -10,6 +10,6 @@ func _ready():
 	interaction_area.interact = Callable(self, "_on_interact")	
 
 func _on_interact():
-	print("yay")
+	player.change_max_health(1)
 	hide()
 	interaction_area.set_deferred("monitoring", false)
