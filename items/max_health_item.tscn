@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://cx7qjvpij1yvv"]
+
+[ext_resource type="Script" uid="uid://pljfws35nj44" path="res://items/max_health_item.gd" id="1_ebkjn"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_vj7qd"]
+[ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_3sbps"]
+[ext_resource type="PackedScene" uid="uid://dm5tr00f4tpl5" path="res://items/health_item.tscn" id="4_vj7qd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5rs43"]
+size = Vector2(14, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kg5e7"]
+radius = 22.0
+
+[node name="max_health_item" type="Area2D" unique_id=1451157788 groups=["items"]]
+position = Vector2(377, 217)
+script = ExtResource("1_ebkjn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=121434415]
+position = Vector2(7.6293945e-06, 0)
+scale = Vector2(0.10937514, 0.12500001)
+texture = ExtResource("2_vj7qd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773315857]
+position = Vector2(7.6293945e-06, 0)
+shape = SubResource("RectangleShape2D_5rs43")
+
+[node name="InteractionArea" parent="." unique_id=358332711 instance=ExtResource("3_3sbps")]
+position = Vector2(7.6293945e-06, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=337489721]
+shape = SubResource("CircleShape2D_kg5e7")
+
+[node name="health_item" parent="." unique_id=568722642 instance=ExtResource("4_vj7qd")]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

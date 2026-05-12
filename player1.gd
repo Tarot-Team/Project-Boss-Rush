@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-signal health_changed(new_health)
+signal health_changed(max_health, health)
 signal died
 @export var max_speed: int = 450
 @export var acceleration: int = 2500
@@ -12,6 +12,13 @@ signal died
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
 
+@export var speed: int = 400
+@export var original_health: int = 5
+@export var attack_swing_scene: PackedScene
+@export var iFrame_duration: float = 0.2 # Time in seconds
+@export var swing_cooldown: float = 0.5
+var original_speed = 400
+var max_health
 var health
 var is_invincible = false
 var screen_size
@@ -21,6 +28,7 @@ var attacking = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	max_health = original_health
 	health = max_health
 	hide()
 	screen_size = get_viewport_rect().size
@@ -64,6 +72,15 @@ func _physics_process(delta: float) -> void:
 		if collider.is_in_group("enemies"):
 			take_damage(1) # handles the invincibility automatically
 			bounce_player(collision.get_normal())
+	position += velocity * delta
+	position = position.clamp(Vector2.ZERO, screen_size)
+	
+
+func reset():
+	speed = original_speed
+	max_health = original_health
+	health = max_health
+	health_changed.emit(max_health, health)
 
 func bounce_player(collision_normal: Vector2):
 	# Note that "normal" is the direction pointing away from whatever was hit
@@ -72,14 +89,25 @@ func bounce_player(collision_normal: Vector2):
 func take_damage(damage):
 	if is_invincible or health <= 0:
 		return
-	health -= damage
-	health_changed.emit(health)
-	print(health)
-	
+	var new_health: int  = health - damage
+	if max_health < new_health: return
+	health = new_health
+	health_changed.emit(max_health, health)
 	if health <= 0:
 		died.emit()
 	else:
 		start_invincibility()	
+
+func change_max_health(change):
+	max_health += change
+	health_changed.emit(max_health, health)
+	take_damage(-change) 
+	print("Max:", max_health, "Current:", health)
+
+func change_speed(change):
+	speed += change
+	print(speed)
+
 
 func start_invincibility():
 	is_invincible = true

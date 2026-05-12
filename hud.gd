@@ -14,25 +14,24 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func setup_health(max_hp: int):
-	# Clear old hearts if any
+
+func update_health(max_hp: int, current_hp: int):
+	# Clear old hearts
 	for child in heart_container.get_children():
 		child.queue_free()
-	# var num_hearts = ceil(max_hp / 5.0) # Use if using all the heart pngs 
+
+	# Rebuild hearts
 	var num_hearts = ceil(max_hp)
-	
+	var hearts = []
+
 	for i in range(num_hearts):
 		var h = heart_scene.instantiate()
 		heart_container.add_child(h)
+		hearts.append(h)
 
-func update_health(current_hp: int):
-	var hearts = heart_container.get_children()
-	
+	# Fill hearts
 	for i in range(hearts.size()):
-		var heart_value = 0
-		if current_hp > i:
-			heart_value = 1
-		hearts[i].set_heart_state(heart_value)
+		hearts[i].set_heart_state(1 if i < current_hp else 0)
 
 func change_avatar(tex: Texture2D):
 	avatar_icon.texture = tex
