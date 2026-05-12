@@ -14,11 +14,7 @@ signal died
 
 @export var speed: int = 400
 @export var original_health: int = 5
-@export var attack_swing_scene: PackedScene
-@export var iFrame_duration: float = 0.2 # Time in seconds
-@export var swing_cooldown: float = 0.5
 var original_speed = 400
-var max_health
 var health
 var is_invincible = false
 var screen_size
@@ -145,15 +141,14 @@ func attack_swing():
 	swing.rotation = direction.angle() + deg_to_rad(-90)
 
 	# Optional: push the swing outward from player
-	var offset = 43
 	swing.global_position += direction * offset
 
 	await get_tree().create_timer(swing_cooldown).timeout
 	on_swing_cooldown = false
 
-func reset():
-	health = max_health
-	health_changed.emit(max_health)
+#func reset():
+	#health = max_health
+	#health_changed.emit(max_health)
 
 #func _on_area_entered(area):
 	#if area.is_in_group("enemies"):
