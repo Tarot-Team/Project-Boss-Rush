@@ -103,18 +103,23 @@ func attack_swing():
 	velocity += lunge_dir * 300
 	
 	add_child(swing)
+
+	# Position at player
 	swing.global_position = global_position
-	$AnimatedSprite2D.play("attack")
-	#attacking = true
-	#$AnimatedSprite2D.animation_finished.connect()
-	#get_tree().create_timer(0.2).timeout.connect(queue_free)
-	if not flipped:
-		swing.global_position.x += offset
-		swing.scale *= -1
-	else:
-		swing.global_position.x -= offset
-		swing.scale *= 1
-	#await $AnimatedSprite2D.animation_finished
+
+	# Get mouse position in world
+	var mouse_pos = get_global_mouse_position()
+
+	# Direction from player to mouse
+	var direction = (mouse_pos - global_position).normalized()
+
+	# Rotate swing to face cursor
+	swing.rotation = direction.angle() + deg_to_rad(-90)
+
+	# Optional: push the swing outward from player
+	var offset = 43
+	swing.global_position += direction * offset
+
 	await get_tree().create_timer(swing_cooldown).timeout
 	on_swing_cooldown = false
 
