@@ -1,19 +1,18 @@
 [gd_scene format=3 uid="uid://b8tr23l4qbvvc"]
 
 [ext_resource type="Script" uid="uid://b078vc7cn36e3" path="res://mob.gd" id="1_b3mxk"]
-[ext_resource type="Texture2D" uid="uid://xiy6860tv857" path="res://Mushroom-Hit1.png" id="1_s5nov"]
-[ext_resource type="Texture2D" uid="uid://ctw8ukgdg48ub" path="res://Mushroom-Hit2.png" id="2_b3mxk"]
-[ext_resource type="Texture2D" uid="uid://dql4pcb1i2681" path="res://Mushroom-Hit3.png" id="3_1qmh0"]
-[ext_resource type="Texture2D" uid="uid://pbjcsiwhchdm" path="res://Mushroom-Hit4.png" id="4_gfurk"]
-[ext_resource type="Texture2D" uid="uid://bmrr8f4bun8i0" path="res://Mushroom-Hit5.png" id="5_ieysi"]
-[ext_resource type="Texture2D" uid="uid://0b8g82jpagqh" path="res://Mushroom-Run1.png" id="7_yscv0"]
-[ext_resource type="Texture2D" uid="uid://b1a8vqtk63kyi" path="res://Mushroom-Run2.png" id="8_eqsov"]
-[ext_resource type="Texture2D" uid="uid://d3lteo58b5pax" path="res://Mushroom-Run3.png" id="9_wvrms"]
-[ext_resource type="Texture2D" uid="uid://opjco6deb7wx" path="res://Mushroom-Run4.png" id="10_h0ign"]
-[ext_resource type="Texture2D" uid="uid://j7hy65c6m1mg" path="res://Mushroom-Run5.png" id="11_6ak38"]
-[ext_resource type="Texture2D" uid="uid://dove8s0l3grap" path="res://Mushroom-Run6.png" id="12_rxhkm"]
-[ext_resource type="Texture2D" uid="uid://cn3kbw871lvjx" path="res://Mushroom-Run7.png" id="13_mhy1y"]
-[ext_resource type="Texture2D" uid="uid://eb3oqie0aveh" path="res://Mushroom-Run8.png" id="14_gy8bd"]
+[ext_resource type="Texture2D" uid="uid://xiy6860tv857" path="res://assets/temp_enemy/Mushroom-Hit1.png" id="1_s5nov"]
+[ext_resource type="Texture2D" uid="uid://ctw8ukgdg48ub" path="res://assets/temp_enemy/Mushroom-Hit2.png" id="2_b3mxk"]
+[ext_resource type="Texture2D" uid="uid://dql4pcb1i2681" path="res://assets/temp_enemy/Mushroom-Hit3.png" id="3_1qmh0"]
+[ext_resource type="Texture2D" uid="uid://pbjcsiwhchdm" path="res://assets/temp_enemy/Mushroom-Hit4.png" id="4_gfurk"]
+[ext_resource type="Texture2D" uid="uid://0b8g82jpagqh" path="res://assets/temp_enemy/Mushroom-Run1.png" id="7_yscv0"]
+[ext_resource type="Texture2D" uid="uid://b1a8vqtk63kyi" path="res://assets/temp_enemy/Mushroom-Run2.png" id="8_eqsov"]
+[ext_resource type="Texture2D" uid="uid://d3lteo58b5pax" path="res://assets/temp_enemy/Mushroom-Run3.png" id="9_wvrms"]
+[ext_resource type="Texture2D" uid="uid://opjco6deb7wx" path="res://assets/temp_enemy/Mushroom-Run4.png" id="10_h0ign"]
+[ext_resource type="Texture2D" uid="uid://j7hy65c6m1mg" path="res://assets/temp_enemy/Mushroom-Run5.png" id="11_6ak38"]
+[ext_resource type="Texture2D" uid="uid://dove8s0l3grap" path="res://assets/temp_enemy/Mushroom-Run6.png" id="12_rxhkm"]
+[ext_resource type="Texture2D" uid="uid://cn3kbw871lvjx" path="res://assets/temp_enemy/Mushroom-Run7.png" id="13_mhy1y"]
+[ext_resource type="Texture2D" uid="uid://eb3oqie0aveh" path="res://assets/temp_enemy/Mushroom-Run8.png" id="14_gy8bd"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cixyi"]
 animations = [{
@@ -36,7 +35,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_ieysi")
+"texture": ExtResource("7_yscv0")
 }],
 "loop": true,
 "name": &"idle",
@@ -72,21 +71,30 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1qmh0"]
-size = Vector2(30, 32.5)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbnni"]
+size = Vector2(30.5, 34)
 
-[node name="Mob" type="Area2D" unique_id=927771302 groups=["enemies"]]
-scale = Vector2(2, 2)
+[node name="Mob" type="CharacterBody2D" unique_id=1309360483 groups=["enemies"]]
+scale = Vector2(0.9, 0.9)
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_b3mxk")
+top_speed = 90
 flee_speed = 200
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=340976674]
 sprite_frames = SubResource("SpriteFrames_cixyi")
 animation = &"run"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1651190419 groups=["enemies"]]
-position = Vector2(0, 1.25)
-shape = SubResource("RectangleShape2D_1qmh0")
+[node name="Hitbox" type="Area2D" parent="." unique_id=2134634239 groups=["enemies"]]
+collision_layer = 2
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1516502672 groups=["enemies"]]
+position = Vector2(0.25, 0.5)
+shape = SubResource("RectangleShape2D_jbnni")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1767886761 groups=["enemies"]]
+polygon = PackedVector2Array(-14.444445, -2.2222223, -14.444445, -6.666667, -12.222223, -11.111112, -8.888889, -14.444445, -5.555556, -15.555556, -3.3333335, -16.666668, 3.3333335, -16.666668, 5.555556, -15.555556, 8.888889, -14.444445, 12.222223, -11.111112, 13.333334, -8.888889, 14.444445, -5.555556, 14.444445, -1.1111112, 5.555556, -1.1111112, 5.555556, 3.3333335, 6.666667, 4.4444447, 6.666667, 10, 5.555556, 12.222223, 8.888889, 12.222223, 8.888889, 15.555556, 3.3333335, 15.555556, 1.1111112, 12.222223, -3.3333335, 17.777779, -7.777778, 17.777779, -7.777778, 15.555556, -3.3333335, 12.222223, -4.4444447, 11.111112, -4.4444447, 10, -5.555556, 10, -5.555556, -1.1111112, -14.444445, -1.1111112)
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]
+[connection signal="area_shape_entered" from="Hitbox" to="." method="_on_hitbox_area_shape_entered"]
