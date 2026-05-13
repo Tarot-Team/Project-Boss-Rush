@@ -1,65 +1,25 @@
-extends Node
-
-@export var mob_scene: PackedScene
-var score
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	$HUD.update_health($Player1.max_health, $Player1.health)
-	$Player1.health_changed.connect($HUD.update_health)
-	
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+extends CharacterBody2D
 
 
-func game_over():
-	$ScoreTimer.stop()
-	$MobTimer.stop()
-	$HUD.show_game_over()
-	get_tree().call_group("enemies", "start_fleeing", $Player1.global_position)
-
-func new_game():
-	print("starting new game")
-	score = 0
-	$Player1.reset()
-	$Player1.start($StartPosition.position)
-	$StartTimer.start()
-	$HUD.update_score(score)
-	$HUD.show_message("Get Ready")
-	get_tree().call_group("enemies", "queue_free")
-	get_tree().call_group("items", "reset")
+const SPEED = 300.0
+const JUMP_VELOCITY = -400.0
 
 
-func _on_mob_timer_timeout() -> void:
-	var mob = mob_scene.instantiate()
-	
-	# Choose a random location on the path
-	var mob_spawn_location = $MobPath/MobSpawnLocation
-	mob_spawn_location.progress_ratio = randf()
-	
-	mob.position = mob_spawn_location.position
-	
-	# Set the mob's direction perpendicular to the path direction.
-	#var direction = mob_spawn_location.rotation + PI / 2
-	var direction = ($Player1.position - mob.position).angle()
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
 
-	#direction += randf_range(-PI/4, PI/4)
-	mob.rotation = direction
-	
-	var velocity = Vector2(randf_range(150, 250), 0)
-	mob.velocity = velocity.rotated(direction)
+	# Handle jump.
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
 
-	# Spawns the mob by adding an instance to the main scene
-	add_child(mob)
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis("ui_left", "ui_right")
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-func _on_score_timer_timeout() -> void:
-	score += 1
-	$HUD.update_score(score)
-
-
-func _on_start_timer_timeout() -> void:
-	$MobTimer.start()
-	$ScoreTimer.start()
-	$HUD.show_message("")
+	move_and_slide()

@@ -2,7 +2,6 @@ extends CharacterBody2D
 
 signal health_changed(max_health, health)
 signal died
-@export var max_speed: int = 450
 @export var acceleration: int = 2500
 @export var friction: int = 2500 # Basically acts as a global deceleration, we can change it later if needed
 @export var recoil_from_mob: int = 600
@@ -11,10 +10,9 @@ signal died
 @export var attack_swing_scene: PackedScene
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
-
-@export var speed: int = 400
+@export var original_speed: int = 400
 @export var original_health: int = 5
-var original_speed = 400
+var speed 
 var health
 var is_invincible = false
 var screen_size
@@ -26,6 +24,7 @@ var attacking = false
 func _ready() -> void:
 	max_health = original_health
 	health = max_health
+	speed = original_speed
 	#hide()
 	screen_size = get_viewport_rect().size
 
@@ -41,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	# Apply Acceleration and Friction
 	if input_direction != Vector2.ZERO:
 		# Approach max speed by acceleration
-		velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2)
+		velocity = velocity.move_toward(input_direction * speed, acceleration * delta * 2)
 		
 		# Animation Stuff
 		if not attacking:
