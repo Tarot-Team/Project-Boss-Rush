@@ -26,7 +26,7 @@ var attacking = false
 func _ready() -> void:
 	max_health = original_health
 	health = max_health
-	hide()
+	#hide()
 	screen_size = get_viewport_rect().size
 
 
@@ -122,10 +122,6 @@ func attack_swing():
 	if swing.has_method("set_player_info"):
 		swing.set_player_info(velocity, global_position)
 	
-	# Lil lunge effect:
-	var lunge_dir = Vector2.LEFT if flipped else Vector2.RIGHT
-	velocity += lunge_dir * 300
-	
 	add_child(swing)
 
 	# Position at player
@@ -142,6 +138,9 @@ func attack_swing():
 
 	# Optional: push the swing outward from player
 	swing.global_position += direction * offset
+	
+	# Lil lunge effect:
+	#velocity += direction * 300
 
 	await get_tree().create_timer(swing_cooldown).timeout
 	on_swing_cooldown = false

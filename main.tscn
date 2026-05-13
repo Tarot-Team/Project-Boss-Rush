@@ -19,6 +19,7 @@ script = ExtResource("1_0xm2m")
 mob_scene = ExtResource("2_1bvp3")
 
 [node name="Player1" parent="." unique_id=774817887 instance=ExtResource("1_ig7tw")]
+position = Vector2(569, 319)
 
 [node name="MobTimer" type="Timer" parent="." unique_id=1381839639]
 
@@ -47,6 +48,7 @@ rotation = -1.5707964
 [node name="RoomContainer" type="Node2D" parent="LevelManager" unique_id=209205632]
 
 [node name="Camera2D" type="Camera2D" parent="LevelManager" unique_id=832315287]
+position = Vector2(569, 319)
 
 [node name="BaseRoom" parent="." unique_id=714955676 instance=ExtResource("7_272bh")]
 
