@@ -11,6 +11,7 @@ signal died
 @export var attack_swing_scene: PackedScene
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
+@export var lunge_distance: int = 5
 
 @export var speed: int = 400
 @export var original_health: int = 5
@@ -123,8 +124,21 @@ func attack_swing():
 		swing.set_player_info(velocity, global_position)
 	
 	# Lil lunge effect:
-	var lunge_dir = Vector2.LEFT if flipped else Vector2.RIGHT
-	velocity += lunge_dir * 300
+	var lunge_dir = get_global_mouse_position() - global_position
+	var dir = lunge_dir.normalized()
+	velocity += dir * 300  # e.g. 300.0 — same every time
+	if absf(lunge_dir.x) > 0.01:
+		flipped = lunge_dir.x < 0
+		$AnimatedSprite2D.flip_h = flipped
+	velocity += dir * lunge_distance  # e.g. 300.0 — same every time
+	
+	#var to_mouse = get_global_mouse_position() - global_position
+	#if to_mouse.length_squared() < 0.0001:
+		#return  # or skip lunge / use last direction — avoids normalize() on zero
+	#var dir = to_mouse.normalized()
+	#velocity += dir * 300  # e.g. 300.0 — same every time
+	
+	
 	
 	add_child(swing)
 
