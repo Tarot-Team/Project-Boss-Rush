@@ -21,6 +21,7 @@ mob_scene = ExtResource("2_1bvp3")
 
 [node name="Player1" parent="." unique_id=774817887 instance=ExtResource("1_ig7tw")]
 scale = Vector2(0.5, 0.5)
+lunge_distance = 300
 
 [node name="MobTimer" type="Timer" parent="." unique_id=1381839639]
 
