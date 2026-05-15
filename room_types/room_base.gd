@@ -41,7 +41,7 @@ func spawn_enemies():
 		enemy.global_position = marker.global_position
 		enemy.add_to_group("enemies")
 		enemy.tree_exited.connect(_check_room_cleared)
-		
+			
 		add_child(enemy)
 
 func _check_room_cleared():
