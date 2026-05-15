@@ -70,7 +70,7 @@ func _physics_process(delta: float) -> void:
 			take_damage(1) # handles the invincibility automatically
 			bounce_player(collision.get_normal())
 	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
+	#position = position.clamp(Vector2.ZERO, screen_size)
 	
 
 func reset():
