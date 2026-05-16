@@ -15,17 +15,47 @@ var is_active = false
 @onready var spawner_container = $EnemySpawnPoints
 @onready var doors = $Doors
 
-var door_coords = {
-	"NorthDoor": Vector2i(21, 1),
-	"SouthDoor": Vector2i(18, 20),
-	"WestDoor": Vector2i(0, 10),
-	"EastDoor": Vector2i(36, 10)
-}
+#var door_coords = {
+	#"NorthDoor": Vector2i(21, 1),
+	#"SouthDoor": Vector2i(18, 20),
+	#"WestDoor": Vector2i(0, 10),
+	#"EastDoor": Vector2i(36, 10)
+#}
+func setup_doors(has_north: bool, has_south: bool, has_east: bool, has_west: bool):
+	_configure_door($Doors/NorthDoor, has_north)
+	_configure_door($Doors/SouthDoor, has_south)
+	_configure_door($Doors/EastDoor, has_east)
+	_configure_door($Doors/WestDoor, has_west)
+	
+func _configure_door(door_node: InteractionArea, has_neighbor: bool):
+	var wall_patch = door_node.get_node_or_null("WallPatch")
+	var gate_visuals = door_node.get_node_or_null("GateVisuals") # Get the visuals node
+	
+	if wall_patch == null:
+		print("CRASH AVOIDED: Could not find WallPatch on ", door_node.name)
+		return
+		
+	if has_neighbor:
+		# Room exists! Open the path visually, disable the fake wall.
+		wall_patch.hide()
+		wall_patch.process_mode = Node.PROCESS_MODE_DISABLED
+		
+		if gate_visuals:
+			gate_visuals.show() # Show just the gate visuals
+			
+		door_node.monitoring = true 
+	else:
+		# No room here! Show the fake wall.
+		wall_patch.show()
+		wall_patch.process_mode = Node.PROCESS_MODE_INHERIT
+		
+		if gate_visuals:
+			gate_visuals.hide() # Hide just the gate visuals
+			
+		door_node.monitoring = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for door in doors.get_children():
-		door.body_entered.connect(_on_door_entered.bind(door.name))
 	close_doors() # Closes the doors when the player enters
 	spawn_enemies()
 
@@ -61,9 +91,9 @@ func lock_doors(locked: bool):
 	for door in doors.get_children():
 		door.set_locked(locked) # placeholder for future animation n interactable
 
-func _on_door_entered(body, door_name):
-	if body.is_in_group("player"):
-		Events.room_transition_requested.emit(door_name)
+#func _on_door_entered(body, door_name):
+	#if body.is_in_group("player"):
+		#Events.room_transition_requested.emit(door_name)
 
 func get_room_pixel_size() -> Vector2:
 	return Vector2(room_width_units * 1280, room_height_units * 720)

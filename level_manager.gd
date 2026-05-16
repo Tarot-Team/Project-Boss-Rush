@@ -33,12 +33,28 @@ func generate_map():
 	# Create the starting room
 	spawn_room(walker_pos, start_room_scene)
 	
+	# Generate Rooms
 	while grid.size() < room_count:
 		var direction = [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT].pick_random()
 		walker_pos += direction
 		
 		if not grid.has(walker_pos):
 			spawn_room(walker_pos, room_scenes.pick_random())
+	
+	# Configure the doors for each room
+	for grid_pos in grid.keys():
+		var room = grid[grid_pos]
+		
+		# Check if a neighbor exists at each adjacent grid coordinate
+		var has_north = grid.has(grid_pos + Vector2.UP)
+		var has_south = grid.has(grid_pos + Vector2.DOWN)
+		var has_east = grid.has(grid_pos + Vector2.RIGHT)
+		var has_west = grid.has(grid_pos + Vector2.LEFT)
+		
+		# Pass the neighbor data to the room
+		if room.has_method("setup_doors"):
+			room.setup_doors(has_north, has_south, has_east, has_west)
+	
 
 func spawn_room(grid_pos: Vector2, scene: PackedScene):
 	var room = scene.instantiate()
@@ -77,14 +93,34 @@ func transition_to_room(next_room, door_hit):
 	
 	# 3. Teleport player into room
 	var player = get_tree().get_first_node_in_group("player")
-	var move_offset = Vector2.ZERO
+	
+	# Figure out which door to spawn at in the next room
+	var target_door_name = ""
+	var push_offset = Vector2.ZERO 
+	
 	match door_hit:
-		"NorthDoor": move_offset = Vector2(0, -200) # Jump the wall
-		"SouthDoor": move_offset = Vector2(0, 200)
-		"EastDoor":  move_offset = Vector2(200, 0)
-		"WestDoor":  move_offset = Vector2(-200, 0)
-		
-	player.global_position += move_offset
+		"NorthDoor": 
+			target_door_name = "SouthDoor"
+			push_offset = Vector2(0, -50) # Push UP slightly into the room
+		"SouthDoor": 
+			target_door_name = "NorthDoor"
+			push_offset = Vector2(0, 50)  # Push DOWN slightly into the room
+		"EastDoor":  
+			target_door_name = "WestDoor"
+			push_offset = Vector2(50, 0) # Push LEFT slightly into the room
+		"WestDoor":  
+			target_door_name = "EastDoor"
+			push_offset = Vector2(-50, 0)  # Push RIGHT slightly into the room
+			
+	# Find the actual door node in the next room
+	var target_door = next_room.get_node_or_null("Doors/" + target_door_name)
+	
+	if target_door != null:
+		# Teleport player to the exact global position of that door
+		# We add push_offset so they don't spawn exactly inside the doorway/wall collision
+		player.global_position = target_door.global_position + push_offset
+	else:
+		print("Error: Could not find target door: ", target_door_name)
 	
 	await tween.finished
 	
