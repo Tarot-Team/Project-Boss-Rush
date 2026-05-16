@@ -6,7 +6,7 @@ extends Node2D
 @onready var room_container = $RoomContainer
 @onready var camera = $Camera2D
 
-var room_size = Vector2(600, 420)
+var room_size = Vector2(1280, 720)
 var grid = {} # Dictionary of room instances
 var current_grid_pos = Vector2.ZERO
 
