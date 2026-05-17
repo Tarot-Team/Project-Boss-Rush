@@ -118,12 +118,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -400.0
-offset_top = -220.0
+offset_top = -250.0
 offset_right = 400.0
-offset_bottom = 220.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 10
 
 [node name="SelectLabel" type="Label" parent="ClassPicker/VBoxContainer" unique_id=908807755]
 layout_mode = 2
@@ -147,6 +147,13 @@ theme_override_font_sizes/font_size = 24
 text = "Character description goes here."
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="CharacterStats" type="Label" parent="ClassPicker/VBoxContainer" unique_id=987654321]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Health: 5  |  Speed: 400  |  Lunge: 300"
+horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ClassPicker/VBoxContainer" unique_id=1585914916]
 layout_mode = 2

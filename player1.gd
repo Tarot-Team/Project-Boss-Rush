@@ -30,6 +30,20 @@ func _ready() -> void:
 	hide()
 	screen_size = get_viewport_rect().size
 
+func apply_class_stats(stats: Dictionary):
+	original_health = stats.get("health", 5)
+	max_health = original_health
+	health = max_health
+	
+	max_speed = stats.get("speed", 450)
+	original_speed = max_speed
+	speed = max_speed
+	
+	lunge_distance = stats.get("lunge", 300)
+	
+	# We also emit the health changed signal so the HUD updates immediately
+	health_changed.emit(max_health, health)
+
 
 func _physics_process(delta: float) -> void:
 	if attacking: return

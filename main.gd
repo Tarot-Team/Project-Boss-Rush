@@ -5,6 +5,12 @@ var score
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if Global.player_class.has("stats"):
+		$Player1.apply_class_stats(Global.player_class["stats"])
+		
+	if Global.player_class.has("texture"):
+		$HUD.change_avatar(Global.player_class["texture"])
+		
 	$HUD.update_health($Player1.max_health, $Player1.health)
 	$Player1.health_changed.connect($HUD.update_health)
 	$HUD/StartButton.hide()
