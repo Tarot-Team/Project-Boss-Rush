@@ -35,6 +35,9 @@ _bundled = {
 script = ExtResource("1_0xm2m")
 mob_scene = ExtResource("2_1bvp3")
 
+[node name="Player1" parent="." unique_id=774817887 instance=ExtResource("1_ig7tw")]
+position = Vector2(569, 319)
+
 [node name="MobTimer" type="Timer" parent="." unique_id=1381839639]
 
 [node name="ScoreTimer" type="Timer" parent="." unique_id=1351331179]
@@ -65,6 +68,7 @@ start_room_scene = ExtResource("7_272bh")
 [node name="RoomContainer" type="Node2D" parent="LevelManager" unique_id=209205632]
 
 [node name="Camera2D" type="Camera2D" parent="LevelManager" unique_id=832315287]
+position = Vector2(569, 319)
 visible = false
 enabled = false
 
