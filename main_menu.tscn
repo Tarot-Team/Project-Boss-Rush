@@ -1,0 +1,201 @@
+[gd_scene format=3 uid="uid://djiueqdjv78jl"]
+
+[ext_resource type="Script" uid="uid://cfwgry48v3dhh" path="res://main_menu.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bj5dkr7t6x4q8" path="res://Logo.jpg" id="2_logo"]
+
+[node name="MainMenu" type="Control" unique_id=142600020]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1683094532]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_logo")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1213319631]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.02, 0.1, 0.6)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1393645071]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 180.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.843, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.3, 0, 0.5, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 96
+text = "Tarot Trials"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1337178771]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1978557837]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 25
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1028075284]
+custom_minimum_size = Vector2(250, 65)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "Start Run"
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1956340022]
+custom_minimum_size = Vector2(250, 65)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 36
+text = "Options"
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=207463070]
+custom_minimum_size = Vector2(250, 65)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 36
+text = "Quit"
+
+[node name="ClassPicker" type="Control" parent="." unique_id=572734474]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="ClassPicker" unique_id=92315324]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ClassPicker" unique_id=2053214836]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -220.0
+offset_right = 400.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="SelectLabel" type="Label" parent="ClassPicker/VBoxContainer" unique_id=908807755]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "Select Your Character"
+horizontal_alignment = 1
+
+[node name="CharacterName" type="Label" parent="ClassPicker/VBoxContainer" unique_id=2018150481]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843, 0, 1)
+theme_override_font_sizes/font_size = 48
+text = "Mars"
+horizontal_alignment = 1
+
+[node name="CharacterDesc" type="Label" parent="ClassPicker/VBoxContainer" unique_id=1234567890]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 24
+text = "Character description goes here."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ClassPicker/VBoxContainer" unique_id=1585914916]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="LeftButton" type="Button" parent="ClassPicker/VBoxContainer/HBoxContainer" unique_id=510505282]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 48
+text = "<"
+
+[node name="CharacterTexture" type="TextureRect" parent="ClassPicker/VBoxContainer/HBoxContainer" unique_id=1263089939]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightButton" type="Button" parent="ClassPicker/VBoxContainer/HBoxContainer" unique_id=489049586]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 48
+text = ">"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ClassPicker/VBoxContainer" unique_id=290495355]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="BackButton" type="Button" parent="ClassPicker/VBoxContainer/HBoxContainer2" unique_id=1067131907]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Back"
+
+[node name="ConfirmButton" type="Button" parent="ClassPicker/VBoxContainer/HBoxContainer2" unique_id=560290109]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 32
+text = "Confirm"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="ClassPicker/VBoxContainer/HBoxContainer/LeftButton" to="." method="_on_left_button_pressed"]
+[connection signal="pressed" from="ClassPicker/VBoxContainer/HBoxContainer/RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="pressed" from="ClassPicker/VBoxContainer/HBoxContainer2/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="ClassPicker/VBoxContainer/HBoxContainer2/ConfirmButton" to="." method="_on_confirm_button_pressed"]

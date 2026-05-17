@@ -20,6 +20,11 @@ func unregister_area(area: InteractionArea):
 
 func _process(delta):
 	if active_areas.size() > 0 && can_interact:
+		if not is_instance_valid(player):
+			player = get_tree().get_first_node_in_group("player")
+			if not is_instance_valid(player):
+				return
+		
 		active_areas.sort_custom(_sort_by_distance_to_player)
 		label.text = base_text + active_areas[0].action_name
 		label.global_position = active_areas[0].global_position

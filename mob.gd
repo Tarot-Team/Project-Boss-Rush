@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 	var direction = Vector2.ZERO
 	if is_fleeing:
 		direction = (global_position - flee_target).normalized()
-	elif player:
+	elif is_instance_valid(player):
 		direction = (player.global_position - global_position).normalized()
 
 	# Chase Velocity
@@ -125,7 +125,8 @@ func start_fleeing(player_pos):
 	flee_target = player_pos
 
 func _on_game_over():
-	start_fleeing(player.global_position)
+	if is_instance_valid(player):
+		start_fleeing(player.global_position)
 
 func time_freeze():
 	Engine.time_scale = 0.05
