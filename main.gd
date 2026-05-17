@@ -7,6 +7,9 @@ var score
 func _ready() -> void:
 	$HUD.update_health($Player1.max_health, $Player1.health)
 	$Player1.health_changed.connect($HUD.update_health)
+	$HUD/StartButton.hide()
+	$HUD/Message.hide()
+	new_game()
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,7 +27,9 @@ func new_game():
 	print("starting new game")
 	score = 0
 	$Player1.reset()
-	$Player1.start($StartPosition.position)
+	$Player1.show()
+	$Player1.get_node("CollisionShape2D").disabled = false
+	$LevelManager.setup_start_position()
 	$StartTimer.start()
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
