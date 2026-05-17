@@ -3,11 +3,21 @@ signal start_game
 
 @onready var heart_container = $TopLeftUI/HBoxContainer/HeartContainer
 @onready var avatar_icon = $TopLeftUI/HBoxContainer/AvatarIcon
+@onready var minimap = $MinimapContainer/Minimap
 var heart_scene = preload("res://Heart.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
+
+func init_minimap(start_center: Vector2):
+	minimap.init_map(start_center)
+
+func update_minimap(prev_center: Vector2, new_center: Vector2):
+	minimap.visit_room(prev_center, new_center)
+	
+func clear_minimap():
+	minimap.clear()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

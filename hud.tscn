@@ -1,7 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://qog1v2jgchh8"]
+[gd_scene load_steps=5 format=3 uid="uid://qog1v2jgchh8"]
 
 [ext_resource type="Script" uid="uid://b7em8gne0ofod" path="res://hud.gd" id="1_37p78"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_64ctp"]
+[ext_resource type="Script" path="res://minimap.gd" id="3_minimap"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_minimap"]
+bg_color = Color(0.08, 0.08, 0.12, 0.85)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.4, 0.4, 0.5, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="HUD" type="CanvasLayer" unique_id=1202062643]
 script = ExtResource("1_37p78")
@@ -71,6 +84,21 @@ stretch_mode = 5
 [node name="HeartContainer" type="HBoxContainer" parent="TopLeftUI/HBoxContainer" unique_id=1836554992]
 layout_mode = 2
 alignment = 1
+
+[node name="MinimapContainer" type="PanelContainer" parent="." unique_id=1234567891]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 15.0
+offset_right = -20.0
+offset_bottom = 215.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_minimap")
+
+[node name="Minimap" type="Control" parent="MinimapContainer" unique_id=1234567892]
+layout_mode = 2
+script = ExtResource("3_minimap")
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]

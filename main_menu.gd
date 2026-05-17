@@ -14,8 +14,8 @@ var characters = [
 		"desc": "A fierce Fighter/Barbarian.\nExcels in close-quarters combat!",
 		"stats": {
 			"health": 8,
-			"speed": 350,
-			"lunge": 400,
+			"speed": 200,
+			"lunge": 100,
 			"speed_stars": 2,
 			"lunge_stars": 4
 		}
@@ -26,8 +26,8 @@ var characters = [
 		"desc": "Small, fast, and deadly.\nA melee speedster!",
 		"stats": {
 			"health": 3,
-			"speed": 600,
-			"lunge": 500,
+			"speed": 300,
+			"lunge": 200,
 			"speed_stars": 5,
 			"lunge_stars": 5
 		}
@@ -38,8 +38,8 @@ var characters = [
 		"desc": "Spell-oriented with mystical vibes.\nMaster of the arcane!",
 		"stats": {
 			"health": 4,
-			"speed": 400,
-			"lunge": 200,
+			"speed": 250,
+			"lunge": 100,
 			"speed_stars": 3,
 			"lunge_stars": 1
 		}
@@ -50,8 +50,8 @@ var characters = [
 		"desc": "A water-based Summoner.\nLet the tides fight for you!",
 		"stats": {
 			"health": 5,
-			"speed": 400,
-			"lunge": 300,
+			"speed": 250,
+			"lunge": 100,
 			"speed_stars": 3,
 			"lunge_stars": 3
 		}
@@ -62,8 +62,8 @@ var characters = [
 		"desc": "A deadly Ranger.\nMelts foes with heat and acid!",
 		"stats": {
 			"health": 4,
-			"speed": 450,
-			"lunge": 250,
+			"speed": 250,
+			"lunge": 100,
 			"speed_stars": 4,
 			"lunge_stars": 2
 		}

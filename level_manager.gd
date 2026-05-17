@@ -9,6 +9,11 @@ extends Node2D
 var room_size = Vector2(1280, 720)
 var grid = {} # Dictionary of room instances
 var current_grid_pos = Vector2.ZERO
+var current_room_node = null
+
+func get_room_center(room) -> Vector2:
+	var room_rect = room.get_room_pixel_rect()
+	return room.global_position + room_rect.position + (room_rect.size / 2)
 
 func _ready():
 	Events.room_transition_requested.connect(_on_transition_requested)
@@ -20,6 +25,7 @@ func setup_start_position():
 	
 	if grid.has(Vector2.ZERO):
 		var start_room = grid[Vector2.ZERO]
+		current_room_node = start_room
 		
 		# Center the player based on this room's specific size
 		var room_rect = start_room.get_room_pixel_rect()
@@ -27,6 +33,10 @@ func setup_start_position():
 		
 		update_camera_limits(start_room)
 		start_room.start_room()
+		
+		var hud = get_node("../HUD")
+		if hud and hud.has_method("init_minimap"):
+			hud.init_minimap(get_room_center(start_room))
 
 func generate_map():
 	var walker_pos = Vector2.ZERO
@@ -145,6 +155,15 @@ func transition_to_room(next_room, door_hit):
 		player.global_position = target_door.global_position + push_offset
 	else:
 		print("Error: Could not find target door: ", target_door_name)
+	
+	var prev_center = get_room_center(current_room_node)
+	var next_center = get_room_center(next_room)
+	
+	var hud = get_node("../HUD")
+	if hud and hud.has_method("update_minimap"):
+		hud.update_minimap(prev_center, next_center)
+		
+	current_room_node = next_room
 	
 	# Update the camera limits to the new room!
 	update_camera_limits(next_room)
