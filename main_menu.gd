@@ -4,13 +4,34 @@ extends Control
 @onready var class_picker_container = $ClassPicker
 @onready var character_texture = $ClassPicker/VBoxContainer/HBoxContainer/CharacterTexture
 @onready var character_name_label = $ClassPicker/VBoxContainer/CharacterName
+@onready var character_desc_label = $ClassPicker/VBoxContainer/CharacterDesc
 
 var characters = [
-	{"name": "Mars", "texture": preload("res://assets/player/Mars/mars walk_0001.png")},
-	{"name": "Mercury", "texture": preload("res://assets/player/Mercury/Walk/Mercury_0001.png")},
-	{"name": "Moon", "texture": preload("res://assets/player/moon/moon_walk/Moon walk 1.png")},
-	{"name": "Neptune", "texture": preload("res://assets/player/neptune/Neptune_0001.png")},
-	{"name": "Venus", "texture": preload("res://assets/player/venus/Venus_0001.png")}
+	{
+		"name": "Mars", 
+		"texture": preload("res://assets/player/Mars/mars walk_0001.png"),
+		"desc": "A fierce Fighter/Barbarian.\nExcels in close-quarters combat!"
+	},
+	{
+		"name": "Mercury", 
+		"texture": preload("res://assets/player/Mercury/Walk/Mercury_0001.png"),
+		"desc": "Small, fast, and deadly.\nA melee speedster!"
+	},
+	{
+		"name": "Moon", 
+		"texture": preload("res://assets/player/moon/moon_walk/Moon walk 1.png"),
+		"desc": "Spell-oriented with mystical vibes.\nMaster of the arcane!"
+	},
+	{
+		"name": "Neptune", 
+		"texture": preload("res://assets/player/neptune/Neptune_0001.png"),
+		"desc": "A water-based Summoner.\nLet the tides fight for you!"
+	},
+	{
+		"name": "Venus", 
+		"texture": preload("res://assets/player/venus/Venus_0001.png"),
+		"desc": "A deadly Ranger.\nMelts foes with heat and acid!"
+	}
 ]
 
 var current_char_index = 0
@@ -44,6 +65,7 @@ func scroll_character(dir: int) -> void:
 func update_character_display() -> void:
 	var char_data = characters[current_char_index]
 	character_name_label.text = char_data["name"]
+	character_desc_label.text = char_data["desc"]
 	character_texture.texture = char_data["texture"]
 
 func _on_start_button_pressed() -> void:
