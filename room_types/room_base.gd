@@ -95,8 +95,19 @@ func lock_doors(locked: bool):
 	#if body.is_in_group("player"):
 		#Events.room_transition_requested.emit(door_name)
 
-func get_room_pixel_size() -> Vector2:
-	return Vector2(room_width_units * 1280, room_height_units * 720)
+func get_room_pixel_rect() -> Rect2:
+	var walls_layer = get_node("Walls")
+	var map_rect = walls_layer.get_used_rect()
+	var tile_size = walls_layer.tile_set.tile_size
+	var map_scale = walls_layer.scale
+	
+	# Calculate the true pixel position and size
+	var pixel_x = map_rect.position.x * tile_size.x * map_scale.x
+	var pixel_y = map_rect.position.y * tile_size.y * map_scale.y
+	var pixel_width = map_rect.size.x * tile_size.x * map_scale.x
+	var pixel_height = map_rect.size.y * tile_size.y * map_scale.y
+	
+	return Rect2(pixel_x, pixel_y, pixel_width, pixel_height)
 
 func open_doors():
 	print("doors opened")

@@ -192,3 +192,6 @@ shape = SubResource("RectangleShape2D_cmdsw")
 
 [node name="SwingCooldown" type="Timer" parent="." unique_id=709334574]
 one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1576838351]
+position_smoothing_enabled = true
