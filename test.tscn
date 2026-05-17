@@ -2,9 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://di5768wov3v7b" path="res://player1.tscn" id="1_8uh7m"]
 [ext_resource type="PackedScene" uid="uid://bxrxrlpe5j24e" path="res://boss/boss.tscn" id="2_6uqi0"]
+[ext_resource type="PackedScene" uid="uid://cf5qkctm0in18" path="res://death_stab.tscn" id="3_6uqi0"]
 
 [node name="Node2D" type="Node2D" unique_id=1074291788]
 
 [node name="Player1" parent="." unique_id=644555451 instance=ExtResource("1_8uh7m")]
 
 [node name="boss" parent="." unique_id=1309360483 instance=ExtResource("2_6uqi0")]
+attack_swing_scene = ExtResource("3_6uqi0")

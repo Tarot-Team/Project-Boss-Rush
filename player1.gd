@@ -12,9 +12,8 @@ signal died
 @export var swing_cooldown: float = 0.5
 @export var original_speed: int = 400
 @export var lunge_distance: int = 5
-
-@export var speed: int = 400
 @export var original_health: int = 5
+
 var speed 
 var health
 var is_invincible = false
@@ -67,7 +66,7 @@ func _physics_process(delta: float) -> void:
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		
-		if collider.is_in_group("enemies"):
+		if collider.is_in_group("enemies") :
 			take_damage(1) # handles the invincibility automatically
 			bounce_player(collision.get_normal())
 	position += velocity * delta
@@ -83,6 +82,7 @@ func reset():
 func bounce_player(collision_normal: Vector2):
 	# Note that "normal" is the direction pointing away from whatever was hit
 	velocity = collision_normal * recoil_from_mob
+	
 
 func take_damage(damage):
 	if is_invincible or health <= 0:
@@ -91,6 +91,7 @@ func take_damage(damage):
 	if max_health < new_health: return
 	health = new_health
 	health_changed.emit(max_health, health)
+	print(health)
 	if health <= 0:
 		died.emit()
 	else:
