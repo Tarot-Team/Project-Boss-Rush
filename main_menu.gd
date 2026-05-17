@@ -27,7 +27,7 @@ var characters = [
 		"stats": {
 			"health": 3,
 			"speed": 300,
-			"lunge": 200,
+			"lunge": 400,
 			"speed_stars": 5,
 			"lunge_stars": 5
 		}

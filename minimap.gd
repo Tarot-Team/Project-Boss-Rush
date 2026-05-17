@@ -51,7 +51,7 @@ func _draw():
 		
 		var color = Color(0.8, 0.8, 0.8) # Visited (White/Gray)
 		if room_pos == start_room_center:
-			color = Color(1.0, 0.8, 0.2) # Yellow for start
+			color = Color(1.0, 0.95, 0.6) # Lighter Yellow for start
 		if room_pos == current_room_center:
 			color = Color(0.3, 0.8, 1.0) # Blue for current
 			

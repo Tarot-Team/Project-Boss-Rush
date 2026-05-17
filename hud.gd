@@ -3,7 +3,7 @@ signal start_game
 
 @onready var heart_container = $TopLeftUI/HBoxContainer/HeartContainer
 @onready var avatar_icon = $TopLeftUI/HBoxContainer/AvatarIcon
-@onready var minimap = $MinimapContainer/Minimap
+@onready var minimap = $MinimapContainer/VBoxContainer/Minimap
 var heart_scene = preload("res://Heart.tscn")
 
 # Called when the node enters the scene tree for the first time.

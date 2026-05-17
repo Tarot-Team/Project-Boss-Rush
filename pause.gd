@@ -1,16 +1,16 @@
-extends Control
+extends CanvasLayer
 
 func _ready():
-	visible = false
+	$Control.visible = false
 
 func resume():
 	get_tree().paused = false
-	visible = false
+	$Control.visible = false
 	$AnimationPlayer.play_backwards("blur")
 
 func pause():
 	get_tree().paused = true
-	visible = true
+	$Control.visible = true
 	$AnimationPlayer.play("blur")
 
 func _input(event):
@@ -22,7 +22,7 @@ func _input(event):
 
 func _on_restart_pressed():
 	resume()
-	get_tree().reload_current_scene()
+	get_tree().change_scene_to_file("res://main_menu.tscn")
 
 func _on_resume_pressed():
 	resume()

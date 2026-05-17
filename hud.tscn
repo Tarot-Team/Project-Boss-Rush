@@ -5,12 +5,12 @@
 [ext_resource type="Script" path="res://minimap.gd" id="3_minimap"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_minimap"]
-bg_color = Color(0.08, 0.08, 0.12, 0.85)
+bg_color = Color(0.08, 0.08, 0.12, 0.5)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.4, 0.4, 0.5, 1)
+border_color = Color(0.4, 0.4, 0.5, 0.8)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -96,8 +96,19 @@ offset_bottom = 215.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_minimap")
 
-[node name="Minimap" type="Control" parent="MinimapContainer" unique_id=1234567892]
+[node name="VBoxContainer" type="VBoxContainer" parent="MinimapContainer" unique_id=1234567895]
 layout_mode = 2
+
+[node name="MapLabel" type="Label" parent="MinimapContainer/VBoxContainer" unique_id=1234567896]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "MAP"
+horizontal_alignment = 1
+
+[node name="Minimap" type="Control" parent="MinimapContainer/VBoxContainer" unique_id=1234567892]
+layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("3_minimap")
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

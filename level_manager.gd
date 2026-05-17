@@ -2,8 +2,10 @@ extends Node2D
 
 @export var room_scenes: Array[PackedScene] # Room variants (inherited) go here
 @export var start_room_scene: PackedScene
+@export var room_count = 24
 
 @onready var room_container = $RoomContainer
+
 #@onready var camera = $Camera2D
 
 var room_size = Vector2(1280, 720)
@@ -40,7 +42,6 @@ func setup_start_position():
 
 func generate_map():
 	var walker_pos = Vector2.ZERO
-	var room_count = 8
 	var spawned_rooms = 0 # Track actual rooms spawned, not just grid spaces filled
 	
 	# Create the starting room
