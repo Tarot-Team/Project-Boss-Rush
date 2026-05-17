@@ -1,8 +1,8 @@
 extends CanvasLayer
 signal start_game
 
-@onready var heart_container = $MarginContainer/HBoxContainer/HeartContainer
-@onready var avatar_icon = $MarginContainer/HBoxContainer/AvatarIcon
+@onready var heart_container = $TopLeftUI/HBoxContainer/HeartContainer
+@onready var avatar_icon = $TopLeftUI/HBoxContainer/AvatarIcon
 var heart_scene = preload("res://Heart.tscn")
 
 # Called when the node enters the scene tree for the first time.

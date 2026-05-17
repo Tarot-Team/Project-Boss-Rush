@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://qog1v2jgchh8"]
+[gd_scene load_steps=3 format=3 uid="uid://qog1v2jgchh8"]
 
 [ext_resource type="Script" uid="uid://b7em8gne0ofod" path="res://hud.gd" id="1_37p78"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_64ctp"]
@@ -51,22 +51,26 @@ text = "Start"
 [node name="MessageTimer" type="Timer" parent="." unique_id=1493674158]
 wait_time = 2.0
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1582923756]
+[node name="TopLeftUI" type="MarginContainer" parent="." unique_id=1582923756]
 offset_left = 15.0
 offset_top = 15.0
-offset_right = 147.0
-offset_bottom = 143.0
+offset_right = 215.0
+offset_bottom = 79.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=705501664]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopLeftUI" unique_id=705501664]
 layout_mode = 2
+theme_override_constants/separation = 15
 
-[node name="AvatarIcon" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1587755357]
+[node name="AvatarIcon" type="TextureRect" parent="TopLeftUI/HBoxContainer" unique_id=1587755357]
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("2_64ctp")
+expand_mode = 1
 stretch_mode = 5
 
-[node name="HeartContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1836554992]
+[node name="HeartContainer" type="HBoxContainer" parent="TopLeftUI/HBoxContainer" unique_id=1836554992]
 layout_mode = 2
+alignment = 1
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
