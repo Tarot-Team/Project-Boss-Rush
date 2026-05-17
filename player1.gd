@@ -2,198 +2,490 @@ extends CharacterBody2D
 
 signal health_changed(max_health, health)
 signal died
+
 @export var max_speed: int = 450
 @export var acceleration: int = 2500
-@export var friction: int = 2500 # Basically acts as a global deceleration, we can change it later if needed
+@export var friction: int = 2500
 @export var recoil_from_mob: int = 600
 
 @export var max_health: int = 5
 @export var attack_swing_scene: PackedScene
-@export var iFrame_duration: float = 0.2 # Time in seconds
-@export var swing_cooldown: float = 0.5
+@export var fireball_scene: PackedScene = preload("res://fireball.tscn")
+@export var iFrame_duration: float = 0.2
+@export var swing_cooldown: float = 0.45
 @export var lunge_distance: int = 5
 
 @export var speed: int = 400
 @export var original_health: int = 5
-var original_speed = 400
-var health
-var is_invincible = false
-var screen_size
-var flipped = true
-var on_swing_cooldown = false
-var attacking = false
 
-# Called when the node enters the scene tree for the first time.
+const ARROW_SCN := preload("res://arrow.tscn")
+const POISON_FLASK_SCN := preload("res://poison_flask.tscn")
+const NEPTUNE_RING_SCN := preload("res://neptune_summon_ring.tscn")
+const MOON_LASER_SCN := preload("res://moon_laser.tscn")
+
+const DODGE_DURATION: float = 0.24
+const DODGE_COOLDOWN_TIME: float = 1.15
+const DODGE_SPEED_MULT: float = 3.2
+
+var original_speed: int = 400
+var health: int
+var is_invincible: bool = false
+var screen_size: Vector2
+var flipped: bool = true
+var on_swing_cooldown: bool = false
+var attacking: bool = false
+
+var last_move_dir: Vector2 = Vector2.RIGHT
+
+var is_dodging: bool = false
+var dodge_time_left: float = 0.0
+var dodge_direction: Vector2 = Vector2.RIGHT
+var dodge_cooldown_left: float = 0.0
+
+var secondary_cooldown_left: float = 0.0
+var secondary_cooldown_total: float = 1.5
+
+var hud: Node = null
+
+## False during "Get Ready" / start countdown so RMB/LMB/shift don't fire abilities early.
+var abilities_enabled: bool = false
+
+## Top-level: follows the player at scale 1 so orbit visuals aren't crushed by Player1.scale.
+var _companion_anchor: Node2D = null
+
+
+func set_abilities_enabled(enabled: bool) -> void:
+	abilities_enabled = enabled
+
+
+func _cleanup_legacy_companion_nodes() -> void:
+	## Pre-anchor builds parented companions under the player root; strip so we don't double-spawn.
+	for nm: String in ["NeptuneOrb", "MoonSummonController"]:
+		var n: Node = get_node_or_null(nm)
+		if n != null:
+			n.queue_free()
+
+
+func _ensure_companion_anchor() -> void:
+	if _companion_anchor != null and is_instance_valid(_companion_anchor):
+		return
+	_cleanup_legacy_companion_nodes()
+	_companion_anchor = Node2D.new()
+	_companion_anchor.name = "CompanionAnchor"
+	add_child(_companion_anchor)
+	_companion_anchor.set_as_top_level(true)
+	_companion_anchor.z_as_relative = false
+	_companion_anchor.z_index = 6
+	_companion_anchor.visible = visible
+	_companion_anchor.global_position = global_position
+
+
+func setup_hud(layer: Node) -> void:
+	hud = layer
+	refresh_secondary_hud_icon()
+
+
+func refresh_secondary_hud_icon() -> void:
+	if hud == null or not hud.has_method("configure_secondary_ability"):
+		return
+	var sid: String = AbilityKit.normalize_ability_id(Global.active_secondary_ability())
+	if sid == CharacterData.ABILITY_NEPTUNE_SURGE:
+		var n_summ: int = _neptune_summon_count()
+		var preview: Texture2D = NeptuneSummonRing.preview_texture_for_next_summon(n_summ)
+		hud.configure_secondary_ability(sid, preview)
+	else:
+		hud.configure_secondary_ability(sid)
+
+
 func _ready() -> void:
 	max_health = original_health
 	health = max_health
 	hide()
 	screen_size = get_viewport_rect().size
+	_ensure_companion_anchor()
+	apply_character_visuals_from_global()
+	call_deferred("_sync_companion_nodes")
 
-func apply_class_stats(stats: Dictionary):
-	original_health = stats.get("health", 5)
+
+func refresh_ability_loadout() -> void:
+	if Global.player_class.has("stats"):
+		apply_class_stats(Global.player_class["stats"])
+	else:
+		swing_cooldown = AbilityKit.attack_cooldown(AbilityKit.normalize_ability_id(Global.active_primary_ability()))
+		secondary_cooldown_total = AbilityKit.secondary_cooldown(AbilityKit.normalize_ability_id(Global.active_secondary_ability()))
+		_sync_companion_nodes()
+	refresh_secondary_hud_icon()
+	if hud and hud.has_method("configure_ability_pips"):
+		hud.configure_ability_pips(has_ability(CharacterData.ABILITY_DODGE), true)
+
+
+func _sync_companion_nodes() -> void:
+	_ensure_companion_anchor()
+	var sec: String = AbilityKit.normalize_ability_id(Global.active_secondary_ability())
+	var ring: Node = _companion_anchor.get_node_or_null("NeptuneSummonRing")
+
+	if AbilityKit.secondary_requires_neptune_orb(sec):
+		pass
+	elif ring != null:
+		ring.queue_free()
+
+
+func _neptune_summon_count() -> int:
+	if _companion_anchor == null or not is_instance_valid(_companion_anchor):
+		return 0
+	var r: Node = _companion_anchor.get_node_or_null("NeptuneSummonRing")
+	if r == null:
+		return 0
+	return r.get_child_count()
+
+
+func _ensure_neptune_summon_ring() -> NeptuneSummonRing:
+	_ensure_companion_anchor()
+	var ring: NeptuneSummonRing = _companion_anchor.get_node_or_null("NeptuneSummonRing") as NeptuneSummonRing
+	if ring != null:
+		return ring
+	var inst: NeptuneSummonRing = NEPTUNE_RING_SCN.instantiate() as NeptuneSummonRing
+	inst.setup_follow_target(self)
+	inst.name = "NeptuneSummonRing"
+	_companion_anchor.add_child(inst)
+	return inst
+
+
+func apply_character_visuals_from_global() -> void:
+	if not Global.player_class.has("id"):
+		return
+	var cid: String = Global.player_class["id"]
+	var frames := PlayerAnimationLoader.build_sprite_frames_for_character(cid)
+	if frames != null:
+		$AnimatedSprite2D.sprite_frames = frames
+
+
+func apply_class_stats(stats: Dictionary) -> void:
+	original_health = int(stats.get("health", 5))
 	max_health = original_health
 	health = max_health
-	
-	max_speed = stats.get("speed", 450)
+
+	max_speed = int(stats.get("speed", 450))
 	original_speed = max_speed
 	speed = max_speed
-	
-	lunge_distance = stats.get("lunge", 300)
-	
-	# We also emit the health changed signal so the HUD updates immediately
+
+	lunge_distance = int(stats.get("lunge", 300))
+
+	swing_cooldown = AbilityKit.attack_cooldown(AbilityKit.normalize_ability_id(Global.active_primary_ability()))
+	secondary_cooldown_total = AbilityKit.secondary_cooldown(AbilityKit.normalize_ability_id(Global.active_secondary_ability()))
+
 	health_changed.emit(max_health, health)
+	_sync_companion_nodes()
+	refresh_secondary_hud_icon()
+
+
+func has_ability(ability_id: String) -> bool:
+	if Global.player_class.is_empty():
+		return ability_id == CharacterData.ABILITY_DODGE
+	var list: Array = Global.player_class.get("abilities", [])
+	return ability_id in list
 
 
 func _physics_process(delta: float) -> void:
-	if attacking: return
-	# Grab Inputs
-	var input_direction = Vector2.ZERO
-	input_direction.x = Input.get_axis("move_left", "move_right")
-	input_direction.y = Input.get_axis("move_up", "move_down")
-	input_direction = input_direction.normalized()
-	
-	# Apply Acceleration and Friction
-	if input_direction != Vector2.ZERO:
-		# Approach max speed by acceleration
-		velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2)
-		
-		# Animation Stuff
-		if not attacking:
-			$AnimatedSprite2D.play("run")
+	if _companion_anchor != null and is_instance_valid(_companion_anchor):
+		_companion_anchor.visible = visible
+		if visible:
+			_companion_anchor.global_position = global_position
+
+	_update_cooldowns(delta)
+	_update_hud_cooldowns()
+
+	if is_dodging:
+		_process_dodge(delta)
+		return
+
+	if attacking:
+		return
+
+	var input_direction := Vector2(
+		Input.get_axis("move_left", "move_right"),
+		Input.get_axis("move_up", "move_down")
+	)
+	if input_direction.length_squared() > 0.01:
+		input_direction = input_direction.normalized()
+		last_move_dir = input_direction
 		flipped = input_direction.x < 0
 		$AnimatedSprite2D.flip_h = flipped
-	else:
-		# Decelerate
-		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-		if not attacking:
-			$AnimatedSprite2D.play("idle")
-	
-	if Input.is_action_just_pressed("attack_swing"):
-		attack_swing()
-	
-	move_and_slide() # Somehow applies movement, idrk :shrug:
-	#position = position.clamp(Vector2.ZERO, screen_size)
-	
-	# Handle bouncing/collisions
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
-		
-		if collider.is_in_group("enemies"):
-			take_damage(1) # handles the invincibility automatically
-			bounce_player(collision.get_normal())
-	position += velocity * delta
-	#position = position.clamp(Vector2.ZERO, screen_size)
-	
 
-func reset():
+	if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
+		try_start_dodge()
+
+	if Input.is_action_pressed("fireball") and abilities_enabled:
+		try_secondary_attack()
+
+	if Input.is_action_pressed("attack_swing") and abilities_enabled:
+		try_primary_attack()
+
+	if input_direction != Vector2.ZERO:
+		velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
+		$AnimatedSprite2D.play(&"run")
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		$AnimatedSprite2D.play(&"idle")
+
+	var spd_scale: float = clampf(velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0)
+	if $AnimatedSprite2D.animation == &"run":
+		$AnimatedSprite2D.speed_scale = spd_scale
+	else:
+		$AnimatedSprite2D.speed_scale = 1.0
+
+	move_and_slide()
+
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		var collider := collision.get_collider()
+		if collider.is_in_group("enemies") and not is_dodge_active_invuln():
+			take_damage(1)
+			bounce_player(collision.get_normal())
+
+
+func is_dodge_active_invuln() -> bool:
+	return is_dodging
+
+
+func _update_cooldowns(delta: float) -> void:
+	if dodge_cooldown_left > 0.0:
+		dodge_cooldown_left = maxf(0.0, dodge_cooldown_left - delta)
+	if secondary_cooldown_left > 0.0:
+		secondary_cooldown_left = maxf(0.0, secondary_cooldown_left - delta)
+
+
+func _update_hud_cooldowns() -> void:
+	if hud == null or not hud.has_method("set_ability_cooldowns"):
+		return
+	hud.set_ability_cooldowns(
+		dodge_cooldown_left, DODGE_COOLDOWN_TIME,
+		secondary_cooldown_left, secondary_cooldown_total
+	)
+
+
+func try_primary_attack() -> void:
+	if on_swing_cooldown or is_dodging:
+		return
+	match AbilityKit.normalize_ability_id(Global.active_primary_ability()):
+		CharacterData.ABILITY_ARROW_POISON:
+			_fire_arrow()
+		_:
+			_spawn_slash(AbilityKit.melee_slash_texture(AbilityKit.normalize_ability_id(Global.active_primary_ability())))
+
+	on_swing_cooldown = true
+	await get_tree().create_timer(swing_cooldown).timeout
+	on_swing_cooldown = false
+
+
+func _fire_arrow() -> void:
+	var dir := get_global_mouse_position() - global_position
+	if dir.length_squared() < 4.0:
+		dir = Vector2.RIGHT if not flipped else Vector2.LEFT
+	dir = dir.normalized()
+	flipped = dir.x < 0
+	$AnimatedSprite2D.flip_h = flipped
+	var arr: Area2D = ARROW_SCN.instantiate() as Area2D
+	if arr.has_method("apply_texture"):
+		arr.apply_texture(CharacterCombat.load_tex(CharacterCombat.TEX_POISON_ARROW))
+	arr.sprite_heading_offset_rad = PI * 0.5
+	arr.setup(dir, global_position + dir * 22.0, velocity)
+	get_parent().add_child(arr)
+
+
+func _spawn_slash(tex: Texture2D, slash_vis: float = 1.0, hit_vis: float = 1.0, dmg: int = 1, knock: float = 950.0, swing_len: float = 0.15) -> void:
+	if attack_swing_scene == null:
+		return
+	var swing: Area2D = attack_swing_scene.instantiate() as Area2D
+	swing.slash_texture = tex
+	swing.slash_scale_mult = slash_vis
+	swing.hitbox_scale_mult = hit_vis
+	swing.damage = dmg
+	swing.knockback_force = knock
+	swing.swing_length = swing_len
+	if swing.has_method("set_player_info"):
+		swing.set_player_info(velocity, global_position)
+
+	var lunge_dir := get_global_mouse_position() - global_position
+	var dir := lunge_dir.normalized()
+	if lunge_dir.length_squared() > 0.0001:
+		velocity += dir * 280.0
+		if absf(lunge_dir.x) > 0.01:
+			flipped = lunge_dir.x < 0
+			$AnimatedSprite2D.flip_h = flipped
+		velocity += dir * float(lunge_distance)
+
+	add_child(swing)
+	swing.global_position = global_position
+	var mouse_pos := get_global_mouse_position()
+	var direction := (mouse_pos - global_position).normalized()
+	swing.rotation = direction.angle() + deg_to_rad(-90.0) + CharacterCombat.SLASH_WORLD_ROTATION_OFFSET
+	swing.global_position += direction * 64.0
+
+
+func try_secondary_attack() -> void:
+	if secondary_cooldown_left > 0.0 or is_dodging:
+		return
+	match AbilityKit.normalize_ability_id(Global.active_secondary_ability()):
+		CharacterData.ABILITY_POISON_FLASK:
+			var flask: Area2D = POISON_FLASK_SCN.instantiate() as Area2D
+			var m := get_global_mouse_position()
+			var d := m - global_position
+			if d.length_squared() < 4.0:
+				d = Vector2.RIGHT if not flipped else Vector2.LEFT
+			d = d.normalized()
+			flipped = d.x < 0
+			$AnimatedSprite2D.flip_h = flipped
+			flask.setup(global_position + d * 26.0, d, velocity)
+			get_parent().add_child(flask)
+			secondary_cooldown_left = secondary_cooldown_total
+		CharacterData.ABILITY_FIRE_SLASH:
+			_spawn_slash(
+					CharacterCombat.load_tex(CharacterCombat.TEX_FIRE),
+					1.45, 1.35, 2, 1250.0, 0.22
+			)
+			secondary_cooldown_left = secondary_cooldown_total
+		CharacterData.ABILITY_COMET:
+			if fireball_scene == null:
+				return
+			var fb: Area2D = fireball_scene.instantiate() as Area2D
+			var m2 := get_global_mouse_position()
+			var d2 := m2 - global_position
+			if d2.length_squared() < 4.0:
+				d2 = Vector2.RIGHT if not flipped else Vector2.LEFT
+			d2 = d2.normalized()
+			fb.setup(global_position + d2 * 28.0, d2, velocity)
+			if fb.has_method("set_mercury_silver_style"):
+				fb.call("set_mercury_silver_style")
+			get_parent().add_child(fb)
+			secondary_cooldown_left = secondary_cooldown_total
+		CharacterData.ABILITY_NEPTUNE_SURGE:
+			var ring_n: NeptuneSummonRing = _ensure_neptune_summon_ring()
+			ring_n.add_summon()
+			secondary_cooldown_left = secondary_cooldown_total
+			refresh_secondary_hud_icon()
+		CharacterData.ABILITY_MOON_LASER:
+			var beam: Node2D = MOON_LASER_SCN.instantiate() as Node2D
+			var w: float = get_viewport_rect().size.x
+			var mouse_x: float = get_global_mouse_position().x
+			var facing_right: bool = mouse_x >= global_position.x
+			flipped = not facing_right
+			$AnimatedSprite2D.flip_h = flipped
+			var world: Node = get_parent()
+			if world:
+				world.add_child(beam)
+			beam.global_position = global_position
+			if beam.has_method("setup"):
+				beam.call("setup", velocity, global_position, facing_right, w)
+			secondary_cooldown_left = secondary_cooldown_total
+		_:
+			pass
+
+
+func try_start_dodge() -> void:
+	if dodge_cooldown_left > 0.0:
+		return
+	var dir := get_global_mouse_position() - global_position
+	if dir.length_squared() < 4.0:
+		dir = Vector2.RIGHT if not flipped else Vector2.LEFT
+	else:
+		dir = dir.normalized()
+	is_dodging = true
+	dodge_time_left = DODGE_DURATION
+	dodge_direction = dir
+	dodge_cooldown_left = DODGE_COOLDOWN_TIME
+	var dodge_spd: float = float(max_speed) * DODGE_SPEED_MULT
+	velocity = dodge_direction * dodge_spd
+	$AnimatedSprite2D.flip_h = dodge_direction.x < 0
+	$AnimatedSprite2D.play(&"run")
+	$AnimatedSprite2D.speed_scale = 1.8
+	set_dodge_visual(true)
+
+
+func _process_dodge(delta: float) -> void:
+	velocity = dodge_direction * (float(max_speed) * DODGE_SPEED_MULT)
+	dodge_time_left -= delta
+	move_and_slide()
+	if dodge_time_left <= 0.0:
+		is_dodging = false
+		set_dodge_visual(false)
+
+
+func set_dodge_visual(active: bool) -> void:
+	if active:
+		$AnimatedSprite2D.modulate = Color(1, 1, 1, 0.55)
+	else:
+		if not is_invincible:
+			$AnimatedSprite2D.modulate = Color(1, 1, 1, 1.0)
+
+
+func reset() -> void:
+	abilities_enabled = false
 	speed = original_speed
 	max_health = original_health
 	health = max_health
+	dodge_cooldown_left = 0.0
+	secondary_cooldown_left = 0.0
+	is_dodging = false
+	set_dodge_visual(false)
+	_cleanup_legacy_companion_nodes()
+	if _companion_anchor != null and is_instance_valid(_companion_anchor):
+		for c in _companion_anchor.get_children():
+			c.queue_free()
 	health_changed.emit(max_health, health)
+	call_deferred("_sync_companion_nodes")
+	call_deferred("_post_reset_hud")
 
-func bounce_player(collision_normal: Vector2):
-	# Note that "normal" is the direction pointing away from whatever was hit
+
+func _post_reset_hud() -> void:
+	refresh_secondary_hud_icon()
+	if hud and hud.has_method("configure_ability_pips"):
+		hud.configure_ability_pips(has_ability(CharacterData.ABILITY_DODGE), true)
+
+
+func bounce_player(collision_normal: Vector2) -> void:
 	velocity = collision_normal * recoil_from_mob
 
-func take_damage(damage):
+
+func take_damage(damage_amount: int) -> void:
+	if is_dodging:
+		return
 	if is_invincible or health <= 0:
 		return
-	var new_health: int  = health - damage
-	if max_health < new_health: return
+	var new_health: int = health - damage_amount
+	if new_health > max_health:
+		return
 	health = new_health
 	health_changed.emit(max_health, health)
 	if health <= 0:
 		died.emit()
 	else:
-		start_invincibility()	
+		start_invincibility()
 
-func change_max_health(change):
+
+func change_max_health(change: int) -> void:
 	max_health += change
 	health_changed.emit(max_health, health)
-	take_damage(-change) 
+	take_damage(-change)
 	print("Max:", max_health, "Current:", health)
 
-func change_speed(change):
+
+func change_speed(change: int) -> void:
 	speed += change
 	print(speed)
 
 
-func start_invincibility():
+func start_invincibility() -> void:
 	is_invincible = true
-	$AnimatedSprite2D.modulate.a = 0.5 # makes the player transparent
-	
+	if not is_dodging:
+		$AnimatedSprite2D.modulate.a = 0.5
 	await get_tree().create_timer(iFrame_duration).timeout
 	is_invincible = false
-	$AnimatedSprite2D.modulate.a = 1.0
+	if not is_dodging:
+		$AnimatedSprite2D.modulate.a = 1.0
 
-func attack_swing():
-	if on_swing_cooldown: return
-	on_swing_cooldown = true
-	var swing = attack_swing_scene.instantiate()
-	var offset = 67
-	
-	if swing.has_method("set_player_info"):
-		swing.set_player_info(velocity, global_position)
-	
-	# Lil lunge effect:
-	var lunge_dir = get_global_mouse_position() - global_position
-	var dir = lunge_dir.normalized()
-	velocity += dir * 300  # e.g. 300.0 — same every time
-	if absf(lunge_dir.x) > 0.01:
-		flipped = lunge_dir.x < 0
-		$AnimatedSprite2D.flip_h = flipped
-	velocity += dir * lunge_distance  # e.g. 300.0 — same every time
-	
-	#var to_mouse = get_global_mouse_position() - global_position
-	#if to_mouse.length_squared() < 0.0001:
-		#return  # or skip lunge / use last direction — avoids normalize() on zero
-	#var dir = to_mouse.normalized()
-	#velocity += dir * 300  # e.g. 300.0 — same every time
-	
-	
-	
-	add_child(swing)
 
-	# Position at player
-	swing.global_position = global_position
-
-	# Get mouse position in world
-	var mouse_pos = get_global_mouse_position()
-
-	# Direction from player to mouse
-	var direction = (mouse_pos - global_position).normalized()
-
-	# Rotate swing to face cursor
-	swing.rotation = direction.angle() + deg_to_rad(-90)
-
-	# Optional: push the swing outward from player
-	swing.global_position += direction * offset
-
-	await get_tree().create_timer(swing_cooldown).timeout
-	on_swing_cooldown = false
-
-#func reset():
-	#health = max_health
-	#health_changed.emit(max_health)
-
-#func _on_area_entered(area):
-	#if area.is_in_group("enemies"):
-		#take_damage(1)
-		#print("working")
-		##$CollisionShape2D.set_deferred("disabled", true)
-	
-
-func start(pos):
+func start(pos: Vector2) -> void:
 	position = pos
 	show()
 	$CollisionShape2D.disabled = false
-	#pass
-
-
-#func _on_body_entered(body: Node2D) -> void:
-	#if body.is_in_group("enemies"):
-		#take_damage(1)
-		#print("enemies entered the player")
-		##$CollisionShape2D.set_deferred("disabled", true)

@@ -28,31 +28,37 @@ func setup_doors(has_north: bool, has_south: bool, has_east: bool, has_west: boo
 	_configure_door($Doors/WestDoor, has_west)
 	
 func _configure_door(door_node: InteractionArea, has_neighbor: bool):
+	if door_node.has_method("set_has_room_connection"):
+		door_node.set_has_room_connection(has_neighbor)
+	else:
+		door_node.monitoring = has_neighbor
+
+	## No neighbor = solid stub: disable trigger shape so prompts cannot fire even if scripts run out of order.
+	var interact_shape := door_node.get_node_or_null("InteractCollision") as CollisionShape2D
+	if interact_shape != null:
+		interact_shape.disabled = not has_neighbor
+
 	var wall_patch = door_node.get_node_or_null("WallPatch")
 	var gate_visuals = door_node.get_node_or_null("GateVisuals") # Get the visuals node
-	
+
 	if wall_patch == null:
 		print("CRASH AVOIDED: Could not find WallPatch on ", door_node.name)
 		return
-		
+
 	if has_neighbor:
 		# Room exists! Open the path visually, disable the fake wall.
 		wall_patch.hide()
 		wall_patch.process_mode = Node.PROCESS_MODE_DISABLED
-		
+
 		if gate_visuals:
 			gate_visuals.show() # Show just the gate visuals
-			
-		door_node.monitoring = true 
 	else:
 		# No room here! Show the fake wall.
 		wall_patch.show()
 		wall_patch.process_mode = Node.PROCESS_MODE_INHERIT
-		
+
 		if gate_visuals:
 			gate_visuals.hide() # Hide just the gate visuals
-			
-		door_node.monitoring = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

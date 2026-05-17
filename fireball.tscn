@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://fb_fireball_scene"]
+
+[ext_resource type="Script" path="res://fireball.gd" id="1_fb"]
+[ext_resource type="Shader" path="res://fireball.gdshader" id="2_sh"]
+[ext_resource type="Texture2D" path="res://assets/attacks/Fire Flask.png" id="3_tex"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+shader = ExtResource("2_sh")
+shader_parameter/glow_strength = 1.35
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 20.0
+
+[node name="Fireball" type="Area2D"]
+collision_mask = 7
+monitoring = true
+monitorable = false
+script = ExtResource("1_fb")
+lifetime = 5.5
+max_travel_distance = 520.0
+max_pierce_hits = 2
+speed = 600.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_glow")
+position = Vector2(0, -2)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("3_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")

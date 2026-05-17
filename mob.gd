@@ -24,6 +24,7 @@ var flee_target = Vector2.ZERO
 func _ready():
 	$AnimatedSprite2D.play("run")
 	player = get_tree().get_first_node_in_group("player")
+	add_child(AmbientGlow.enemy_aura())
 
 # Called when the node enters the scene tree for the first time.
 func _physics_process(delta: float) -> void:
@@ -107,7 +108,7 @@ func die():
 	self.queue_free()
 
 func _on_hitbox_entered(area: Area2D):
-	if area.is_in_group("swing"):
+	if area.is_in_group("swing") or area.is_in_group("player_proj"):
 		# apply a direction based on the player position
 		var hit_dir = (global_position - area.player_pos_at_hit).normalized()
 		

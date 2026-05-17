@@ -19,6 +19,8 @@ func unregister_area(area: InteractionArea):
 
 
 func _process(delta):
+	## Drop freed areas, stubs that turned off monitoring, or stale entries after room setup order issues.
+	active_areas = active_areas.filter(func(a): return is_instance_valid(a) and (a as Area2D).monitoring)
 	if active_areas.size() > 0 && can_interact:
 		if not is_instance_valid(player):
 			player = get_tree().get_first_node_in_group("player")

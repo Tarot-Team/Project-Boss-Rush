@@ -7,67 +7,57 @@ extends Control
 @onready var character_desc_label = $ClassPicker/VBoxContainer/CharacterDesc
 @onready var character_stats_label = $ClassPicker/VBoxContainer/CharacterStats
 
-var characters = [
+var characters: Array = [
 	{
-		"name": "Mars", 
-		"texture": preload("res://assets/player/Mars/mars walk_0001.png"),
+		"id": "mars",
+		"name": "Mars",
+		"texture": preload("res://assets/player/Mars/mars_idle/mars walk_0001.png"),
 		"desc": "A fierce Fighter/Barbarian.\nExcels in close-quarters combat!",
-		"stats": {
-			"health": 8,
-			"speed": 200,
-			"lunge": 100,
-			"speed_stars": 2,
-			"lunge_stars": 4
-		}
+		"abilities": [CharacterData.ABILITY_DODGE],
+		"primary_ability": CharacterData.ABILITY_SLASH,
+		"secondary_ability": CharacterData.ABILITY_FIRE_SLASH,
+		"stats": {"health": 8, "speed": 200, "lunge": 100},
 	},
 	{
-		"name": "Mercury", 
+		"id": "mercury",
+		"name": "Mercury",
 		"texture": preload("res://assets/player/Mercury/Walk/Mercury_0001.png"),
 		"desc": "Small, fast, and deadly.\nA melee speedster!",
-		"stats": {
-			"health": 3,
-			"speed": 300,
-			"lunge": 400,
-			"speed_stars": 5,
-			"lunge_stars": 5
-		}
+		"abilities": [CharacterData.ABILITY_DODGE],
+		"primary_ability": CharacterData.ABILITY_SLASH_QUICK,
+		"secondary_ability": CharacterData.ABILITY_COMET,
+		"stats": {"health": 3, "speed": 300, "lunge": 400},
 	},
 	{
-		"name": "Moon", 
+		"id": "moon",
+		"name": "Moon",
 		"texture": preload("res://assets/player/moon/moon_walk/Moon walk 1.png"),
-		"desc": "Spell-oriented with mystical vibes.\nMaster of the arcane!",
-		"stats": {
-			"health": 4,
-			"speed": 250,
-			"lunge": 100,
-			"speed_stars": 3,
-			"lunge_stars": 1
-		}
+		"desc": "Spell-oriented with mystical vibes.\nRMB: a wide horizontal light beam.",
+		"abilities": [CharacterData.ABILITY_DODGE],
+		"primary_ability": CharacterData.ABILITY_SLASH_LIGHT,
+		"secondary_ability": CharacterData.ABILITY_MOON_LASER,
+		"stats": {"health": 4, "speed": 250, "lunge": 100},
 	},
 	{
-		"name": "Neptune", 
-		"texture": preload("res://assets/player/neptune/Neptune_0001.png"),
+		"id": "neptune",
+		"name": "Neptune",
+		"texture": preload("res://assets/player/neptune/neptune_walk/Neptune_0001.png"),
 		"desc": "A water-based Summoner.\nLet the tides fight for you!",
-		"stats": {
-			"health": 5,
-			"speed": 250,
-			"lunge": 100,
-			"speed_stars": 3,
-			"lunge_stars": 3
-		}
+		"abilities": [CharacterData.ABILITY_DODGE],
+		"primary_ability": CharacterData.ABILITY_SLASH_WATER,
+		"secondary_ability": CharacterData.ABILITY_NEPTUNE_SURGE,
+		"stats": {"health": 5, "speed": 250, "lunge": 100},
 	},
 	{
-		"name": "Venus", 
+		"id": "venus",
+		"name": "Venus",
 		"texture": preload("res://assets/player/venus/Venus_0001.png"),
 		"desc": "A deadly Ranger.\nMelts foes with heat and acid!",
-		"stats": {
-			"health": 4,
-			"speed": 250,
-			"lunge": 100,
-			"speed_stars": 4,
-			"lunge_stars": 2
-		}
-	}
+		"abilities": [CharacterData.ABILITY_DODGE],
+		"primary_ability": CharacterData.ABILITY_ARROW_POISON,
+		"secondary_ability": CharacterData.ABILITY_POISON_FLASK,
+		"stats": {"health": 4, "speed": 250, "lunge": 100},
+	},
 ]
 
 var current_char_index = 0
@@ -108,16 +98,25 @@ func get_stars(count: int) -> String:
 	return res
 
 func update_character_display() -> void:
-	var char_data = characters[current_char_index]
+	var char_data: Dictionary = characters[current_char_index]
 	character_name_label.text = char_data["name"]
 	character_desc_label.text = char_data["desc"]
 	character_texture.texture = char_data["texture"]
-	
-	var stats = char_data["stats"]
-	var speed_str = get_stars(stats["speed_stars"])
-	var lunge_str = get_stars(stats["lunge_stars"])
-	
-	character_stats_label.text = "Health: %d  |  Speed: %s  |  Lunge: %s" % [stats["health"], speed_str, lunge_str]
+
+	var stats: Dictionary = char_data["stats"]
+	var sp: int = int(stats.get("speed", CharacterData.SPEED_STAT_MIN))
+	var lg: int = int(stats.get("lunge", CharacterData.LUNGE_STAT_MIN))
+	var speed_stars: int = CharacterData.value_to_stars(sp, CharacterData.SPEED_STAT_MIN, CharacterData.SPEED_STAT_MAX)
+	var lunge_stars: int = CharacterData.value_to_stars(lg, CharacterData.LUNGE_STAT_MIN, CharacterData.LUNGE_STAT_MAX)
+	var speed_str := get_stars(speed_stars)
+	var lunge_str := get_stars(lunge_stars)
+
+	character_stats_label.text = "Health: %d  |  Speed: %s  |  Lunge: %s\n%s" % [
+		int(stats.get("health", 5)),
+		speed_str,
+		lunge_str,
+		AbilityKit.loadout_summary(char_data)
+	]
 
 func _on_start_button_pressed() -> void:
 	main_menu_container.hide()
@@ -132,9 +131,7 @@ func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
 func _on_confirm_button_pressed() -> void:
-	# Save the selected character to our Global singleton
-	Global.player_class = characters[current_char_index]
-	
+	Global.player_class = characters[current_char_index].duplicate(true)
 	print("Selected character: ", characters[current_char_index]["name"])
 	get_tree().change_scene_to_file("res://main.tscn")
 

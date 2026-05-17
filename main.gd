@@ -5,11 +5,21 @@ var score
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if Global.player_class.is_empty():
+		push_warning(
+				"Global.player_class is empty. You probably ran main.tscn directly (F6 Run Current Scene). "
+				+ "Use Play Project (F5) from main_menu.tscn, pick a character, then Confirm — "
+				+ "otherwise loadout stays Mars defaults and edits to Moon won't show."
+		)
 	if Global.player_class.has("stats"):
 		$Player1.apply_class_stats(Global.player_class["stats"])
 		
 	if Global.player_class.has("texture"):
 		$HUD.change_avatar(Global.player_class["texture"])
+		
+	$Player1.setup_hud($HUD)
+	$HUD.configure_ability_pips($Player1.has_ability(CharacterData.ABILITY_DODGE), true)
+	$Player1.refresh_secondary_hud_icon()
 		
 	$HUD.update_health($Player1.max_health, $Player1.health)
 	$Player1.health_changed.connect($HUD.update_health)
@@ -39,6 +49,8 @@ func new_game():
 	$StartTimer.start()
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
+	$HUD.configure_ability_pips($Player1.has_ability(CharacterData.ABILITY_DODGE), true)
+	$Player1.refresh_secondary_hud_icon()
 	get_tree().call_group("enemies", "queue_free")
 	get_tree().call_group("items", "reset")
 
@@ -71,6 +83,7 @@ func _on_score_timer_timeout() -> void:
 
 
 func _on_start_timer_timeout() -> void:
+	$Player1.set_abilities_enabled(true)
 	$MobTimer.start()
 	$ScoreTimer.start()
 	$HUD.show_message("")

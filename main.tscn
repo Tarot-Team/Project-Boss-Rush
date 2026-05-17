@@ -35,6 +35,9 @@ _bundled = {
 script = ExtResource("1_0xm2m")
 mob_scene = ExtResource("2_1bvp3")
 
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=550077144]
+color = Color(0.58, 0.52, 0.68, 1)
+
 [node name="MobTimer" type="Timer" parent="." unique_id=1381839639]
 
 [node name="ScoreTimer" type="Timer" parent="." unique_id=1351331179]

@@ -13,6 +13,11 @@ var grid = {} # Dictionary of room instances
 var current_grid_pos = Vector2.ZERO
 var current_room_node = null
 
+
+func get_active_room() -> Node:
+	return current_room_node
+
+
 func get_room_center(room) -> Vector2:
 	var room_rect = room.get_room_pixel_rect()
 	return room.global_position + room_rect.position + (room_rect.size / 2)
