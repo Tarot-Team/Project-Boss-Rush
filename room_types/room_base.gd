@@ -72,8 +72,16 @@ func start_room():
 	spawn_enemies()
 
 func spawn_enemies():
+	var choices: Array[PackedScene] = []
+	for scene_entry in enemy_scenes:
+		if scene_entry != null:
+			choices.push_back(scene_entry as PackedScene)
+	if choices.is_empty():
+		push_warning("BaseRoom.spawn_enemies: enemy_scenes has no PackedScene assigned.")
+		return
 	for marker in $EnemySpawnPoints.get_children():
-		var enemy = enemy_scenes.pick_random().instantiate()
+		var tmpl: PackedScene = choices.pick_random()
+		var enemy: Node = tmpl.instantiate()
 		enemy.global_position = marker.global_position
 		enemy.add_to_group("enemies")
 		enemy.tree_exited.connect(_check_room_cleared)
@@ -116,7 +124,9 @@ func get_room_pixel_rect() -> Rect2:
 	return Rect2(pixel_x, pixel_y, pixel_width, pixel_height)
 
 func open_doors():
-	print("doors opened")
+	#print("doors opened")
+	pass
 
 func close_doors():
-	print("doors closed")
+	#print("doors closed")
+	pass

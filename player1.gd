@@ -11,6 +11,13 @@ signal died
 @export var max_health: int = 5
 @export var attack_swing_scene: PackedScene
 @export var fireball_scene: PackedScene = preload("res://fireball.tscn")
+## Secondary Moon beam scene (also default-preloaded — assign in Inspector if overridden).
+@export var moon_laser_scene: PackedScene = preload("res://moon_laser.tscn")
+## Beam origin along aim, in pixels from the player root (clears the torso so the slash reads).
+@export var moon_laser_emit_offset_px: float = 58.0
+## Faint guide + sparklets during Moon charge (see `_moon_spawn_charge_preview`).
+@export var moon_charge_preview_line_width: float = 2.2
+@export var moon_charge_preview_line_color: Color = Color(0.74, 0.94, 1.0, 0.2)
 @export var iFrame_duration: float = 0.2
 @export var swing_cooldown: float = 0.45
 @export var lunge_distance: int = 5
@@ -21,7 +28,6 @@ signal died
 const ARROW_SCN := preload("res://arrow.tscn")
 const POISON_FLASK_SCN := preload("res://poison_flask.tscn")
 const NEPTUNE_RING_SCN := preload("res://neptune_summon_ring.tscn")
-const MOON_LASER_SCN := preload("res://moon_laser.tscn")
 
 const DODGE_DURATION: float = 0.24
 const DODGE_COOLDOWN_TIME: float = 1.15
@@ -35,7 +41,7 @@ var flipped: bool = true
 var on_swing_cooldown: bool = false
 var attacking: bool = false
 
-var last_move_dir: Vector2 = Vector2.RIGHT
+var last_move_dir: Vector2 = Vector2.LEFT
 
 var is_dodging: bool = false
 var dodge_time_left: float = 0.0
@@ -49,6 +55,9 @@ var hud: Node = null
 
 ## False during "Get Ready" / start countdown so RMB/LMB/shift don't fire abilities early.
 var abilities_enabled: bool = false
+
+## Moon beam secondary: suppress other attacks during windup/beam/recovery.
+var _moon_beam_channeling: bool = false
 
 ## Top-level: follows the player at scale 1 so orbit visuals aren't crushed by Player1.scale.
 var _companion_anchor: Node2D = null
@@ -177,6 +186,8 @@ func apply_class_stats(stats: Dictionary) -> void:
 	health_changed.emit(max_health, health)
 	_sync_companion_nodes()
 	refresh_secondary_hud_icon()
+	## After loadout resolves, rebuild SpriteFrames (Moon beam animations, ordered attacks, etc.).
+	apply_character_visuals_from_global()
 
 
 func has_ability(ability_id: String) -> bool:
@@ -202,37 +213,43 @@ func _physics_process(delta: float) -> void:
 	if attacking:
 		return
 
-	var input_direction := Vector2(
-		Input.get_axis("move_left", "move_right"),
-		Input.get_axis("move_up", "move_down")
-	)
-	if input_direction.length_squared() > 0.01:
-		input_direction = input_direction.normalized()
-		last_move_dir = input_direction
-		flipped = input_direction.x < 0
-		$AnimatedSprite2D.flip_h = flipped
-
-	if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
-		try_start_dodge()
-
-	if Input.is_action_pressed("fireball") and abilities_enabled:
-		try_secondary_attack()
-
-	if Input.is_action_pressed("attack_swing") and abilities_enabled:
-		try_primary_attack()
-
-	if input_direction != Vector2.ZERO:
-		velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
-		$AnimatedSprite2D.play(&"run")
-	else:
+	if _moon_beam_channeling:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-		$AnimatedSprite2D.play(&"idle")
-
-	var spd_scale: float = clampf(velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0)
-	if $AnimatedSprite2D.animation == &"run":
-		$AnimatedSprite2D.speed_scale = spd_scale
 	else:
-		$AnimatedSprite2D.speed_scale = 1.0
+		var input_direction := Vector2(
+				Input.get_axis("move_left", "move_right"),
+				Input.get_axis("move_up", "move_down")
+		)
+		if input_direction.length_squared() > 0.01:
+			input_direction = input_direction.normalized()
+			last_move_dir = input_direction
+			flipped = input_direction.x < 0
+			$AnimatedSprite2D.flip_h = flipped
+
+		if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
+			try_start_dodge()
+
+		if Input.is_action_pressed("fireball") and abilities_enabled:
+			try_secondary_attack()
+
+		if Input.is_action_pressed("attack_swing") and abilities_enabled:
+			try_primary_attack()
+
+		if not _moon_beam_channeling:
+			if input_direction != Vector2.ZERO:
+				velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
+				$AnimatedSprite2D.play(&"run")
+			else:
+				velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+				$AnimatedSprite2D.play(&"idle")
+
+			var spd_scale: float = clampf(
+					velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0
+			)
+			if $AnimatedSprite2D.animation == &"run":
+				$AnimatedSprite2D.speed_scale = spd_scale
+			else:
+				$AnimatedSprite2D.speed_scale = 1.0
 
 	move_and_slide()
 
@@ -265,6 +282,8 @@ func _update_hud_cooldowns() -> void:
 
 
 func try_primary_attack() -> void:
+	if _moon_beam_channeling:
+		return
 	if on_swing_cooldown or is_dodging:
 		return
 	match AbilityKit.normalize_ability_id(Global.active_primary_ability()):
@@ -326,6 +345,8 @@ func _spawn_slash(tex: Texture2D, slash_vis: float = 1.0, hit_vis: float = 1.0, 
 func try_secondary_attack() -> void:
 	if secondary_cooldown_left > 0.0 or is_dodging:
 		return
+	if _moon_beam_channeling:
+		return
 	match AbilityKit.normalize_ability_id(Global.active_secondary_ability()):
 		CharacterData.ABILITY_POISON_FLASK:
 			var flask: Area2D = POISON_FLASK_SCN.instantiate() as Area2D
@@ -336,7 +357,8 @@ func try_secondary_attack() -> void:
 			d = d.normalized()
 			flipped = d.x < 0
 			$AnimatedSprite2D.flip_h = flipped
-			flask.setup(global_position + d * 26.0, d, velocity)
+			var toss_origin := global_position + d * 26.0
+			flask.setup(toss_origin, m, velocity, d)
 			get_parent().add_child(flask)
 			secondary_cooldown_left = secondary_cooldown_total
 		CharacterData.ABILITY_FIRE_SLASH:
@@ -365,28 +387,142 @@ func try_secondary_attack() -> void:
 			secondary_cooldown_left = secondary_cooldown_total
 			refresh_secondary_hud_icon()
 		CharacterData.ABILITY_MOON_LASER:
-			var beam: Node2D = MOON_LASER_SCN.instantiate() as Node2D
-			var w: float = get_viewport_rect().size.x
-			var mouse_x: float = get_global_mouse_position().x
-			var facing_right: bool = mouse_x >= global_position.x
-			flipped = not facing_right
-			$AnimatedSprite2D.flip_h = flipped
-			var world: Node = get_parent()
-			if world:
-				world.add_child(beam)
-			beam.global_position = global_position
-			if beam.has_method("setup"):
-				beam.call("setup", velocity, global_position, facing_right, w)
 			secondary_cooldown_left = secondary_cooldown_total
+			await _moon_laser_cast_sequence()
 		_:
 			pass
+
+
+func _moon_sprite_anim_playback_secs(sprite: AnimatedSprite2D, anim: StringName, fallback_secs: float) -> float:
+	if sprite == null:
+		return fallback_secs
+	var sf_anim: SpriteFrames = sprite.sprite_frames
+	if sf_anim == null or not sf_anim.has_animation(anim):
+		return fallback_secs
+	var fc: int = sf_anim.get_frame_count(anim)
+	if fc <= 0:
+		return fallback_secs
+	var sum_duration_scales: float = 0.0
+	var idx: int = 0
+	while idx < fc:
+		sum_duration_scales += float(sf_anim.get_frame_duration(anim, idx))
+		idx += 1
+	var anim_hz: float = float(sf_anim.get_animation_speed(anim))
+	if anim_hz < 0.001:
+		anim_hz = 12.0
+	var play_scale: float = float(sprite.speed_scale)
+	if play_scale < 0.001:
+		play_scale = 1.0
+	var secs: float = sum_duration_scales / (anim_hz * play_scale)
+	return clampf(maxf(secs, 0.08) + 0.06, 0.06, 20.0)
+
+
+func _moon_laser_cast_sequence() -> void:
+	_moon_beam_channeling = true
+	var sprite: AnimatedSprite2D = $AnimatedSprite2D as AnimatedSprite2D
+	var sf: SpriteFrames = sprite.sprite_frames if sprite != null else null
+
+	var mouse_gp: Vector2 = get_global_mouse_position()
+	var aim: Vector2 = mouse_gp - global_position
+	if aim.length_squared() < 4.0:
+		aim = Vector2.RIGHT if not flipped else Vector2.LEFT
+	else:
+		aim = aim.normalized()
+
+	flipped = aim.x < 0.0
+	sprite.flip_h = flipped
+
+	var charge_preview := MoonChargeBeamPreview.new()
+	var old_fx := get_node_or_null("_MoonLaserChargeFx")
+	if old_fx != null:
+		old_fx.queue_free()
+	charge_preview.name = "_MoonLaserChargeFx"
+	add_child(charge_preview)
+	charge_preview.activate(
+			self,
+			moon_laser_emit_offset_px,
+			moon_charge_preview_line_width,
+			moon_charge_preview_line_color,
+	)
+
+	if (
+			sf != null
+			and sf.has_animation(&"moon_laser_charge")
+			and sf.get_frame_count(&"moon_laser_charge") > 0
+	):
+		sprite.speed_scale = 1.0
+		sprite.play(&"moon_laser_charge")
+		var charge_w: float = _moon_sprite_anim_playback_secs(sprite, &"moon_laser_charge", 0.52)
+		await get_tree().create_timer(charge_w).timeout
+	else:
+		await get_tree().create_timer(0.35).timeout
+
+	var snap: Dictionary = {}
+	if charge_preview != null and is_instance_valid(charge_preview):
+		snap = charge_preview.capture_fire_snapshot()
+		charge_preview.queue_free()
+
+	var aim_fire: Vector2 = snap.get(&"aim", aim) as Vector2
+	if aim_fire.length_squared() < 0.0001:
+		aim_fire = aim
+	if aim_fire.length_squared() < 0.0001:
+		aim_fire = Vector2.RIGHT if not flipped else Vector2.LEFT
+	else:
+		aim_fire = aim_fire.normalized()
+
+	flipped = aim_fire.x < 0.0
+	sprite.flip_h = flipped
+
+	var beam_spawn: Vector2 = snap.get(&"beam_spawn", global_position + aim_fire * moon_laser_emit_offset_px) as Vector2
+	var beam_len: float = float(snap.get(&"beam_len", 0.0))
+	if beam_len < 24.0:
+		var beam_space_fallback: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
+		beam_spawn = global_position + aim_fire * moon_laser_emit_offset_px
+		beam_len = MoonLaser.beam_length_through_space(
+				beam_space_fallback, beam_spawn, aim_fire, 3200.0, self, 52.0
+		)
+
+	var beam_pack: PackedScene = moon_laser_scene
+	if beam_pack == null:
+		beam_pack = load("res://moon_laser.tscn") as PackedScene
+
+	if beam_pack == null:
+		push_error("Player1: Moon laser scene missing (assign moon_laser_scene or add res://moon_laser.tscn).")
+		_moon_beam_channeling = false
+		return
+
+	var beam_node: MoonLaser = beam_pack.instantiate() as MoonLaser
+	var beam_duration_sec: float = 1.0
+	if beam_node != null:
+		beam_duration_sec = beam_node.beam_duration_sec
+		get_parent().add_child(beam_node)
+		beam_node.setup(velocity, global_position, beam_spawn, aim_fire, beam_len)
+
+	await get_tree().create_timer(beam_duration_sec).timeout
+
+	if (
+			sf != null
+			and sf.has_animation(&"moon_laser_recovery")
+			and sf.get_frame_count(&"moon_laser_recovery") > 0
+	):
+		sprite.speed_scale = 1.0
+		sprite.play(&"moon_laser_recovery")
+		var rec_w: float = _moon_sprite_anim_playback_secs(sprite, &"moon_laser_recovery", 0.42)
+		await get_tree().create_timer(rec_w).timeout
+
+	_moon_beam_channeling = false
 
 
 func try_start_dodge() -> void:
 	if dodge_cooldown_left > 0.0:
 		return
-	var dir := get_global_mouse_position() - global_position
-	if dir.length_squared() < 4.0:
+	var dir: Vector2
+	## Prefer actual motion so diagonals match; idle uses last cardinal input + fallback to sprite flip.
+	if velocity.length_squared() > 400.0:
+		dir = velocity.normalized()
+	else:
+		dir = last_move_dir
+	if dir.length_squared() < 0.01:
 		dir = Vector2.RIGHT if not flipped else Vector2.LEFT
 	else:
 		dir = dir.normalized()
@@ -428,6 +564,10 @@ func reset() -> void:
 	secondary_cooldown_left = 0.0
 	is_dodging = false
 	set_dodge_visual(false)
+	_moon_beam_channeling = false
+	var moon_fx: Node = get_node_or_null("_MoonLaserChargeFx")
+	if moon_fx != null:
+		moon_fx.queue_free()
 	_cleanup_legacy_companion_nodes()
 	if _companion_anchor != null and is_instance_valid(_companion_anchor):
 		for c in _companion_anchor.get_children():

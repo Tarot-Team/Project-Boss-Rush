@@ -54,6 +54,9 @@ static func collider_is_enemy_damage_target(col: Object) -> bool:
 static func should_ignore_projectile_collision(col: Object) -> bool:
 	if col is InteractionArea:
 		return true
+	## AoE overlays (poison cloud, etc.) must not intercept player projectile rays / movement sweeps.
+	if col is CollisionObject2D and (col as CollisionObject2D).is_in_group(&"aoe_pass_projectiles"):
+		return true
 	return false
 
 

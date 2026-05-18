@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://poison_cloud_scene"]
 
 [ext_resource type="Script" path="res://poison_cloud.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/attacks/Poison Flask.png" id="2_tex"]
+[ext_resource type="Texture2D" path="res://poison_cloud.png" id="2_tex"]
 
 [sub_resource type="CircleShape2D" id="CircleShape_cloud"]
 radius = 72.0
@@ -14,7 +14,7 @@ modulate = Color(0.45, 0.95, 0.42, 0.42)
 scale = Vector2(3.6, 3.6)
 texture = ExtResource("2_tex")
 
-[node name="DamageZone" type="Area2D" parent="."]
+[node name="DamageZone" type="Area2D" parent="." groups=["aoe_pass_projectiles"]]
 collision_mask = 2
 monitoring = true
 

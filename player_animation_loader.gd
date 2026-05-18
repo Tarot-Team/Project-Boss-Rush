@@ -24,6 +24,51 @@ static func _load_textures_from_folder(folder: String) -> Array[Texture2D]:
 	return textures
 
 
+static func _moon_attack_filename_order() -> PackedStringArray:
+	return PackedStringArray([
+		"moon attack 1.png",
+		"moon attack 2.png",
+		"moon attack 3.png",
+		"moon attack 4.png",
+		"moon attack 5.png",
+		"moon attack 6.png",
+		"moon attack 7.png",
+		"moon attack 7.1.png",
+		"moon attack 7.2.png",
+		"moon attack 7.3.png",
+		"moon attack 8.png",
+		"moon attack 9.png",
+		"moon attack 10.png",
+		"moon attack 11.png",
+		"moon attack 12.png",
+		"moon attack 13.png",
+		"moon attack 14.png",
+	])
+
+
+static func _load_moon_attacks_ordered() -> Array[Texture2D]:
+	var folder := "res://assets/player/moon/moon_attacks/"
+	var out: Array[Texture2D] = []
+	for fname: String in _moon_attack_filename_order():
+		var p: String = folder.path_join(fname)
+		if ResourceLoader.exists(p):
+			var t_loaded: Variant = load(p)
+			var t_tex: Texture2D = t_loaded as Texture2D
+			if t_tex != null and t_tex.get_width() > 4:
+				out.append(t_tex)
+		else:
+			push_warning("PlayerAnimationLoader: missing Moon attack frame: ", p)
+	return out
+
+
+static func _moon_laser_recovery_start(texs: Array[Texture2D]) -> int:
+	for i in range(texs.size()):
+		var f: String = texs[i].resource_path.get_file()
+		if f == "moon attack 10.png":
+			return i
+	return texs.size()
+
+
 static func build_sprite_frames_for_character(character_id: String) -> SpriteFrames:
 	var walk_folder := ""
 	match character_id:
@@ -58,14 +103,34 @@ static func build_sprite_frames_for_character(character_id: String) -> SpriteFra
 	frames.set_animation_speed(&"run", 10.0)
 	frames.set_animation_speed(&"idle", 4.0)
 
-	# Moon: attack combo from moon_attacks
+	# Moon: melee uses full combo; beam uses animations split at `moon attack 10.png`.
 	if character_id == "moon":
-		var atk: Array[Texture2D] = _load_textures_from_folder("res://assets/player/moon/moon_attacks")
-		if not atk.is_empty():
+		var atk_ordered: Array[Texture2D] = _load_moon_attacks_ordered()
+		if not atk_ordered.is_empty():
 			frames.add_animation(&"attack")
-			for t2 in atk:
-				frames.add_frame(&"attack", t2, 1.0, -1)
+			for tex_atk: Texture2D in atk_ordered:
+				frames.add_frame(&"attack", tex_atk, 1.0, -1)
 			frames.set_animation_loop(&"attack", false)
 			frames.set_animation_speed(&"attack", 18.0)
+
+			var split_idx: int = _moon_laser_recovery_start(atk_ordered)
+			var windup: Array = atk_ordered.slice(0, split_idx)
+			var recovery_tex: Array = atk_ordered.slice(split_idx, atk_ordered.size())
+
+			if windup.size() > 0:
+				frames.add_animation(&"moon_laser_charge")
+				for tw: Variant in windup:
+					var t_wind: Texture2D = tw as Texture2D
+					frames.add_frame(&"moon_laser_charge", t_wind, 1.0, -1)
+				frames.set_animation_loop(&"moon_laser_charge", false)
+				frames.set_animation_speed(&"moon_laser_charge", 18.0)
+
+			if recovery_tex.size() > 0:
+				frames.add_animation(&"moon_laser_recovery")
+				for tr: Variant in recovery_tex:
+					var t_rec: Texture2D = tr as Texture2D
+					frames.add_frame(&"moon_laser_recovery", t_rec, 1.0, -1)
+				frames.set_animation_loop(&"moon_laser_recovery", false)
+				frames.set_animation_speed(&"moon_laser_recovery", 14.0)
 
 	return frames
