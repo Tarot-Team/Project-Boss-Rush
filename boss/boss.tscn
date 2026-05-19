@@ -58,7 +58,8 @@ signal setname(name)
 
 
 @export_group(\"Movement\")
-@export var top_speed = 150
+@export var lunge_speed = 600  
+@export var top_speed = 100
 @export var acceleration = 800
 @export var friction = 600
 
@@ -68,7 +69,7 @@ signal setname(name)
 
 var health = 0
 var player = null
-
+var attacking = false
 
 func _ready():
 	$AnimatedSprite2D.play(\"run\")
@@ -76,17 +77,27 @@ func _ready():
 
 	health = max_health
 
-	# Send initial values to UI
 	sethealthbar.emit(max_health)
 	bosshealth_changed.emit(health)
 	setname.emit(boss_name)
 	
-	 # Add this:
 	var timer = Timer.new()
 	add_child(timer)
-	timer.wait_time = 1.0
+	timer.wait_time = 3.0
 	timer.timeout.connect(lunge_attack)
 	timer.start()
+
+
+func _physics_process(delta: float) -> void:
+	if player == null: return
+	if not attacking: 
+		var dir = (player.global_position - global_position).normalized()
+		velocity = velocity.move_toward(dir * top_speed, acceleration * delta)
+		$AnimatedSprite2D.flip_h = dir.x < 0  
+		$AnimatedSprite2D.play(\"run\")
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+	move_and_slide()
 
 func take_damage(amount, source_pos):
 	health -= amount
@@ -125,26 +136,30 @@ func punchy_scale():
 	tween.tween_property($AnimatedSprite2D,\"scale\",Vector2(1, 1),0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 
+
 func lunge_attack():
-	if player == null:
-		push_error(\"lunge_attack: player is null\")
-		return
+	if player == null:return
+	if attack_swing_scene == null:return
+	
+	var direction = (player.global_position - global_position).normalized()
+	velocity = direction * lunge_speed
+	$AnimatedSprite2D.flip_h = direction.x < 0
+	
 	var swing = attack_swing_scene.instantiate()
 	var offset = 67
-	
 	if swing.has_method(\"set_player_info\"):
 		swing.set_player_info(velocity, global_position)
 	add_child(swing)
-
 	swing.global_position = global_position
-	
-	var player_pos = player.global_position
-
-	var direction = (player_pos - global_position).normalized()
-
 	swing.rotation = direction.angle() + deg_to_rad(-90)
-
 	swing.global_position += direction * offset
+	
+	attacking = true
+	$AnimatedSprite2D.play(\"stab\")
+	await $AnimatedSprite2D.animation_finished
+	attacking = false
+	
+
 	
 "
 
@@ -327,7 +342,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("26_0mfxo")
 }],
-"loop": true,
+"loop": false,
 "name": &"stab",
 "speed": 5.0
 }]

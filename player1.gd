@@ -10,7 +10,7 @@ signal died
 @export var attack_swing_scene: PackedScene
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
-@export var original_speed: int = 400
+@export var original_speed: int = 300
 @export var lunge_distance: int = 5
 @export var original_health: int = 5
 
