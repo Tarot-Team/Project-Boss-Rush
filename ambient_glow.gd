@@ -1,5 +1,5 @@
-class_name AmbientGlow
 extends RefCounted
+class_name AmbientGlow
 ## Soft additive radial pool (shader); reads like a faint lamp — not chunky GradientTexture2D quads.
 
 const _POOL_SHADER := preload("res://ambient_light_pool.gdshader")

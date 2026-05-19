@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ddxlutla0gwfp"
-path="res://.godot/imported/Skeleton Fighter Attack_0005.png-eac023fbba9baa96b1c542e51095b15d.ctex"
+path="res://.godot/imported/Skeleton Fighter Attack_000(bad)5.png-4ec0d4437c435e581cb7dd30dda37ac6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Enemy/Basic/Skeleton Fighter/Attack/Skeleton Fighter Attack_0005.png"
-dest_files=["res://.godot/imported/Skeleton Fighter Attack_0005.png-eac023fbba9baa96b1c542e51095b15d.ctex"]
+source_file="res://assets/Enemy/Basic/Skeleton Fighter/Attack/Skeleton Fighter Attack_000(bad)5.png"
+dest_files=["res://.godot/imported/Skeleton Fighter Attack_000(bad)5.png-4ec0d4437c435e581cb7dd30dda37ac6.ctex"]
 
 [params]
 

@@ -2,6 +2,10 @@ extends Node2D
 
 @export var room_width_units: int = 1 # how many grid cells wide
 @export var room_height_units: int = 1 # how many grid cells tall
+@export_range(1, 10) var min_spawns_per_enemy_type: int = 1
+@export_range(1, 10) var max_spawns_per_enemy_type: int = 3
+@export var spawn_jitter_radius: float = 96.0
+@export var spawn_door_clearance: float = 128.0
 
 signal room_cleared
 signal player_entered(room_node)
@@ -9,6 +13,7 @@ signal player_entered(room_node)
 @export var enemy_scenes: Array[PackedScene] # This defines which enemies can spawn
 var is_cleared = false
 var is_active = false
+var has_spawned_enemies = false
 
 @onready var tilemap = $Walls
 
@@ -42,7 +47,7 @@ func _configure_door(door_node: InteractionArea, has_neighbor: bool):
 	var gate_visuals = door_node.get_node_or_null("GateVisuals") # Get the visuals node
 
 	if wall_patch == null:
-		print("CRASH AVOIDED: Could not find WallPatch on ", door_node.name)
+		push_warning("BaseRoom: could not find WallPatch on %s." % door_node.name)
 		return
 
 	if has_neighbor:
@@ -63,31 +68,80 @@ func _configure_door(door_node: InteractionArea, has_neighbor: bool):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	close_doors() # Closes the doors when the player enters
-	spawn_enemies()
+	set_room_active(false)
 
-func start_room():
+func start_room() -> void:
 	if is_cleared: return
-	is_active = true
-	lock_doors(true)
-	spawn_enemies()
+	set_room_active(true)
+	if not has_spawned_enemies:
+		spawn_enemies()
 
-func spawn_enemies():
+func set_room_active(active: bool) -> void:
+	is_active = active
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if is_ancestor_of(enemy):
+			if active:
+				enemy.process_mode = Node.PROCESS_MODE_INHERIT
+			else:
+				enemy.process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func spawn_enemies() -> void:
 	var choices: Array[PackedScene] = []
 	for scene_entry in enemy_scenes:
 		if scene_entry != null:
 			choices.push_back(scene_entry as PackedScene)
 	if choices.is_empty():
 		push_warning("BaseRoom.spawn_enemies: enemy_scenes has no PackedScene assigned.")
+		has_spawned_enemies = true
+		is_cleared = true
+		lock_doors(false)
 		return
-	for marker in $EnemySpawnPoints.get_children():
-		var tmpl: PackedScene = choices.pick_random()
-		var enemy: Node = tmpl.instantiate()
-		enemy.global_position = marker.global_position
-		enemy.add_to_group("enemies")
-		enemy.tree_exited.connect(_check_room_cleared)
-		add_child(enemy)
+	has_spawned_enemies = true
+	for enemy_scene in choices:
+		var spawn_count := randi_range(min_spawns_per_enemy_type, max_spawns_per_enemy_type)
+		for i in range(spawn_count):
+			_spawn_enemy(enemy_scene)
 
-func _check_room_cleared():
+
+func _spawn_enemy(enemy_scene: PackedScene) -> void:
+	var enemy: Node2D = enemy_scene.instantiate() as Node2D
+	enemy.add_to_group("enemies")
+	enemy.tree_exited.connect(_check_room_cleared)
+	if is_active:
+		enemy.process_mode = Node.PROCESS_MODE_INHERIT
+	else:
+		enemy.process_mode = Node.PROCESS_MODE_DISABLED
+	add_child(enemy)
+	enemy.global_position = _random_spawn_position()
+
+
+func _random_spawn_position() -> Vector2:
+	var markers := spawner_container.get_children()
+	if markers.is_empty():
+		var room_rect := get_room_pixel_rect()
+		return global_position + room_rect.position + room_rect.size / 2.0
+
+	for attempt in range(12):
+		var marker: Node2D = markers.pick_random() as Node2D
+		var offset := Vector2.RIGHT.rotated(randf() * TAU) * randf_range(0.0, spawn_jitter_radius)
+		var spawn_position := marker.global_position + offset
+		if _is_clear_of_doors(spawn_position):
+			return spawn_position
+
+	var fallback_marker: Node2D = markers.pick_random() as Node2D
+	return fallback_marker.global_position
+
+
+func _is_clear_of_doors(spawn_position: Vector2) -> bool:
+	for door in doors.get_children():
+		var door_node: Node2D = door as Node2D
+		if door_node != null and spawn_position.distance_to(door_node.global_position) < spawn_door_clearance:
+			return false
+	return true
+
+
+func _check_room_cleared() -> void:
 	await get_tree().process_frame # delay a frame to not break stuff
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var room_enemies = 0
@@ -97,7 +151,7 @@ func _check_room_cleared():
 	if room_enemies == 0:
 		is_cleared = true
 		lock_doors(false)
-		room_cleared.emit
+		room_cleared.emit()
 
 
 
@@ -110,7 +164,11 @@ func lock_doors(locked: bool):
 		#Events.room_transition_requested.emit(door_name)
 
 func get_room_pixel_rect() -> Rect2:
-	var walls_layer = get_node("Walls")
+	var walls_layer = tilemap
+	if walls_layer == null:
+		walls_layer = get_node_or_null("Walls")
+	if walls_layer == null:
+		return Rect2()
 	var map_rect = walls_layer.get_used_rect()
 	var tile_size = walls_layer.tile_set.tile_size
 	var map_scale = walls_layer.scale
@@ -124,9 +182,7 @@ func get_room_pixel_rect() -> Rect2:
 	return Rect2(pixel_x, pixel_y, pixel_width, pixel_height)
 
 func open_doors():
-	#print("doors opened")
 	pass
 
 func close_doors():
-	#print("doors closed")
 	pass

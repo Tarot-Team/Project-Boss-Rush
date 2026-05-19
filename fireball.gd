@@ -122,7 +122,7 @@ func _explode() -> void:
 	params.collide_with_areas = true
 	params.collide_with_bodies = false
 	params.motion = Vector2.ZERO
-	params.collision_mask = 2
+	params.collision_mask = CharacterCombat.ENEMY_HITBOX_MASK
 
 	var hits: Array = space.intersect_shape(params, 64)
 	for item in hits:

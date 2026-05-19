@@ -1,5 +1,9 @@
-class_name AbilityKit
 extends RefCounted
+class_name AbilityKit
+
+const ICON_COMET := preload("res://fireball_icon.png")
+const ICON_MOON_LASER := preload("res://assets/attacks/Light Beam.png")
+const ICON_NEPTUNE_SURGE := preload("res://assets/player/neptune/neptune_summons/fire orb.jpg")
 
 ## Central place for cooldowns, HUD, display strings, and companion rules. When you add a new ability id:
 ## 1) Constant in CharacterData
@@ -89,13 +93,13 @@ static func secondary_hud_icon(ability_id: String) -> Texture2D:
 		CharacterData.ABILITY_FIRE_SLASH:
 			return CharacterCombat.load_tex(CharacterCombat.TEX_FIRE)
 		CharacterData.ABILITY_COMET:
-			return load("res://fireball_icon.png") as Texture2D
+			return ICON_COMET
 		CharacterData.ABILITY_MOON_LASER:
-			return load("res://assets/attacks/Light Beam.png") as Texture2D
+			return ICON_MOON_LASER
 		CharacterData.ABILITY_NEPTUNE_SURGE:
-			return load("res://assets/player/neptune/neptune_summons/fire orb.jpg") as Texture2D
+			return ICON_NEPTUNE_SURGE
 		_:
-			return load("res://fireball_icon.png") as Texture2D
+			return ICON_COMET
 
 
 static func ability_display_name(ability_id: String) -> String:

@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://s6k57q0pwy"]
+
+[ext_resource type="Script" uid="uid://b078vc7cn36e3" path="res://mob.gd" id="1_enemy"]
+[ext_resource type="Texture2D" uid="uid://1kum8bmwt5u3" path="res://assets/Enemy/Basic/Spider/Attack/Spider Attack_0001.png" id="2_4gsof"]
+[ext_resource type="Texture2D" uid="uid://jinfa1vtp43l" path="res://assets/Enemy/Basic/Spider/Attack/Spider Attack_0002.png" id="3_hb8so"]
+[ext_resource type="Texture2D" uid="uid://d1xgr1fmx0r11" path="res://assets/Enemy/Basic/Spider/Attack/Spider Attack_0003.png" id="4_d7h2y"]
+[ext_resource type="Texture2D" uid="uid://dwoo6dbx8mt8n" path="res://assets/Enemy/Basic/Spider/Attack/Spider Attack_0004.png" id="5_efldy"]
+[ext_resource type="Texture2D" uid="uid://cvg8htnrrkm61" path="res://assets/Enemy/Basic/Spider/Attack/Spider Attack_0005.png" id="6_nsw8d"]
+[ext_resource type="Texture2D" uid="uid://k8g2o2svp8n7" path="res://assets/Enemy/Basic/Spider/Attack/Spider Attack_0006.png" id="7_qwv6e"]
+[ext_resource type="Texture2D" uid="uid://287ut68ro2nr" path="res://assets/Enemy/Basic/Spider/Attack/Spider Attack_0007.png" id="8_ngmxm"]
+[ext_resource type="Texture2D" uid="uid://e6gn22ffubi3" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0001.png" id="9_11xf6"]
+[ext_resource type="Texture2D" uid="uid://dvpxqgrmxmny5" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0002.png" id="10_5siru"]
+[ext_resource type="Texture2D" uid="uid://cp4unuis41p2t" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0003.png" id="11_vq8vy"]
+[ext_resource type="Texture2D" uid="uid://dkyy8j41qe0gj" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0004.png" id="12_4lpdj"]
+[ext_resource type="Texture2D" uid="uid://bc0ke7frfpuo8" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0005.png" id="13_h2s58"]
+[ext_resource type="Texture2D" uid="uid://b67s5d364qn1v" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0006.png" id="14_1jsbo"]
+[ext_resource type="Texture2D" uid="uid://dbdknf5iu30u" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0007.png" id="15_k8a73"]
+[ext_resource type="Texture2D" uid="uid://dqloyaxw3cdcv" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0008.png" id="16_4mnmw"]
+[ext_resource type="Texture2D" uid="uid://cmskfgep7dfkq" path="res://assets/Enemy/Basic/Spider/Walk/Spider_0009.png" id="17_cf0bi"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r8ddv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4gsof")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hb8so")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_d7h2y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_efldy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_nsw8d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_qwv6e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ngmxm")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_11xf6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_5siru")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_vq8vy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_4lpdj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_h2s58")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_1jsbo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_k8a73")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_4mnmw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_cf0bi")
+}],
+"loop": true,
+"name": &"run",
+"speed": 9.0
+}]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(34, 28)
+
+[sub_resource type="StyleBoxFlat" id="HealthBg"]
+bg_color = Color(0.12, 0.07, 0.08, 0.78)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="HealthFill"]
+bg_color = Color(0.88, 0.14, 0.18, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[node name="Spider" type="CharacterBody2D" unique_id=382302729 groups=["enemies"]]
+scale = Vector2(0.85, 0.85)
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_enemy")
+top_speed = 145
+attack_range = 36.0
+max_health = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=767839746]
+sprite_frames = SubResource("SpriteFrames_r8ddv")
+animation = &"run"
+frame_progress = 0.5823058
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1063479019]
+collision_layer = 2
+
+[node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1479359499]
+shape = SubResource("BodyShape")
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="." unique_id=1062318182]
+shape = SubResource("BodyShape")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=18410132]
+visible = false
+offset_left = -17.0
+offset_top = -27.0
+offset_right = 17.0
+offset_bottom = -22.0
+theme_override_styles/background = SubResource("HealthBg")
+theme_override_styles/fill = SubResource("HealthFill")
+show_percentage = false
+
+[node name="HideTimer" type="Timer" parent="HealthBar" unique_id=780438270]
+one_shot = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]
+[connection signal="timeout" from="HealthBar/HideTimer" to="." method="_on_health_bar_hide_timer_timeout"]

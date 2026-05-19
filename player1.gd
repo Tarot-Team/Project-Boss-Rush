@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Player
 
 signal health_changed(max_health, health)
 signal died
@@ -62,9 +63,16 @@ var _moon_beam_channeling: bool = false
 ## Top-level: follows the player at scale 1 so orbit visuals aren't crushed by Player1.scale.
 var _companion_anchor: Node2D = null
 
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var body_collision: CollisionShape2D = $CollisionShape2D
+
 
 func set_abilities_enabled(enabled: bool) -> void:
 	abilities_enabled = enabled
+
+
+func set_body_collision_enabled(enabled: bool) -> void:
+	body_collision.disabled = not enabled
 
 
 func _cleanup_legacy_companion_nodes() -> void:
@@ -166,7 +174,7 @@ func apply_character_visuals_from_global() -> void:
 	var cid: String = Global.player_class["id"]
 	var frames := PlayerAnimationLoader.build_sprite_frames_for_character(cid)
 	if frames != null:
-		$AnimatedSprite2D.sprite_frames = frames
+		animated_sprite.sprite_frames = frames
 
 
 func apply_class_stats(stats: Dictionary) -> void:
@@ -224,7 +232,7 @@ func _physics_process(delta: float) -> void:
 			input_direction = input_direction.normalized()
 			last_move_dir = input_direction
 			flipped = input_direction.x < 0
-			$AnimatedSprite2D.flip_h = flipped
+			animated_sprite.flip_h = flipped
 
 		if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
 			try_start_dodge()
@@ -238,18 +246,18 @@ func _physics_process(delta: float) -> void:
 		if not _moon_beam_channeling:
 			if input_direction != Vector2.ZERO:
 				velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
-				$AnimatedSprite2D.play(&"run")
+				animated_sprite.play(&"run")
 			else:
 				velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-				$AnimatedSprite2D.play(&"idle")
+				animated_sprite.play(&"idle")
 
 			var spd_scale: float = clampf(
 					velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0
 			)
-			if $AnimatedSprite2D.animation == &"run":
-				$AnimatedSprite2D.speed_scale = spd_scale
+			if animated_sprite.animation == &"run":
+				animated_sprite.speed_scale = spd_scale
 			else:
-				$AnimatedSprite2D.speed_scale = 1.0
+				animated_sprite.speed_scale = 1.0
 
 	move_and_slide()
 
@@ -303,7 +311,7 @@ func _fire_arrow() -> void:
 		dir = Vector2.RIGHT if not flipped else Vector2.LEFT
 	dir = dir.normalized()
 	flipped = dir.x < 0
-	$AnimatedSprite2D.flip_h = flipped
+	animated_sprite.flip_h = flipped
 	var arr: Area2D = ARROW_SCN.instantiate() as Area2D
 	if arr.has_method("apply_texture"):
 		arr.apply_texture(CharacterCombat.load_tex(CharacterCombat.TEX_POISON_ARROW))
@@ -331,7 +339,7 @@ func _spawn_slash(tex: Texture2D, slash_vis: float = 1.0, hit_vis: float = 1.0, 
 		velocity += dir * 280.0
 		if absf(lunge_dir.x) > 0.01:
 			flipped = lunge_dir.x < 0
-			$AnimatedSprite2D.flip_h = flipped
+			animated_sprite.flip_h = flipped
 		velocity += dir * float(lunge_distance)
 
 	add_child(swing)
@@ -356,7 +364,7 @@ func try_secondary_attack() -> void:
 				d = Vector2.RIGHT if not flipped else Vector2.LEFT
 			d = d.normalized()
 			flipped = d.x < 0
-			$AnimatedSprite2D.flip_h = flipped
+			animated_sprite.flip_h = flipped
 			var toss_origin := global_position + d * 26.0
 			flask.setup(toss_origin, m, velocity, d)
 			get_parent().add_child(flask)
@@ -419,8 +427,10 @@ func _moon_sprite_anim_playback_secs(sprite: AnimatedSprite2D, anim: StringName,
 
 func _moon_laser_cast_sequence() -> void:
 	_moon_beam_channeling = true
-	var sprite: AnimatedSprite2D = $AnimatedSprite2D as AnimatedSprite2D
-	var sf: SpriteFrames = sprite.sprite_frames if sprite != null else null
+	var sprite: AnimatedSprite2D = animated_sprite
+	var sf: SpriteFrames = null
+	if sprite != null:
+		sf = sprite.sprite_frames
 
 	var mouse_gp: Vector2 = get_global_mouse_position()
 	var aim: Vector2 = mouse_gp - global_position
@@ -462,7 +472,7 @@ func _moon_laser_cast_sequence() -> void:
 		snap = charge_preview.capture_fire_snapshot()
 		charge_preview.queue_free()
 
-	var aim_fire: Vector2 = snap.get(&"aim", aim) as Vector2
+	var aim_fire: Vector2 = snap.get(&"aim", aim)
 	if aim_fire.length_squared() < 0.0001:
 		aim_fire = aim
 	if aim_fire.length_squared() < 0.0001:
@@ -473,7 +483,7 @@ func _moon_laser_cast_sequence() -> void:
 	flipped = aim_fire.x < 0.0
 	sprite.flip_h = flipped
 
-	var beam_spawn: Vector2 = snap.get(&"beam_spawn", global_position + aim_fire * moon_laser_emit_offset_px) as Vector2
+	var beam_spawn: Vector2 = snap.get(&"beam_spawn", global_position + aim_fire * moon_laser_emit_offset_px)
 	var beam_len: float = float(snap.get(&"beam_len", 0.0))
 	if beam_len < 24.0:
 		var beam_space_fallback: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
@@ -532,9 +542,9 @@ func try_start_dodge() -> void:
 	dodge_cooldown_left = DODGE_COOLDOWN_TIME
 	var dodge_spd: float = float(max_speed) * DODGE_SPEED_MULT
 	velocity = dodge_direction * dodge_spd
-	$AnimatedSprite2D.flip_h = dodge_direction.x < 0
-	$AnimatedSprite2D.play(&"run")
-	$AnimatedSprite2D.speed_scale = 1.8
+	animated_sprite.flip_h = dodge_direction.x < 0
+	animated_sprite.play(&"run")
+	animated_sprite.speed_scale = 1.8
 	set_dodge_visual(true)
 
 
@@ -549,14 +559,15 @@ func _process_dodge(delta: float) -> void:
 
 func set_dodge_visual(active: bool) -> void:
 	if active:
-		$AnimatedSprite2D.modulate = Color(1, 1, 1, 0.55)
+		animated_sprite.modulate = Color(1, 1, 1, 0.55)
 	else:
 		if not is_invincible:
-			$AnimatedSprite2D.modulate = Color(1, 1, 1, 1.0)
+			animated_sprite.modulate = Color(1, 1, 1, 1.0)
 
 
 func reset() -> void:
 	abilities_enabled = false
+	max_speed = original_speed
 	speed = original_speed
 	max_health = original_health
 	health = max_health
@@ -604,28 +615,30 @@ func take_damage(damage_amount: int) -> void:
 
 
 func change_max_health(change: int) -> void:
-	max_health += change
+	max_health = max(1, max_health + change)
+	if change > 0:
+		health = mini(max_health, health + change)
+	else:
+		health = mini(health, max_health)
 	health_changed.emit(max_health, health)
-	take_damage(-change)
-	print("Max:", max_health, "Current:", health)
 
 
 func change_speed(change: int) -> void:
-	speed += change
-	print(speed)
+	max_speed = max(1, max_speed + change)
+	speed = max_speed
 
 
 func start_invincibility() -> void:
 	is_invincible = true
 	if not is_dodging:
-		$AnimatedSprite2D.modulate.a = 0.5
+		animated_sprite.modulate.a = 0.5
 	await get_tree().create_timer(iFrame_duration).timeout
 	is_invincible = false
 	if not is_dodging:
-		$AnimatedSprite2D.modulate.a = 1.0
+		animated_sprite.modulate.a = 1.0
 
 
 func start(pos: Vector2) -> void:
 	position = pos
 	show()
-	$CollisionShape2D.disabled = false
+	set_body_collision_enabled(true)

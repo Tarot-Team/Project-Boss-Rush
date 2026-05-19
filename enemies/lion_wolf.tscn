@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://brlykc77obo0u"]
+
+[ext_resource type="Script" uid="uid://b078vc7cn36e3" path="res://mob.gd" id="1_enemy"]
+[ext_resource type="Texture2D" uid="uid://0movy0b1bu5c" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0001.png" id="2_bhdt6"]
+[ext_resource type="Texture2D" uid="uid://dren5jdmki8cp" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0002.png" id="3_v4gdq"]
+[ext_resource type="Texture2D" uid="uid://dcqkjutep1wjw" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0003.png" id="4_bqvhq"]
+[ext_resource type="Texture2D" uid="uid://blh0w2nodbvni" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0004.png" id="5_0jdi0"]
+[ext_resource type="Texture2D" uid="uid://cu1ck030a0735" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0005.png" id="6_igou8"]
+[ext_resource type="Texture2D" uid="uid://dyb6dsamw43yx" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0006.png" id="7_xgppf"]
+[ext_resource type="Texture2D" uid="uid://0xyq54q214pn" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0007.png" id="8_rhewp"]
+[ext_resource type="Texture2D" uid="uid://dx47tqojhuvhf" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0008.png" id="9_7bmuk"]
+[ext_resource type="Texture2D" uid="uid://bde2omsjnumrr" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0009.png" id="10_yqs3j"]
+[ext_resource type="Texture2D" uid="uid://n7dmka5xttel" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0010.png" id="11_xefwh"]
+[ext_resource type="Texture2D" uid="uid://mom7dkniyip4" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0001.png" id="12_is6vo"]
+[ext_resource type="Texture2D" uid="uid://dnjslx1trbdh1" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0002.png" id="13_knpaq"]
+[ext_resource type="Texture2D" uid="uid://b55fcs2fvofy" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0003.png" id="14_h50h0"]
+[ext_resource type="Texture2D" uid="uid://vcs6c0jeilmk" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0004.png" id="15_0ud15"]
+[ext_resource type="Texture2D" uid="uid://bnw103sltfr78" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0005.png" id="16_lwer7"]
+[ext_resource type="Texture2D" uid="uid://ch0evg8gofeuh" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0006.png" id="17_ortqs"]
+[ext_resource type="Texture2D" uid="uid://bhxn71gmgy7ft" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0007.png" id="18_p10me"]
+[ext_resource type="Texture2D" uid="uid://blfva4n2xqbta" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0008.png" id="19_k62hh"]
+[ext_resource type="Texture2D" uid="uid://cc6vvirlqmljs" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0009.png" id="20_c3fk2"]
+[ext_resource type="Texture2D" uid="uid://bsbga5hdrn6xo" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0010.png" id="21_hja02"]
+[ext_resource type="Texture2D" uid="uid://d0ccav3gv6oxo" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0011.png" id="22_1dhky"]
+[ext_resource type="Texture2D" uid="uid://cjwlburufq2vy" path="res://assets/Enemy/Basic/Lion-Wolf/Walk/Lion-Wolf_0012.png" id="23_q3ohh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2xxdx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_bhdt6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_v4gdq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bqvhq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_0jdi0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_igou8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xgppf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_rhewp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7bmuk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_yqs3j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_xefwh")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_is6vo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_knpaq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_h50h0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_0ud15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_lwer7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ortqs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_p10me")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_k62hh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_c3fk2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_hja02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_1dhky")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_q3ohh")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bhdt6"]
+size = Vector2(79.999985, 78.82352)
+
+[sub_resource type="StyleBoxFlat" id="HealthBg"]
+bg_color = Color(0.12, 0.07, 0.08, 0.78)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="HealthFill"]
+bg_color = Color(0.88, 0.14, 0.18, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[node name="LionWolf" type="CharacterBody2D" unique_id=113260645 groups=["enemies"]]
+scale = Vector2(0.85, 0.85)
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_enemy")
+top_speed = 130
+attack_range = 38.0
+max_health = 5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=412157077]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_2xxdx")
+animation = &"attack"
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1169524471]
+collision_layer = 2
+
+[node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=594278958]
+visible = false
+position = Vector2(1.1764705, 1.7647059)
+scale = Vector2(1.0000002, 1.0000002)
+shape = SubResource("RectangleShape2D_bhdt6")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1716412074]
+polygon = PackedVector2Array(-7.0588236, -14.117647, 18.82353, -37.64706, 37.64706, -31.764708, 41.17647, -10.588236, 24.705883, 16.470589, 25.882355, 32.941177, 31.764708, 37.64706, 27.058825, 41.17647, 18.82353, 40, 5.8823533, 38.823532, 4.7058825, 34.11765, -8.235294, 35.29412, -21.176472, 15.294118, -29.411766, 34.11765, -30.588236, 37.64706, -38.823532, 37.64706, -37.64706, 18.82353, -28.235294, -4.7058825, -37.64706, -7.0588236, -37.64706, -17.64706, -30.588236, -34.11765, -18.82353, -31.764708, -21.176472, -20, -34.11765, -12.941177, -27.058825, -10.588236, -20, -14.117647)
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1119944144]
+visible = false
+offset_left = -20.0
+offset_top = -30.0
+offset_right = 20.0
+offset_bottom = -25.0
+theme_override_styles/background = SubResource("HealthBg")
+theme_override_styles/fill = SubResource("HealthFill")
+show_percentage = false
+
+[node name="HideTimer" type="Timer" parent="HealthBar" unique_id=138133366]
+one_shot = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]
+[connection signal="timeout" from="HealthBar/HideTimer" to="." method="_on_health_bar_hide_timer_timeout"]

@@ -1,5 +1,5 @@
-class_name NeptuneSummonUnit
 extends Node2D
+class_name NeptuneSummonUnit
 
 const BOLT := preload("res://water_bolt.tscn")
 

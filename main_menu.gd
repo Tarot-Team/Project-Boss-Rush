@@ -125,14 +125,13 @@ func _on_start_button_pressed() -> void:
 	$ClassPicker/VBoxContainer/HBoxContainer2/ConfirmButton.grab_focus()
 
 func _on_options_button_pressed() -> void:
-	print("Options menu not implemented yet")
+	pass
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
 func _on_confirm_button_pressed() -> void:
 	Global.player_class = characters[current_char_index].duplicate(true)
-	print("Selected character: ", characters[current_char_index]["name"])
 	get_tree().change_scene_to_file("res://main.tscn")
 
 func _on_back_button_pressed() -> void:

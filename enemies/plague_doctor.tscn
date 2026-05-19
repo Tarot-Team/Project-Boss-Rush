@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://dnelld115rhh0"]
+
+[ext_resource type="Script" uid="uid://b078vc7cn36e3" path="res://mob.gd" id="1_enemy"]
+[ext_resource type="Texture2D" uid="uid://d22ftcq0hjr41" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0001.png" id="2_dvf68"]
+[ext_resource type="Texture2D" uid="uid://csduswiysgy6d" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0002.png" id="3_p7acj"]
+[ext_resource type="Texture2D" uid="uid://eyualfhvpfln" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0003.png" id="4_c0t18"]
+[ext_resource type="Texture2D" uid="uid://dntp0cacur1xw" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0004.png" id="5_mjcy4"]
+[ext_resource type="Texture2D" uid="uid://cdo1gwhyfe4gi" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0005.png" id="6_jddir"]
+[ext_resource type="Texture2D" uid="uid://2lkr2a2jlfhf" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0006.png" id="7_mqh06"]
+[ext_resource type="Texture2D" uid="uid://b4n80aoi4muhf" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0007.png" id="8_vwt6o"]
+[ext_resource type="Texture2D" uid="uid://cyyqx661y1f3n" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0008.png" id="9_uoxnn"]
+[ext_resource type="Texture2D" uid="uid://cq1ruron6mx6d" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0009.png" id="10_3ygoe"]
+[ext_resource type="Texture2D" uid="uid://vwy37braxwm4" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0010.png" id="11_lx1hc"]
+[ext_resource type="Texture2D" uid="uid://bbssxhbcjbgji" path="res://assets/Enemy/Basic/Plague Doctor/Attack/Plague Doctor attack_0011.png" id="12_7whe2"]
+[ext_resource type="Texture2D" uid="uid://cmfs0m70wsuj7" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0001.png" id="13_veg12"]
+[ext_resource type="Texture2D" uid="uid://cwxb6p7gefjgu" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0002.png" id="14_vbwmg"]
+[ext_resource type="Texture2D" uid="uid://cbouj62hab7jp" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0003.png" id="15_87jjr"]
+[ext_resource type="Texture2D" uid="uid://btd78t8pvrhjw" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0004.png" id="16_rcu2o"]
+[ext_resource type="Texture2D" uid="uid://dy87ckhqf6pc5" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0005.png" id="17_qqtwh"]
+[ext_resource type="Texture2D" uid="uid://hjeyasq51if5" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0006.png" id="18_0jihq"]
+[ext_resource type="Texture2D" uid="uid://bi5cer8de04qg" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0007.png" id="19_i30cw"]
+[ext_resource type="Texture2D" uid="uid://boiwnix467k2a" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0008.png" id="20_ne6ni"]
+[ext_resource type="Texture2D" uid="uid://bldix41o5ik2v" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0009.png" id="21_fml1a"]
+[ext_resource type="Texture2D" uid="uid://1562k1t6hngr" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0010.png" id="22_sfokh"]
+[ext_resource type="Texture2D" uid="uid://cobgpc7uh40ak" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0011.png" id="23_yhjic"]
+[ext_resource type="Texture2D" uid="uid://civjwm68q0vic" path="res://assets/Enemy/Basic/Plague Doctor/Walk/Plague Doctor_0012.png" id="24_rf2jy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qdimv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_dvf68")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_p7acj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_c0t18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_mjcy4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_jddir")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_mqh06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_vwt6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_uoxnn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_3ygoe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_lx1hc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_7whe2")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_veg12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_vbwmg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_87jjr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_rcu2o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_qqtwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_0jihq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_i30cw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ne6ni")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_fml1a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_sfokh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_yhjic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_rf2jy")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(30, 42)
+
+[sub_resource type="StyleBoxFlat" id="HealthBg"]
+bg_color = Color(0.12, 0.07, 0.08, 0.78)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="HealthFill"]
+bg_color = Color(0.88, 0.14, 0.18, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[node name="PlagueDoctor" type="CharacterBody2D" unique_id=1196261248 groups=["enemies"]]
+scale = Vector2(0.85, 0.85)
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_enemy")
+top_speed = 95
+attack_range = 40.0
+max_health = 6
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1836689929]
+sprite_frames = SubResource("SpriteFrames_qdimv")
+animation = &"attack"
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=5926834]
+collision_layer = 2
+
+[node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1222318200]
+shape = SubResource("BodyShape")
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="." unique_id=578113091]
+shape = SubResource("BodyShape")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1228052732]
+visible = false
+offset_left = -18.0
+offset_top = -34.0
+offset_right = 18.0
+offset_bottom = -29.0
+theme_override_styles/background = SubResource("HealthBg")
+theme_override_styles/fill = SubResource("HealthFill")
+show_percentage = false
+
+[node name="HideTimer" type="Timer" parent="HealthBar" unique_id=536406546]
+one_shot = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]
+[connection signal="timeout" from="HealthBar/HideTimer" to="." method="_on_health_bar_hide_timer_timeout"]

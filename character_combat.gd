@@ -1,5 +1,5 @@
-class_name CharacterCombat
 extends RefCounted
+class_name CharacterCombat
 
 const TEX_SLASH := "res://assets/attacks/Slash.png"
 const TEX_WATER := "res://assets/attacks/Water Slash.png"
@@ -12,9 +12,13 @@ const TEX_POISON_FLASK := "res://assets/attacks/Poison Flask.png"
 ## Baked into the slash PNGs; added on top of aim (-90°) so swings read square to the stroke.
 const SLASH_WORLD_ROTATION_OFFSET := 1.1
 
-## Room TileMap physics uses collision_layer = 7 (layers 1–3); enemy Hitbox Area2D uses layer 2.
-## Player projectiles need this mask so `body_entered` hits walls and `area_entered` still hits enemies.
-const PROJECTILE_COLLISION_MASK := 7
+const LAYER_WORLD := 1 << 0
+const LAYER_ENEMY := 1 << 1
+const LAYER_PLAYER := 1 << 2
+
+## Player projectiles raycast through the layers that can block or receive damage.
+const PROJECTILE_COLLISION_MASK := LAYER_WORLD | LAYER_ENEMY | LAYER_PLAYER
+const ENEMY_HITBOX_MASK := LAYER_ENEMY
 
 
 static func id() -> String:

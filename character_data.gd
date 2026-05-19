@@ -1,5 +1,5 @@
-class_name CharacterData
 extends RefCounted
+class_name CharacterData
 
 ## Stat ranges for ★ ratings on the class picker screen.
 ## Ability IDs: set `primary_ability`, `secondary_ability`, and optional `abilities` (e.g. dodge)

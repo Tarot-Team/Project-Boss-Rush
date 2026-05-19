@@ -34,17 +34,16 @@ func _process(delta: float) -> void:
 
 
 func game_over():
-	$ScoreTimer.stop()
 	$MobTimer.stop()
+	$ScoreTimer.stop()
 	$HUD.show_game_over()
 	get_tree().call_group("enemies", "start_fleeing", $Player1.global_position)
 
 func new_game():
-	print("starting new game")
 	score = 0
 	$Player1.reset()
 	$Player1.show()
-	$Player1.get_node("CollisionShape2D").disabled = false
+	$Player1.set_body_collision_enabled(true)
 	$LevelManager.setup_start_position()
 	$StartTimer.start()
 	$HUD.update_score(score)
@@ -84,6 +83,5 @@ func _on_score_timer_timeout() -> void:
 
 func _on_start_timer_timeout() -> void:
 	$Player1.set_abilities_enabled(true)
-	$MobTimer.start()
 	$ScoreTimer.start()
 	$HUD.show_message("")

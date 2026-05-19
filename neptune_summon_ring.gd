@@ -1,5 +1,5 @@
-class_name NeptuneSummonRing
 extends Node2D
+class_name NeptuneSummonRing
 
 const UNIT_SCN := preload("res://neptune_summon_unit.tscn")
 const ORB_TEXTURES := [
