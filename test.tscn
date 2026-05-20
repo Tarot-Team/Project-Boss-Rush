@@ -9,4 +9,4 @@
 [node name="Player1" parent="." unique_id=644555451 instance=ExtResource("1_8uh7m")]
 
 [node name="boss" parent="." unique_id=1309360483 instance=ExtResource("2_6uqi0")]
-attack_swing_scene = ExtResource("3_6uqi0")
+lunge_attack_scene = ExtResource("3_6uqi0")

@@ -1,40 +1,25 @@
 [gd_scene format=3 uid="uid://bxrxrlpe5j24e"]
 
-[ext_resource type="Script" uid="uid://clmxt75a7b36m" path="res://death_stab.gd" id="1_fh6xi"]
 [ext_resource type="Texture2D" uid="uid://xiy6860tv857" path="res://assets/temp_enemy/Mushroom-Hit1.png" id="1_h3lj5"]
+[ext_resource type="PackedScene" uid="uid://cf5qkctm0in18" path="res://death_stab.tscn" id="1_rbwa1"]
 [ext_resource type="Texture2D" uid="uid://ctw8ukgdg48ub" path="res://assets/temp_enemy/Mushroom-Hit2.png" id="2_1s1j2"]
-[ext_resource type="Texture2D" uid="uid://bkt0mnamun1j7" path="res://assets/player/moon/moon_attacks/moon attack 1.png" id="2_3iqkp"]
-[ext_resource type="Texture2D" uid="uid://4t22stwd6e6q" path="res://assets/player/moon/moon_attacks/moon attack 2.png" id="3_bcede"]
+[ext_resource type="PackedScene" uid="uid://dm24qywd2cvpn" path="res://death_ranged_attack.tscn" id="2_eptv8"]
 [ext_resource type="Texture2D" uid="uid://dql4pcb1i2681" path="res://assets/temp_enemy/Mushroom-Hit3.png" id="3_km2bi"]
-[ext_resource type="Texture2D" uid="uid://ck4bhlu7t0l2p" path="res://assets/player/moon/moon_attacks/moon attack 3.png" id="4_hymop"]
 [ext_resource type="Texture2D" uid="uid://pbjcsiwhchdm" path="res://assets/temp_enemy/Mushroom-Hit4.png" id="4_u0duv"]
 [ext_resource type="Texture2D" uid="uid://cfgh6m0ygsf0a" path="res://assets/Enemy/Bosses/Death/Walk/Death_0011.png" id="5_2802n"]
-[ext_resource type="Texture2D" uid="uid://1gtpp6003iyx" path="res://assets/player/moon/moon_attacks/moon attack 4.png" id="5_gtdrh"]
-[ext_resource type="Texture2D" uid="uid://c8wm28i6vrb4c" path="res://assets/player/moon/moon_attacks/moon attack 5.png" id="6_l0cit"]
 [ext_resource type="Texture2D" uid="uid://doc7slls3ml8x" path="res://assets/Enemy/Bosses/Death/Walk/Death_0001.png" id="6_mcvhe"]
 [ext_resource type="Texture2D" uid="uid://c1tf0pxbaqmaj" path="res://assets/Enemy/Bosses/Death/Walk/Death_0002.png" id="7_7ga37"]
-[ext_resource type="Texture2D" uid="uid://ug67uyr172kn" path="res://assets/player/moon/moon_attacks/moon attack 6.png" id="7_w2atc"]
 [ext_resource type="Texture2D" uid="uid://dv60adtsm1m0w" path="res://assets/Enemy/Bosses/Death/Walk/Death_0003.png" id="8_b7o0r"]
-[ext_resource type="Texture2D" uid="uid://chkd8bcrvhgrb" path="res://assets/player/moon/moon_attacks/moon attack 7.png" id="8_xvpmu"]
 [ext_resource type="Texture2D" uid="uid://crk1eeqjvct3j" path="res://assets/Enemy/Bosses/Death/Walk/Death_0004.png" id="9_gptwq"]
-[ext_resource type="Texture2D" uid="uid://drdidp8iwo12k" path="res://assets/player/moon/moon_attacks/moon attack 8.png" id="9_tshh6"]
 [ext_resource type="Texture2D" uid="uid://bo7cp8051c8fq" path="res://assets/Enemy/Bosses/Death/Walk/Death_0005.png" id="10_bkmdk"]
-[ext_resource type="Texture2D" uid="uid://3osjmbrrw8ro" path="res://assets/player/moon/moon_attacks/moon attack 9.png" id="10_w3it6"]
-[ext_resource type="Texture2D" uid="uid://cycg6ryvxf7j4" path="res://assets/player/moon/moon_attacks/moon attack 10.png" id="11_4038m"]
 [ext_resource type="Texture2D" uid="uid://din2cm158l4sp" path="res://assets/Enemy/Bosses/Death/Walk/Death_0006.png" id="11_q1lp7"]
-[ext_resource type="Texture2D" uid="uid://cs5dcpl7mr7o4" path="res://assets/player/moon/moon_attacks/moon attack 11.png" id="12_abqmd"]
 [ext_resource type="Texture2D" uid="uid://dusytqsyf1fi7" path="res://assets/Enemy/Bosses/Death/Walk/Death_0007.png" id="12_mlnln"]
 [ext_resource type="PackedScene" uid="uid://xvy0njpp0ojo" path="res://boss/boss_health_bar.tscn" id="13_bfjv4"]
 [ext_resource type="Texture2D" uid="uid://cjf84ldiv46y8" path="res://assets/Enemy/Bosses/Death/Walk/Death_0008.png" id="13_cdwu8"]
-[ext_resource type="Texture2D" uid="uid://hulu2j6ywjha" path="res://assets/player/moon/moon_attacks/moon attack 12.png" id="13_dgtir"]
-[ext_resource type="Texture2D" uid="uid://bjig14ut6ahdu" path="res://assets/player/moon/moon_attacks/moon attack 13.png" id="14_1rde8"]
 [ext_resource type="Texture2D" uid="uid://cfciddesappvk" path="res://assets/Enemy/Bosses/Death/Walk/Death_0009.png" id="14_da7hl"]
 [ext_resource type="Texture2D" uid="uid://0c44wclfv3ju" path="res://assets/Enemy/Bosses/Death/Walk/Death_0010.png" id="15_hdb3k"]
-[ext_resource type="Texture2D" uid="uid://do3rfms8i65gy" path="res://assets/player/moon/moon_attacks/moon attack 14.png" id="15_p6hkr"]
-[ext_resource type="Texture2D" uid="uid://n4id1nqohuyr" path="res://assets/attacks/attack_base.png" id="16_c5i44"]
 [ext_resource type="Texture2D" uid="uid://ccpyo4m7uudiu" path="res://assets/Enemy/Bosses/Death/Attack/Death Attack_0001.png" id="16_mvglp"]
 [ext_resource type="Texture2D" uid="uid://c121qyf8cu25u" path="res://assets/Enemy/Bosses/Death/Attack/Death Attack_0002.png" id="17_5egvk"]
-[ext_resource type="Texture2D" uid="uid://cdrqgrukdlsdj" path="res://assets/attacks/attack.png" id="17_bubxh"]
 [ext_resource type="Texture2D" uid="uid://xig6tvvqg0tu" path="res://assets/Enemy/Bosses/Death/Attack/Death Attack_0003.png" id="18_rbwa1"]
 [ext_resource type="Texture2D" uid="uid://dcwcjkandaokn" path="res://assets/Enemy/Bosses/Death/Attack/Death Attack_0004.png" id="19_eptv8"]
 [ext_resource type="Texture2D" uid="uid://b77h3v85df75r" path="res://assets/Enemy/Bosses/Death/Attack/Death Attack_0005.png" id="20_jtjw6"]
@@ -52,10 +37,8 @@ signal bosshealth_changed(value)
 signal sethealthbar(max_health)
 signal setname(name)
 
-@export var attack_swing_scene: PackedScene
-
-@export_group(\"Stats\")
-
+@export var lunge_attack_scene: PackedScene
+@export var ranged_attack_scene: PackedScene
 
 @export_group(\"Movement\")
 @export var lunge_speed = 600  
@@ -66,6 +49,7 @@ signal setname(name)
 @export_group(\"Sun\")
 @export var boss_name := \"Sun\"
 @export var max_health := 10
+@export var projectile_speed = 500
 
 var health = 0
 var player = null
@@ -83,8 +67,8 @@ func _ready():
 	
 	var timer = Timer.new()
 	add_child(timer)
-	timer.wait_time = 3.0
-	timer.timeout.connect(lunge_attack)
+	timer.wait_time = 1.0
+	timer.timeout.connect(ranged_attack)
 	timer.start()
 
 
@@ -139,13 +123,13 @@ func punchy_scale():
 
 func lunge_attack():
 	if player == null:return
-	if attack_swing_scene == null:return
+	if lunge_attack_scene == null:return
 	
 	var direction = (player.global_position - global_position).normalized()
 	velocity = direction * lunge_speed
 	$AnimatedSprite2D.flip_h = direction.x < 0
 	
-	var swing = attack_swing_scene.instantiate()
+	var swing = lunge_attack_scene.instantiate()
 	var offset = 67
 	if swing.has_method(\"set_player_info\"):
 		swing.set_player_info(velocity, global_position)
@@ -158,90 +142,26 @@ func lunge_attack():
 	$AnimatedSprite2D.play(\"stab\")
 	await $AnimatedSprite2D.animation_finished
 	attacking = false
-	
 
+func ranged_attack():
+	if player == null:return
+	if ranged_attack_scene == null:return
 	
+	var direction = (player.global_position - global_position).normalized()
+	$AnimatedSprite2D.flip_h = direction.x < 0
+	
+	var projectile = ranged_attack_scene.instantiate()
+	var offset = 67
+	get_parent().add_child(projectile)
+	projectile.global_position = global_position + direction * offset
+	projectile.rotation = direction.angle() + deg_to_rad(-90)
+	projectile.velocity = direction * projectile_speed  
+	
+	attacking = true
+	$AnimatedSprite2D.play(\"stab\")
+	await  $AnimatedSprite2D.animation_finished
+	attacking = false
 "
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_wefpt"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_3iqkp")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_bcede")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_hymop")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_gtdrh")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_l0cit")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_w2atc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_xvpmu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_tshh6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_w3it6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_4038m")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_abqmd")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_dgtir")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_1rde8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_p6hkr")
-}],
-"loop": true,
-"name": &"moon_blast",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("16_c5i44")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_bubxh")
-}],
-"loop": true,
-"name": &"swing",
-"speed": 10.0
-}]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_is03c"]
-radius = 116.666664
-height = 260.0
-
-[sub_resource type="PackedScene" id="PackedScene_58yds"]
-_bundled = {
-"conn_count": 1,
-"conns": PackedInt32Array(1073741827, 1073741826, 19, 18, 2, 0, 0),
-"editable_instances": [],
-"id_paths": [PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array()],
-"names": PackedStringArray("death_stab", "Area2D", "swing", "rotation", "scale", "collision_mask", "script", "AnimatedSprite2D", "AnimatedSprite2D", "swing", "scale", "sprite_frames", "animation", "CollisionShape2D", "CollisionShape2D", "swing", "position", "shape", "_on_area_entered", "area_entered"),
-"node_count": 3,
-"node_ids": PackedInt32Array(464157870, 2008510559, 1590202066),
-"node_paths": [NodePath("."), NodePath("."), NodePath("."), NodePath(".")],
-"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 4, 3, 0, 4, 1, 5, 2, 6, 3, 1, 2, 1073741824, 0, 8, 7, -1, 3, 10, 4, 11, 5, 12, 6, 1, 9, 1073741825, 0, 14, 13, -1, 2, 16, 7, 17, 8, 1, 15),
-"variants": [1.5707964, Vector2(0.9, 0.9), 2, ExtResource("1_fh6xi"), Vector2(-1, -1), SubResource("SpriteFrames_wefpt"), &"swing", Vector2(-1.1920929e-06, -29.999996), SubResource("CapsuleShape2D_is03c")],
-"version": 3
-}
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cixyi"]
 animations = [{
@@ -356,7 +276,8 @@ scale = Vector2(0.9, 0.9)
 collision_layer = 2
 collision_mask = 7
 script = SubResource("GDScript_7ke2s")
-attack_swing_scene = SubResource("PackedScene_58yds")
+lunge_attack_scene = ExtResource("1_rbwa1")
+ranged_attack_scene = ExtResource("2_eptv8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=340976674]
 sprite_frames = SubResource("SpriteFrames_cixyi")
