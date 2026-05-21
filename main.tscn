@@ -38,6 +38,8 @@ mob_scene = ExtResource("2_1bvp3")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=550077144]
 color = Color(0.58, 0.52, 0.68, 1)
+[node name="Player1" parent="." unique_id=774817887 instance=ExtResource("1_ig7tw")]
+position = Vector2(569, 319)
 
 [node name="MobTimer" type="Timer" parent="." unique_id=1381839639]
 
@@ -69,6 +71,7 @@ start_room_scene = ExtResource("7_272bh")
 [node name="RoomContainer" type="Node2D" parent="LevelManager" unique_id=209205632]
 
 [node name="Camera2D" type="Camera2D" parent="LevelManager" unique_id=832315287]
+position = Vector2(569, 319)
 visible = false
 enabled = false
 

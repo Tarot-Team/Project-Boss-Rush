@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://cf5qkctm0in18"]
+
+[ext_resource type="Script" uid="uid://clmxt75a7b36m" path="res://death_stab.gd" id="1_vxxln"]
+[ext_resource type="Texture2D" uid="uid://bkt0mnamun1j7" path="res://assets/player/moon/moon_attacks/moon attack 1.png" id="2_o2rwp"]
+[ext_resource type="Texture2D" uid="uid://4t22stwd6e6q" path="res://assets/player/moon/moon_attacks/moon attack 2.png" id="3_qnnxu"]
+[ext_resource type="Texture2D" uid="uid://ck4bhlu7t0l2p" path="res://assets/player/moon/moon_attacks/moon attack 3.png" id="4_o7dqp"]
+[ext_resource type="Texture2D" uid="uid://1gtpp6003iyx" path="res://assets/player/moon/moon_attacks/moon attack 4.png" id="5_ellcj"]
+[ext_resource type="Texture2D" uid="uid://c8wm28i6vrb4c" path="res://assets/player/moon/moon_attacks/moon attack 5.png" id="6_iaacw"]
+[ext_resource type="Texture2D" uid="uid://ug67uyr172kn" path="res://assets/player/moon/moon_attacks/moon attack 6.png" id="7_5kvq2"]
+[ext_resource type="Texture2D" uid="uid://chkd8bcrvhgrb" path="res://assets/player/moon/moon_attacks/moon attack 7.png" id="8_ru67k"]
+[ext_resource type="Texture2D" uid="uid://drdidp8iwo12k" path="res://assets/player/moon/moon_attacks/moon attack 8.png" id="9_dfpv0"]
+[ext_resource type="Texture2D" uid="uid://3osjmbrrw8ro" path="res://assets/player/moon/moon_attacks/moon attack 9.png" id="10_v2ojl"]
+[ext_resource type="Texture2D" uid="uid://cycg6ryvxf7j4" path="res://assets/player/moon/moon_attacks/moon attack 10.png" id="11_q4c4e"]
+[ext_resource type="Texture2D" uid="uid://cs5dcpl7mr7o4" path="res://assets/player/moon/moon_attacks/moon attack 11.png" id="12_wpsli"]
+[ext_resource type="Texture2D" uid="uid://hulu2j6ywjha" path="res://assets/player/moon/moon_attacks/moon attack 12.png" id="13_3dx8o"]
+[ext_resource type="Texture2D" uid="uid://bjig14ut6ahdu" path="res://assets/player/moon/moon_attacks/moon attack 13.png" id="14_3jky2"]
+[ext_resource type="Texture2D" uid="uid://do3rfms8i65gy" path="res://assets/player/moon/moon_attacks/moon attack 14.png" id="15_tfh06"]
+[ext_resource type="Texture2D" uid="uid://cpgxc3snpc4yc" path="res://assets/attacks/Undead Slash.png" id="16_rvuh1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wefpt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_o2rwp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_qnnxu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_o7dqp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ellcj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_iaacw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_5kvq2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ru67k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_dfpv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_v2ojl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_q4c4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_wpsli")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_3dx8o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_3jky2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_tfh06")
+}],
+"loop": true,
+"name": &"moon_blast",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_rvuh1")
+}],
+"loop": true,
+"name": &"swing",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_is03c"]
+radius = 116.666664
+height = 260.0
+
+[node name="death_stab" type="Area2D" unique_id=464157870 groups=["enemy_attack"]]
+rotation = 1.5707964
+scale = Vector2(0.9, 0.9)
+collision_mask = 3
+script = ExtResource("1_vxxln")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2008510559]
+scale = Vector2(-1, -1)
+sprite_frames = SubResource("SpriteFrames_wefpt")
+animation = &"swing"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1590202066]
+position = Vector2(-1.1920929e-06, -29.999996)
+shape = SubResource("CapsuleShape2D_is03c")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
