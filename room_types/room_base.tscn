@@ -1,10 +1,14 @@
 [gd_scene format=4 uid="uid://bhufguxrcdfoe"]
 
 [ext_resource type="Script" uid="uid://lyt6wm6igxlf" path="res://room_types/room_base.gd" id="1_2sogh"]
-[ext_resource type="PackedScene" uid="uid://b8tr23l4qbvvc" path="res://mob.tscn" id="2_fj8kh"]
 [ext_resource type="Texture2D" uid="uid://brpgd8mob116j" path="res://TD_pixel_dungeon_assets/Tiled_files/walls_floor.png" id="2_y7ss7"]
 [ext_resource type="Script" uid="uid://c6uis5ads2oq" path="res://door.gd" id="4_ucmrq"]
 [ext_resource type="Texture2D" uid="uid://bw4jeh437cxbh" path="res://TD_pixel_dungeon_assets/Tiled_files/doors_lever_chest_animation.png" id="5_yp8xc"]
+[ext_resource type="PackedScene" path="res://enemies/lion_wolf.tscn" id="6_lion"]
+[ext_resource type="PackedScene" path="res://enemies/plague_doctor.tscn" id="7_plague"]
+[ext_resource type="PackedScene" path="res://enemies/skeleton_archer.tscn" id="8_archer"]
+[ext_resource type="PackedScene" path="res://enemies/skeleton_fighter.tscn" id="9_fighter"]
+[ext_resource type="PackedScene" path="res://enemies/spider.tscn" id="10_spider"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y7ss7"]
 texture = ExtResource("2_y7ss7")
@@ -867,7 +871,7 @@ glow_enabled = true
 
 [node name="BaseRoom" type="Node2D" unique_id=714955676]
 script = ExtResource("1_2sogh")
-enemy_scenes = Array[PackedScene]([ExtResource("2_fj8kh")])
+enemy_scenes = Array[PackedScene]([ExtResource("6_lion"), ExtResource("7_plague"), ExtResource("8_archer"), ExtResource("9_fighter"), ExtResource("10_spider")])
 
 [node name="ReferenceRect" type="ReferenceRect" parent="." unique_id=1373140088]
 visible = false
@@ -890,6 +894,8 @@ tile_set = SubResource("TileSet_5tog5")
 
 [node name="NorthDoor" type="Area2D" parent="Doors" unique_id=1749660032]
 position = Vector2(544, 64)
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("4_ucmrq")
 door_direction = "NorthDoor"
 
@@ -921,6 +927,8 @@ tile_set = SubResource("TileSet_5tog5")
 
 [node name="EastDoor" type="Area2D" parent="Doors" unique_id=276689283]
 position = Vector2(1120, 320)
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("4_ucmrq")
 door_direction = "EastDoor"
 
@@ -952,6 +960,8 @@ tile_set = SubResource("TileSet_5tog5")
 
 [node name="SouthDoor" type="Area2D" parent="Doors" unique_id=887100971]
 position = Vector2(544, 608)
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("4_ucmrq")
 door_direction = "SouthDoor"
 
@@ -984,6 +994,8 @@ tile_set = SubResource("TileSet_5tog5")
 
 [node name="WestDoor" type="Area2D" parent="Doors" unique_id=559171994]
 position = Vector2(32, 320)
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("4_ucmrq")
 door_direction = "WestDoor"
 

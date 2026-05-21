@@ -13,6 +13,11 @@ var grid = {} # Dictionary of room instances
 var current_grid_pos = Vector2.ZERO
 var current_room_node = null
 
+
+func get_active_room() -> Node:
+	return current_room_node
+
+
 func get_room_center(room) -> Vector2:
 	var room_rect = room.get_room_pixel_rect()
 	return room.global_position + room_rect.position + (room_rect.size / 2)
@@ -28,6 +33,8 @@ func setup_start_position():
 	if grid.has(Vector2.ZERO):
 		var start_room = grid[Vector2.ZERO]
 		current_room_node = start_room
+		if current_room_node.has_method("set_room_active"):
+			current_room_node.set_room_active(true)
 		
 		# Center the player based on this room's specific size
 		var room_rect = start_room.get_room_pixel_rect()
@@ -88,6 +95,8 @@ func spawn_room(grid_pos: Vector2, scene: PackedScene):
 	room.global_position = grid_pos * Vector2(1280, 720) 
 	
 	room_container.add_child(room)
+	if room.has_method("set_room_active"):
+		room.set_room_active(false)
 	
 	# If a room is larger than 1x1, it needs to occupy multiple grid spaces!
 	# We loop through its width and height and claim all those grid spots.
@@ -111,6 +120,8 @@ func _on_transition_requested(direction: String):
 	if grid.has(next_pos):
 		current_grid_pos = next_pos
 		transition_to_room(grid[next_pos], direction)
+	else:
+		push_warning("LevelManager: no room at %s from door '%s'." % [next_pos, direction])
 
 func update_camera_limits(room):
 	var player = get_tree().get_first_node_in_group("player")
@@ -130,6 +141,7 @@ func transition_to_room(next_room, door_hit):
 	# 1. Pause gameplay / ignore inputs during transition (You can add this later)
 	
 	var player = get_tree().get_first_node_in_group("player")
+	var previous_room = current_room_node
 	
 	# Figure out which door to spawn at in the next room
 	var target_door_name = ""
@@ -155,16 +167,21 @@ func transition_to_room(next_room, door_hit):
 	if target_door != null:
 		player.global_position = target_door.global_position + push_offset
 	else:
-		print("Error: Could not find target door: ", target_door_name)
+		push_warning("LevelManager: could not find target door '%s'." % target_door_name)
 	
-	var prev_center = get_room_center(current_room_node)
+	var prev_center = get_room_center(previous_room)
 	var next_center = get_room_center(next_room)
 	
 	var hud = get_node("../HUD")
 	if hud and hud.has_method("update_minimap"):
 		hud.update_minimap(prev_center, next_center)
+
+	if previous_room != null and previous_room.has_method("set_room_active"):
+		previous_room.set_room_active(false)
 		
 	current_room_node = next_room
+	if current_room_node.has_method("set_room_active"):
+		current_room_node.set_room_active(true)
 	
 	# Update the camera limits to the new room!
 	update_camera_limits(next_room)
