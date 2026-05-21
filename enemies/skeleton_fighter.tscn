@@ -19,7 +19,16 @@
 [ext_resource type="Texture2D" uid="uid://c541ndb8at03k" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0005.png" id="17_eckt4"]
 [ext_resource type="Texture2D" uid="uid://dpj6w76g885k8" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0006.png" id="18_kyiym"]
 [ext_resource type="Texture2D" uid="uid://8k008l3sjjxf" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0007.png" id="19_nt1ai"]
+[ext_resource type="Texture2D" uid="uid://3epufhg2uvuj" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0001.png" id="20_6tp1n"]
 [ext_resource type="Texture2D" uid="uid://dffp4qtubt54m" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0008.png" id="20_118da"]
+[ext_resource type="Texture2D" uid="uid://dpw75u0t2v38p" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0002.png" id="21_a4gsi"]
+[ext_resource type="Texture2D" uid="uid://ber4lkmhae7of" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0003.png" id="22_00fya"]
+[ext_resource type="Texture2D" uid="uid://mno8apefhbt7" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0004.png" id="23_uv0wp"]
+[ext_resource type="Texture2D" uid="uid://4ujtr46geolh" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0005.png" id="24_fjl63"]
+[ext_resource type="Texture2D" uid="uid://d2wfcha7qkelw" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0006.png" id="25_jykvc"]
+[ext_resource type="Texture2D" uid="uid://w62kw6wkuf6t" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0007.png" id="26_eckt4"]
+[ext_resource type="Texture2D" uid="uid://bkckbdqtqywfw" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0008.png" id="27_kyiym"]
+[ext_resource type="Texture2D" uid="uid://btu6hjb0alxfj" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0009.png" id="28_nt1ai"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e3hct"]
 animations = [{
@@ -59,7 +68,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack",
-"speed": 9.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -85,12 +94,42 @@ animations = [{
 }],
 "loop": false,
 "name": &"death",
-"speed": 10.0
+"speed": 16.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_6tp1n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_a4gsi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_00fya")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_uv0wp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_fjl63")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_jykvc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_eckt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_kyiym")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_nt1ai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_00fya")
+}],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -122,7 +161,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"summon",
-"speed": 10.0
+"speed": 15.0
 }]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
@@ -153,7 +192,9 @@ max_health = 5
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=330478551]
 sprite_frames = SubResource("SpriteFrames_e3hct")
-animation = &"death"
+animation = &"summon"
+frame = 8
+frame_progress = 1.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=435104847]
 collision_layer = 2

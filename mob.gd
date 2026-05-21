@@ -174,14 +174,18 @@ func flash_sprite() -> void:
 func die() -> void:
 	#$CollisionShape2D.set_deferred("disabled", true)
 	$CollisionPolygon2D.set_deferred("disabled", true)
-	set_physics_process(false) # Stop moving
 	health_bar.hide()
 	if animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"death"):
+		set_physics_process(false) # Stop moving
 		animated_sprite.play(&"death")
 		await animated_sprite.animation_finished
-	#elif animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"summon"):
-		#animated_sprite.play(&"summon")
-		#await animated_sprite.animation_finished
+	else:
+		animated_sprite.modulate.a = 0.5
+		#while velocity.length() > 0.1:
+			#await get_tree().physics_frame
+		await get_tree().create_timer(0.2).timeout
+		
+		
 	velocity = Vector2.ZERO
 	self.queue_free()
 
