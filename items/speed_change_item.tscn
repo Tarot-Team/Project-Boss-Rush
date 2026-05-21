@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://deufxpkpipg13"]
 
 [ext_resource type="Script" uid="uid://d2jgrmccji73r" path="res://items/speed_change_item.gd" id="1_m5hhl"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_rw2gb"]
+[ext_resource type="Texture2D" uid="uid://c42bjwval7ckn" path="res://assets/Power Ups/Speed Up.png" id="2_vlh7q"]
 [ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_8qdft"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5rs43"]
@@ -15,9 +15,9 @@ position = Vector2(377, 217)
 script = ExtResource("1_m5hhl")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=121434415]
-position = Vector2(7.6293945e-06, 0)
-scale = Vector2(0.10937514, 0.12500001)
-texture = ExtResource("2_rw2gb")
+position = Vector2(-5.000023, -1.0000153)
+scale = Vector2(1.9296874, 2.09375)
+texture = ExtResource("2_vlh7q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773315857]
 position = Vector2(7.6293945e-06, 0)
