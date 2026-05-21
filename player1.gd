@@ -20,7 +20,7 @@ signal died
 @export var moon_charge_preview_line_width: float = 2.2
 @export var moon_charge_preview_line_color: Color = Color(0.74, 0.94, 1.0, 0.2)
 
-@export var iFrame_duration: float = 0.2 # Time in seconds
+@export var iFrame_duration: float = 0.2
 @export var swing_cooldown: float = 0.5
 @export var original_speed: int = 300
 @export var lunge_distance: int = 5
@@ -36,7 +36,6 @@ const DODGE_DURATION: float = 0.24
 const DODGE_COOLDOWN_TIME: float = 1.15
 const DODGE_SPEED_MULT: float = 3.2
 
-var original_speed: int = 400
 var health: int
 var is_invincible: bool = false
 var screen_size: Vector2
@@ -79,7 +78,6 @@ func set_body_collision_enabled(enabled: bool) -> void:
 
 
 func _cleanup_legacy_companion_nodes() -> void:
-	## Pre-anchor builds parented companions under the player root; strip so we don't double-spawn.
 	for nm: String in ["NeptuneOrb", "MoonSummonController"]:
 		var n: Node = get_node_or_null(nm)
 		if n != null:
@@ -117,15 +115,6 @@ func refresh_secondary_hud_icon() -> void:
 		hud.configure_secondary_ability(sid)
 
 
-var speed 
-var health
-var is_invincible = false
-var screen_size
-var flipped = true
-var on_swing_cooldown = false
-var attacking = false
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	max_health = original_health
 	health = max_health
@@ -133,7 +122,6 @@ func _ready() -> void:
 	dmg_add = 0
 	hide()
 	speed = original_speed
-	#hide()
 	screen_size = get_viewport_rect().size
 	_ensure_companion_anchor()
 	apply_character_visuals_from_global()
@@ -207,16 +195,9 @@ func apply_class_stats(stats: Dictionary) -> void:
 	swing_cooldown = AbilityKit.attack_cooldown(AbilityKit.normalize_ability_id(Global.active_primary_ability()))
 	secondary_cooldown_total = AbilityKit.secondary_cooldown(AbilityKit.normalize_ability_id(Global.active_secondary_ability()))
 
-	
-	speed = original_speed
-	
-	lunge_distance = stats.get("lunge", 300)
-	
-	# We also emit the health changed signal so the HUD updates immediately
 	health_changed.emit(max_health, health)
 	_sync_companion_nodes()
 	refresh_secondary_hud_icon()
-	## After loadout resolves, rebuild SpriteFrames (Moon beam animations, ordered attacks, etc.).
 	apply_character_visuals_from_global()
 
 
@@ -244,61 +225,41 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if _moon_beam_channeling:
-	if attacking: return
-	# Grab Inputs
-	var input_direction = Vector2.ZERO
-	input_direction.x = Input.get_axis("move_left", "move_right")
-	input_direction.y = Input.get_axis("move_up", "move_down")
-	input_direction = input_direction.normalized()
-	
-	# Apply Acceleration and Friction
-	if input_direction != Vector2.ZERO:
-		# Approach max speed by acceleration
-		velocity = velocity.move_toward(input_direction * speed, acceleration * delta * 2)
-		
-		# Animation Stuff
-		if not attacking:
-			$AnimatedSprite2D.play("run")
+		return
+
+	var input_direction := Vector2(
+			Input.get_axis("move_left", "move_right"),
+			Input.get_axis("move_up", "move_down")
+	)
+	if input_direction.length_squared() > 0.01:
+		input_direction = input_direction.normalized()
+		last_move_dir = input_direction
 		flipped = input_direction.x < 0
-		$AnimatedSprite2D.flip_h = flipped
+		animated_sprite.flip_h = flipped
+
+	if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
+		try_start_dodge()
+
+	if Input.is_action_pressed("fireball") and abilities_enabled:
+		try_secondary_attack()
+
+	if Input.is_action_pressed("attack_swing") and abilities_enabled:
+		try_primary_attack()
+
+	if input_direction != Vector2.ZERO:
+		velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
+		animated_sprite.play(&"run")
 	else:
-		# Decelerate
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		animated_sprite.play(&"idle")
+
+	var spd_scale: float = clampf(
+			velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0
+	)
+	if animated_sprite.animation == &"run":
+		animated_sprite.speed_scale = spd_scale
 	else:
-		var input_direction := Vector2(
-				Input.get_axis("move_left", "move_right"),
-				Input.get_axis("move_up", "move_down")
-		)
-		if input_direction.length_squared() > 0.01:
-			input_direction = input_direction.normalized()
-			last_move_dir = input_direction
-			flipped = input_direction.x < 0
-			animated_sprite.flip_h = flipped
-
-		if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
-			try_start_dodge()
-
-		if Input.is_action_pressed("fireball") and abilities_enabled:
-			try_secondary_attack()
-
-		if Input.is_action_pressed("attack_swing") and abilities_enabled:
-			try_primary_attack()
-
-		if not _moon_beam_channeling:
-			if input_direction != Vector2.ZERO:
-				velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
-				animated_sprite.play(&"run")
-			else:
-				velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-				animated_sprite.play(&"idle")
-
-			var spd_scale: float = clampf(
-					velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0
-			)
-			if animated_sprite.animation == &"run":
-				animated_sprite.speed_scale = spd_scale
-			else:
-				animated_sprite.speed_scale = 1.0
+		animated_sprite.speed_scale = 1.0
 
 	move_and_slide()
 
@@ -307,11 +268,6 @@ func _physics_process(delta: float) -> void:
 		var collider := collision.get_collider()
 		if collider.is_in_group("enemies") and not is_dodge_active_invuln():
 			take_damage(1)
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
-		
-		if collider.is_in_group("enemies") :
-			take_damage(1) # handles the invincibility automatically
 			bounce_player(collision.get_normal())
 
 
@@ -382,7 +338,6 @@ func _spawn_slash(tex: Texture2D, slash_vis: float = 1.0, hit_vis: float = 1.0, 
 	var lunge_dir := get_global_mouse_position() - global_position
 	var dir := lunge_dir.normalized()
 	if lunge_dir.length_squared() > 0.0001:
-		velocity += dir * 280.0
 		if absf(lunge_dir.x) > 0.01:
 			flipped = lunge_dir.x < 0
 			animated_sprite.flip_h = flipped
@@ -573,7 +528,6 @@ func try_start_dodge() -> void:
 	if dodge_cooldown_left > 0.0:
 		return
 	var dir: Vector2
-	## Prefer actual motion so diagonals match; idle uses last cardinal input + fallback to sprite flip.
 	if velocity.length_squared() > 400.0:
 		dir = velocity.normalized()
 	else:
@@ -642,7 +596,6 @@ func _post_reset_hud() -> void:
 
 func bounce_player(collision_normal: Vector2) -> void:
 	velocity = collision_normal * recoil_from_mob
-	
 
 
 func take_damage(damage_amount: int) -> void:
@@ -672,11 +625,14 @@ func change_max_health(change: int) -> void:
 	health_changed.emit(max_health, health)
 	print(health)
 
+
 func change_cooldown(change: float) -> void:
 	cool_down_mod = cool_down_mod * change
 
+
 func damage(change: int) -> void:
 	dmg_add = dmg_add + change
+
 
 func change_speed(change: int) -> void:
 	max_speed = max(1, max_speed + change)
@@ -694,30 +650,6 @@ func start_invincibility() -> void:
 
 
 func start(pos: Vector2) -> void:
-	# Rotate swing to face cursor
-	swing.rotation = direction.angle() + deg_to_rad(-90)
-
-	# Optional: push the swing outward from player
-	swing.global_position += direction * offset
-	
-	# Lil lunge effect:
-	#velocity += direction * 300
-
-	await get_tree().create_timer(swing_cooldown).timeout
-	on_swing_cooldown = false
-
-#func reset():
-	#health = max_health
-	#health_changed.emit(max_health)
-
-#func _on_area_entered(area):
-	#if area.is_in_group("enemies"):
-		#take_damage(1)
-		#print("working")
-		##$CollisionShape2D.set_deferred("disabled", true)
-	
-
-func start(pos):
 	position = pos
 	show()
 	set_body_collision_enabled(true)
