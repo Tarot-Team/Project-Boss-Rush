@@ -19,8 +19,6 @@ signal died
 ## Faint guide + sparklets during Moon charge (see `_moon_spawn_charge_preview`).
 @export var moon_charge_preview_line_width: float = 2.2
 @export var moon_charge_preview_line_color: Color = Color(0.74, 0.94, 1.0, 0.2)
-@export var iFrame_duration: float = 0.2
-@export var swing_cooldown: float = 0.45
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
 @export var original_speed: int = 300
@@ -35,7 +33,6 @@ const DODGE_DURATION: float = 0.24
 const DODGE_COOLDOWN_TIME: float = 1.15
 const DODGE_SPEED_MULT: float = 3.2
 
-var original_speed: int = 400
 var health: int
 var is_invincible: bool = false
 var screen_size: Vector2
@@ -115,13 +112,7 @@ func refresh_secondary_hud_icon() -> void:
 		hud.configure_secondary_ability(sid)
 
 
-var speed 
-var health
-var is_invincible = false
-var screen_size
-var flipped = true
-var on_swing_cooldown = false
-var attacking = false
+var speed: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -202,11 +193,6 @@ func apply_class_stats(stats: Dictionary) -> void:
 	swing_cooldown = AbilityKit.attack_cooldown(AbilityKit.normalize_ability_id(Global.active_primary_ability()))
 	secondary_cooldown_total = AbilityKit.secondary_cooldown(AbilityKit.normalize_ability_id(Global.active_secondary_ability()))
 
-	
-	speed = original_speed
-	
-	lunge_distance = stats.get("lunge", 300)
-	
 	# We also emit the health changed signal so the HUD updates immediately
 	health_changed.emit(max_health, health)
 	_sync_companion_nodes()
@@ -238,62 +224,40 @@ func _physics_process(delta: float) -> void:
 	if attacking:
 		return
 
-	if _moon_beam_channeling:
-	if attacking: return
-	# Grab Inputs
-	var input_direction = Vector2.ZERO
-	input_direction.x = Input.get_axis("move_left", "move_right")
-	input_direction.y = Input.get_axis("move_up", "move_down")
-	input_direction = input_direction.normalized()
-	
-	# Apply Acceleration and Friction
-	if input_direction != Vector2.ZERO:
-		# Approach max speed by acceleration
-		velocity = velocity.move_toward(input_direction * speed, acceleration * delta * 2)
-		
-		# Animation Stuff
-		if not attacking:
-			$AnimatedSprite2D.play("run")
+	var input_direction := Vector2(
+			Input.get_axis("move_left", "move_right"),
+			Input.get_axis("move_up", "move_down")
+	)
+	if input_direction.length_squared() > 0.01:
+		input_direction = input_direction.normalized()
+		last_move_dir = input_direction
 		flipped = input_direction.x < 0
-		$AnimatedSprite2D.flip_h = flipped
-	else:
-		# Decelerate
-		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-	else:
-		var input_direction := Vector2(
-				Input.get_axis("move_left", "move_right"),
-				Input.get_axis("move_up", "move_down")
+		animated_sprite.flip_h = flipped
+
+	if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
+		try_start_dodge()
+
+	if Input.is_action_pressed("fireball") and abilities_enabled:
+		try_secondary_attack()
+
+	if Input.is_action_pressed("attack_swing") and abilities_enabled:
+		try_primary_attack()
+
+	if not _moon_beam_channeling:
+		if input_direction != Vector2.ZERO:
+			velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
+			animated_sprite.play(&"run")
+		else:
+			velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+			animated_sprite.play(&"idle")
+
+		var spd_scale: float = clampf(
+				velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0
 		)
-		if input_direction.length_squared() > 0.01:
-			input_direction = input_direction.normalized()
-			last_move_dir = input_direction
-			flipped = input_direction.x < 0
-			animated_sprite.flip_h = flipped
-
-		if Input.is_action_just_pressed("dodge") and abilities_enabled and has_ability(CharacterData.ABILITY_DODGE):
-			try_start_dodge()
-
-		if Input.is_action_pressed("fireball") and abilities_enabled:
-			try_secondary_attack()
-
-		if Input.is_action_pressed("attack_swing") and abilities_enabled:
-			try_primary_attack()
-
-		if not _moon_beam_channeling:
-			if input_direction != Vector2.ZERO:
-				velocity = velocity.move_toward(input_direction * max_speed, acceleration * delta * 2.0)
-				animated_sprite.play(&"run")
-			else:
-				velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-				animated_sprite.play(&"idle")
-
-			var spd_scale: float = clampf(
-					velocity.length() / float(max(1, max_speed)) * 1.2, 0.35, 2.0
-			)
-			if animated_sprite.animation == &"run":
-				animated_sprite.speed_scale = spd_scale
-			else:
-				animated_sprite.speed_scale = 1.0
+		if animated_sprite.animation == &"run":
+			animated_sprite.speed_scale = spd_scale
+		else:
+			animated_sprite.speed_scale = 1.0
 
 	move_and_slide()
 
@@ -302,11 +266,6 @@ func _physics_process(delta: float) -> void:
 		var collider := collision.get_collider()
 		if collider.is_in_group("enemies") and not is_dodge_active_invuln():
 			take_damage(1)
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
-		
-		if collider.is_in_group("enemies") :
-			take_damage(1) # handles the invincibility automatically
 			bounce_player(collision.get_normal())
 
 
@@ -339,7 +298,7 @@ func try_primary_attack() -> void:
 		CharacterData.ABILITY_ARROW_POISON:
 			_fire_arrow()
 		_:
-			_spawn_slash(AbilityKit.melee_slash_texture(AbilityKit.normalize_ability_id(Global.active_primary_ability())))
+			_spawn_slash(AbilityKit.melee_slash_animation(AbilityKit.normalize_ability_id(Global.active_primary_ability())))
 
 	on_swing_cooldown = true
 	await get_tree().create_timer(swing_cooldown).timeout
@@ -361,11 +320,11 @@ func _fire_arrow() -> void:
 	get_parent().add_child(arr)
 
 
-func _spawn_slash(tex: Texture2D, slash_vis: float = 1.0, hit_vis: float = 1.0, dmg: int = 1, knock: float = 950.0, swing_len: float = 0.15) -> void:
+func _spawn_slash(anim: StringName, slash_vis: float = 1.0, hit_vis: float = 1.0, dmg: int = 1, knock: float = 950.0, swing_len: float = 0.15) -> void:
 	if attack_swing_scene == null:
 		return
-	var swing: Area2D = attack_swing_scene.instantiate() as Area2D
-	swing.slash_texture = tex
+	var swing = attack_swing_scene.instantiate()
+	swing.slash_animation = anim
 	swing.slash_scale_mult = slash_vis
 	swing.hitbox_scale_mult = hit_vis
 	swing.damage = dmg
@@ -412,7 +371,7 @@ func try_secondary_attack() -> void:
 			secondary_cooldown_left = secondary_cooldown_total
 		CharacterData.ABILITY_FIRE_SLASH:
 			_spawn_slash(
-					CharacterCombat.load_tex(CharacterCombat.TEX_FIRE),
+					AbilityKit.melee_slash_animation(CharacterData.ABILITY_FIRE_SLASH),
 					1.45, 1.35, 2, 1250.0, 0.22
 			)
 			secondary_cooldown_left = secondary_cooldown_total
@@ -682,30 +641,6 @@ func start_invincibility() -> void:
 
 
 func start(pos: Vector2) -> void:
-	# Rotate swing to face cursor
-	swing.rotation = direction.angle() + deg_to_rad(-90)
-
-	# Optional: push the swing outward from player
-	swing.global_position += direction * offset
-	
-	# Lil lunge effect:
-	#velocity += direction * 300
-
-	await get_tree().create_timer(swing_cooldown).timeout
-	on_swing_cooldown = false
-
-#func reset():
-	#health = max_health
-	#health_changed.emit(max_health)
-
-#func _on_area_entered(area):
-	#if area.is_in_group("enemies"):
-		#take_damage(1)
-		#print("working")
-		##$CollisionShape2D.set_deferred("disabled", true)
-	
-
-func start(pos):
 	position = pos
 	show()
 	set_body_collision_enabled(true)

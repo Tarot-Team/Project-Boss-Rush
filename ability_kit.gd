@@ -78,6 +78,22 @@ static func melee_slash_texture(ability_id: String) -> Texture2D:
 			return CharacterCombat.load_tex(CharacterCombat.TEX_SLASH)
 
 
+static func melee_slash_animation(ability_id: String) -> StringName:
+	match ability_id:
+		CharacterData.ABILITY_SLASH_QUICK:
+			return &"quick_slash"
+		CharacterData.ABILITY_SLASH_LIGHT:
+			return &"light_slash"
+		CharacterData.ABILITY_SLASH_WATER:
+			return &"water_slash"
+		CharacterData.ABILITY_FIRE_SLASH:
+			return &"fire_slash"
+		CharacterData.ABILITY_SLASH:
+			return &"slash"
+		_:
+			return &"slash"
+
+
 static func secondary_requires_neptune_orb(secondary_id: String) -> bool:
 	return secondary_id == CharacterData.ABILITY_NEPTUNE_SURGE
 
