@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://neptune_summon_ring_scene"]
+
+[ext_resource type="Script" path="res://neptune_summon_ring.gd" id="1"]
+
+[node name="NeptuneSummonRing" type="Node2D"]
+z_as_relative = false
+z_index = 1
+script = ExtResource("1")
+orbit_radius = 68.0
+orbit_speed = 1.65
+fire_interval = 0.95
+shot_cooldown_jitter = 0.22

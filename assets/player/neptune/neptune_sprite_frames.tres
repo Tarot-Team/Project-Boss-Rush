@@ -1,0 +1,54 @@
+[gd_resource type="SpriteFrames" load_steps=10 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0001.png" id="walk_1"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0002.png" id="walk_2"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0003.png" id="walk_3"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0004.png" id="walk_4"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0005.png" id="walk_5"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0006.png" id="walk_6"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0007.png" id="walk_7"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0008.png" id="walk_8"]
+[ext_resource type="Texture2D" path="res://assets/player/neptune/neptune_walk/Neptune_0009.png" id="walk_9"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("walk_1")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("walk_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_9")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]

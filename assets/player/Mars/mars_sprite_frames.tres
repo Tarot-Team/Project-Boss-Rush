@@ -1,0 +1,72 @@
+[gd_resource type="SpriteFrames" load_steps=14 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_idle/mars walk_0001.png" id="idle_1"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_walk/mars walk_0009.png" id="walk_1"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_walk/mars walk_0010.png" id="walk_2"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_walk/mars walk_0011.png" id="walk_3"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_walk/mars walk_0012.png" id="walk_4"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0001.png" id="attack_1"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0002.png" id="attack_2"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0003.png" id="attack_3"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0004.png" id="attack_4"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0005.png" id="attack_5"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0006.png" id="attack_6"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0007.png" id="attack_7"]
+[ext_resource type="Texture2D" path="res://assets/player/Mars/mars_attack/mars walk_0008.png" id="attack_8"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("attack_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("attack_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("attack_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("attack_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("attack_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("attack_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("attack_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("attack_8")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("idle_1")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("walk_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_4")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]

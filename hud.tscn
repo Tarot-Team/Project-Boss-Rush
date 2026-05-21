@@ -1,8 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://qog1v2jgchh8"]
+[gd_scene format=3 uid="uid://qog1v2jgchh8"]
 
 [ext_resource type="Script" uid="uid://b7em8gne0ofod" path="res://hud.gd" id="1_37p78"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_64ctp"]
-[ext_resource type="Script" path="res://minimap.gd" id="3_minimap"]
+[ext_resource type="Script" uid="uid://c6hwjmcepryg0" path="res://minimap.gd" id="3_minimap"]
+[ext_resource type="PackedScene" path="res://ability_cooldown_slot.tscn" id="4_ab"]
+[ext_resource type="Shader" uid="uid://jv3lnu4e721" path="res://dungeon_vignette.gdshader" id="5_vig"]
+[ext_resource type="Texture2D" uid="uid://cyloynpjxu1b" path="res://dash_icon.png" id="6_dodge"]
+[ext_resource type="Texture2D" uid="uid://dhc256ut4jdut" path="res://fireball_icon.png" id="7_fire"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vig"]
+shader = ExtResource("5_vig")
+shader_parameter/dim = 0.38
+shader_parameter/vignette_power = 2.2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_minimap"]
 bg_color = Color(0.08, 0.08, 0.12, 0.5)
@@ -18,6 +27,16 @@ corner_radius_bottom_left = 8
 
 [node name="HUD" type="CanvasLayer" unique_id=1202062643]
 script = ExtResource("1_37p78")
+
+[node name="Vignette" type="ColorRect" parent="." unique_id=1011337241]
+z_index = -100
+material = SubResource("ShaderMaterial_vig")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="ScoreLabel" type="Label" parent="." unique_id=463984515]
 anchors_preset = 5
@@ -67,7 +86,7 @@ wait_time = 2.0
 [node name="TopLeftUI" type="MarginContainer" parent="." unique_id=1582923756]
 offset_left = 15.0
 offset_top = 15.0
-offset_right = 215.0
+offset_right = 520.0
 offset_bottom = 79.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TopLeftUI" unique_id=705501664]
@@ -75,6 +94,7 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="AvatarIcon" type="TextureRect" parent="TopLeftUI/HBoxContainer" unique_id=1587755357]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("2_64ctp")
@@ -84,6 +104,22 @@ stretch_mode = 5
 [node name="HeartContainer" type="HBoxContainer" parent="TopLeftUI/HBoxContainer" unique_id=1836554992]
 layout_mode = 2
 alignment = 1
+
+[node name="AbilitySlots" type="HBoxContainer" parent="TopLeftUI/HBoxContainer" unique_id=705501665]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DodgeSlot" parent="TopLeftUI/HBoxContainer/AbilitySlots" unique_id=441365893 instance=ExtResource("4_ab")]
+visible = false
+layout_mode = 2
+action_key = "Shift"
+ability_icon = ExtResource("6_dodge")
+
+[node name="FireballSlot" parent="TopLeftUI/HBoxContainer/AbilitySlots" unique_id=831461870 instance=ExtResource("4_ab")]
+visible = false
+layout_mode = 2
+action_key = "RMB"
+ability_icon = ExtResource("7_fire")
 
 [node name="MinimapContainer" type="PanelContainer" parent="." unique_id=1234567891]
 anchors_preset = 1
