@@ -21,9 +21,10 @@ signal died
 @export var moon_charge_preview_line_color: Color = Color(0.74, 0.94, 1.0, 0.2)
 @export var iFrame_duration: float = 0.2
 @export var swing_cooldown: float = 0.45
+@export var iFrame_duration: float = 0.2 # Time in seconds
+@export var swing_cooldown: float = 0.5
+@export var original_speed: int = 300
 @export var lunge_distance: int = 5
-
-@export var speed: int = 400
 @export var original_health: int = 5
 
 const ARROW_SCN := preload("res://arrow.tscn")
@@ -114,10 +115,20 @@ func refresh_secondary_hud_icon() -> void:
 		hud.configure_secondary_ability(sid)
 
 
+var speed 
+var health
+var is_invincible = false
+var screen_size
+var flipped = true
+var on_swing_cooldown = false
+var attacking = false
+
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	max_health = original_health
 	health = max_health
-	hide()
+	speed = original_speed
+	#hide()
 	screen_size = get_viewport_rect().size
 	_ensure_companion_anchor()
 	apply_character_visuals_from_global()
@@ -191,6 +202,12 @@ func apply_class_stats(stats: Dictionary) -> void:
 	swing_cooldown = AbilityKit.attack_cooldown(AbilityKit.normalize_ability_id(Global.active_primary_ability()))
 	secondary_cooldown_total = AbilityKit.secondary_cooldown(AbilityKit.normalize_ability_id(Global.active_secondary_ability()))
 
+	
+	speed = original_speed
+	
+	lunge_distance = stats.get("lunge", 300)
+	
+	# We also emit the health changed signal so the HUD updates immediately
 	health_changed.emit(max_health, health)
 	_sync_companion_nodes()
 	refresh_secondary_hud_icon()
@@ -222,6 +239,25 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if _moon_beam_channeling:
+	if attacking: return
+	# Grab Inputs
+	var input_direction = Vector2.ZERO
+	input_direction.x = Input.get_axis("move_left", "move_right")
+	input_direction.y = Input.get_axis("move_up", "move_down")
+	input_direction = input_direction.normalized()
+	
+	# Apply Acceleration and Friction
+	if input_direction != Vector2.ZERO:
+		# Approach max speed by acceleration
+		velocity = velocity.move_toward(input_direction * speed, acceleration * delta * 2)
+		
+		# Animation Stuff
+		if not attacking:
+			$AnimatedSprite2D.play("run")
+		flipped = input_direction.x < 0
+		$AnimatedSprite2D.flip_h = flipped
+	else:
+		# Decelerate
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 	else:
 		var input_direction := Vector2(
@@ -266,6 +302,11 @@ func _physics_process(delta: float) -> void:
 		var collider := collision.get_collider()
 		if collider.is_in_group("enemies") and not is_dodge_active_invuln():
 			take_damage(1)
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		if collider.is_in_group("enemies") :
+			take_damage(1) # handles the invincibility automatically
 			bounce_player(collision.get_normal())
 
 
@@ -596,6 +637,7 @@ func _post_reset_hud() -> void:
 
 func bounce_player(collision_normal: Vector2) -> void:
 	velocity = collision_normal * recoil_from_mob
+	
 
 
 func take_damage(damage_amount: int) -> void:
@@ -608,6 +650,7 @@ func take_damage(damage_amount: int) -> void:
 		return
 	health = new_health
 	health_changed.emit(max_health, health)
+	print(health)
 	if health <= 0:
 		died.emit()
 	else:
@@ -639,6 +682,30 @@ func start_invincibility() -> void:
 
 
 func start(pos: Vector2) -> void:
+	# Rotate swing to face cursor
+	swing.rotation = direction.angle() + deg_to_rad(-90)
+
+	# Optional: push the swing outward from player
+	swing.global_position += direction * offset
+	
+	# Lil lunge effect:
+	#velocity += direction * 300
+
+	await get_tree().create_timer(swing_cooldown).timeout
+	on_swing_cooldown = false
+
+#func reset():
+	#health = max_health
+	#health_changed.emit(max_health)
+
+#func _on_area_entered(area):
+	#if area.is_in_group("enemies"):
+		#take_damage(1)
+		#print("working")
+		##$CollisionShape2D.set_deferred("disabled", true)
+	
+
+func start(pos):
 	position = pos
 	show()
 	set_body_collision_enabled(true)

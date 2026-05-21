@@ -178,7 +178,6 @@ collision_layer = 4
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_c5mkm")
-max_speed = 200
 attack_swing_scene = ExtResource("2_s33xd")
 swing_cooldown = 0.3
 
