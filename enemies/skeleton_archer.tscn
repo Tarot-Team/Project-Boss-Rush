@@ -165,7 +165,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
-size = Vector2(28, 40)
+size = Vector2(45.882347, 81.17647)
 
 [sub_resource type="StyleBoxFlat" id="HealthBg"]
 bg_color = Color(0.12, 0.07, 0.08, 0.78)
@@ -200,10 +200,14 @@ frame_progress = 1.0
 collision_layer = 2
 
 [node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1191700019]
+position = Vector2(-0.5882337, 0.5882331)
+scale = Vector2(1.0000002, 1.0000002)
 shape = SubResource("BodyShape")
 
-[node name="CollisionPolygon2D" type="CollisionShape2D" parent="." unique_id=207800501]
-shape = SubResource("BodyShape")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1727459876]
+visible = false
+position = Vector2(-9.411765, -4.7058825)
+polygon = PackedVector2Array(10.588237, -35.294117, 16.470589, -32.941177, 17.64706, -22.352942, 23.529413, -18.82353, 31.764708, 8.235294, 22.352943, 23.529413, 27.058826, 42.352943, 16.470589, 43.529415, 9.536743e-07, 47.058826, -4.705881, 44.705883, -1.1764698, 25.882355, -21.17647, 11.764707, -20, -4.705882, -2.3529406, -16.470589, -10.588234, -28.235294, -3.5294113, -31.764706, 3.5294127, -22.352942, 5.8823543, -32.941177)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1456303099]
 visible = false

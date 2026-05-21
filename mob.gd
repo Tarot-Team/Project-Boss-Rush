@@ -28,6 +28,9 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 var attack_cooldown_left: float = 0.0
 var is_attacking: bool = false
 
+var base_sprite_scale: Vector2
+
+
 # If we want to do some kind of player death effect
 var is_fleeing = false
 var flee_target = Vector2.ZERO
@@ -39,6 +42,7 @@ var flee_target = Vector2.ZERO
 
 func _ready() -> void:
 	current_health = max_health
+	base_sprite_scale = animated_sprite.scale
 	player = get_tree().get_first_node_in_group("player") as Node2D
 	_setup_health_bar()
 	if animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"run"):
@@ -223,9 +227,8 @@ func time_freeze() -> void:
 
 func punchy_scale() -> void:
 	var tween = create_tween()
-	animated_sprite.scale = Vector2(0.7, 1.3)
-	tween.tween_property(animated_sprite, "scale", Vector2(1, 1), 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-
+	animated_sprite.scale = base_sprite_scale * Vector2(0.7, 1.3)
+	tween.tween_property(animated_sprite, "scale", base_sprite_scale, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 func _on_health_bar_hide_timer_timeout() -> void:
 	if current_health > 0:

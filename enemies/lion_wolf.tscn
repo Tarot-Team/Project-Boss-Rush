@@ -128,19 +128,20 @@ max_health = 5
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=412157077]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_2xxdx")
-animation = &"run"
-frame_progress = 0.62159663
+animation = &"attack"
+frame = 8
+frame_progress = 1.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1169524471]
 collision_layer = 2
 
 [node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=594278958]
-visible = false
 position = Vector2(1.1764705, 1.7647059)
 scale = Vector2(1.0000002, 1.0000002)
 shape = SubResource("RectangleShape2D_bhdt6")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1716412074]
+visible = false
 polygon = PackedVector2Array(-7.0588236, -14.117647, 18.82353, -37.64706, 37.64706, -31.764708, 41.17647, -10.588236, 24.705883, 16.470589, 25.882355, 32.941177, 31.764708, 37.64706, 27.058825, 41.17647, 18.82353, 40, 5.8823533, 38.823532, 4.7058825, 34.11765, -8.235294, 35.29412, -21.176472, 15.294118, -29.411766, 34.11765, -30.588236, 37.64706, -38.823532, 37.64706, -37.64706, 18.82353, -28.235294, -4.7058825, -37.64706, -7.0588236, -37.64706, -17.64706, -30.588236, -34.11765, -18.82353, -31.764708, -21.176472, -20, -34.11765, -12.941177, -27.058825, -10.588236, -20, -14.117647)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1119944144]
