@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://6lwbo6qn28um"]
 
-[ext_resource type="Script" path="res://items/item_pickup.gd" id="1_kg5e7"]
+[ext_resource type="Script" uid="uid://bb8ruhukeg37j" path="res://items/item_pickup.gd" id="1_kg5e7"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_ys7tt"]
 [ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_unjj8"]
+[ext_resource type="PackedScene" uid="uid://di5768wov3v7b" path="res://player1.tscn" id="4_cd4ji"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5rs43"]
 size = Vector2(14, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kg5e7"]
-radius = 22.0
+radius = 44.181442
 
 [node name="item" type="Area2D" unique_id=1451157788]
 position = Vector2(377, 217)
@@ -28,5 +29,7 @@ position = Vector2(7.6293945e-06, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=337489721]
 shape = SubResource("CircleShape2D_kg5e7")
+
+[node name="Player1" parent="." unique_id=644555451 instance=ExtResource("4_cd4ji")]
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

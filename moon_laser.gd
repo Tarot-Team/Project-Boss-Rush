@@ -3,7 +3,7 @@ class_name MoonLaser
 ## Moon secondary: beam aligned to aim, clipped at room walls (+ small bleed), pierce enemies only.
 
 const BASE_BEAM_WIDTH: float = 420.0
-
+@onready var player = get_tree().get_nodes_in_group("player")[0]
 ## Time at full thickness where damage ticks run (starts after blade_expand_sec).
 @export var beam_duration_sec: float = 1.0
 @export var damage_per_tick: int = 1
@@ -226,4 +226,4 @@ func _apply_tick_damage() -> void:
 			hit_dir /= hit_len
 		var mom: float = 1.0 + (player_velocity_at_hit.dot(hit_dir) / 600.0)
 		mom = clampf(mom, 0.5, 1.6)
-		enemy.take_damage(damage_per_tick, player_pos_at_hit, knockback_force * mom)
+		enemy.take_damage(damage_per_tick+player.dmg_add, player_pos_at_hit, knockback_force * mom)
