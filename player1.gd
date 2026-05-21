@@ -19,8 +19,7 @@ signal died
 ## Faint guide + sparklets during Moon charge (see `_moon_spawn_charge_preview`).
 @export var moon_charge_preview_line_width: float = 2.2
 @export var moon_charge_preview_line_color: Color = Color(0.74, 0.94, 1.0, 0.2)
-@export var iFrame_duration: float = 0.2
-@export var swing_cooldown: float = 0.45
+
 @export var iFrame_duration: float = 0.2 # Time in seconds
 @export var swing_cooldown: float = 0.5
 @export var original_speed: int = 300
