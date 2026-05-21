@@ -61,9 +61,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("12_7whe2")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
-"speed": 5.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -104,7 +104,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 14.5
 }]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
@@ -135,7 +135,8 @@ max_health = 6
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1836689929]
 sprite_frames = SubResource("SpriteFrames_qdimv")
-animation = &"attack"
+animation = &"run"
+frame_progress = 0.56824774
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=5926834]
 collision_layer = 2

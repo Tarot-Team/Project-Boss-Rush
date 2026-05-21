@@ -176,12 +176,12 @@ func die() -> void:
 	$CollisionPolygon2D.set_deferred("disabled", true)
 	set_physics_process(false) # Stop moving
 	health_bar.hide()
-	if animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"hit"):
-		animated_sprite.play(&"hit")
+	if animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"death"):
+		animated_sprite.play(&"death")
 		await animated_sprite.animation_finished
-	elif animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"summon"):
-		animated_sprite.play(&"summon")
-		await animated_sprite.animation_finished
+	#elif animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"summon"):
+		#animated_sprite.play(&"summon")
+		#await animated_sprite.animation_finished
 	velocity = Vector2.ZERO
 	self.queue_free()
 

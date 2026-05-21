@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://b078vc7cn36e3" path="res://mob.gd" id="1_enemy"]
 [ext_resource type="Texture2D" uid="uid://0movy0b1bu5c" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0001.png" id="2_bhdt6"]
-[ext_resource type="Texture2D" uid="uid://dren5jdmki8cp" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0002.png" id="3_v4gdq"]
 [ext_resource type="Texture2D" uid="uid://dcqkjutep1wjw" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0003.png" id="4_bqvhq"]
 [ext_resource type="Texture2D" uid="uid://blh0w2nodbvni" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0004.png" id="5_0jdi0"]
 [ext_resource type="Texture2D" uid="uid://cu1ck030a0735" path="res://assets/Enemy/Basic/Lion-Wolf/Attack/Lion-Wolf Attack_0005.png" id="6_igou8"]
@@ -28,12 +27,6 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_bhdt6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_v4gdq")
-}, {
-"duration": 1.0,
 "texture": ExtResource("4_bqvhq")
 }, {
 "duration": 1.0,
@@ -56,10 +49,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("11_xefwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_bhdt6")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
-"speed": 5.0
+"speed": 14.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -100,7 +96,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 14.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bhdt6"]
@@ -132,7 +128,8 @@ max_health = 5
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=412157077]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_2xxdx")
-animation = &"attack"
+animation = &"run"
+frame_progress = 0.62159663
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1169524471]
 collision_layer = 2

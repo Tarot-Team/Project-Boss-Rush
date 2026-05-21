@@ -57,9 +57,35 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("12_a4gsi")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
 "speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_118da")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_nt1ai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_kyiym")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_eckt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_jykvc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_fjl63")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_uv0wp")
+}],
+"loop": false,
+"name": &"death",
+"speed": 10.0
 }, {
 "frames": [],
 "loop": true,
@@ -94,7 +120,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("20_118da")
 }],
-"loop": true,
+"loop": false,
 "name": &"summon",
 "speed": 10.0
 }]
@@ -127,8 +153,7 @@ max_health = 5
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=330478551]
 sprite_frames = SubResource("SpriteFrames_e3hct")
-animation = &"summon"
-frame_progress = 0.10352256
+animation = &"death"
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=435104847]
 collision_layer = 2
