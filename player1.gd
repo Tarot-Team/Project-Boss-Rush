@@ -35,9 +35,7 @@ func apply_class_stats(stats: Dictionary):
 	max_health = original_health
 	health = max_health
 	
-	max_speed = stats.get("speed", 450)
-	original_speed = max_speed
-	speed = max_speed
+	speed = original_speed
 	
 	lunge_distance = stats.get("lunge", 300)
 	
