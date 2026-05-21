@@ -5,7 +5,7 @@ extends Area2D
 @export var damage: int = 1
 
 ## Assign on the instance before add_child(); if null, scene default frames are used.
-var slash_texture: Texture2D
+var slash_texture: SpriteFrames
 var slash_scale_mult: float = 1.0
 var hitbox_scale_mult: float = 1.0
 
