@@ -8,7 +8,7 @@
 size = Vector2(14, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kg5e7"]
-radius = 22.0
+radius = 40.012497
 
 [node name="speed_item" type="Area2D" unique_id=1451157788 groups=["items"]]
 position = Vector2(377, 217)

@@ -10,8 +10,8 @@ func _ready():
 	interaction_area.interact = Callable(self, "_on_interact")	
 
 func _on_interact():
-	player.change_speed(100)	
-	print(player.speed)
+	player.change_dmg(1)
 	hide()
 	interaction_area.set_deferred("monitoring", false)
+
 	

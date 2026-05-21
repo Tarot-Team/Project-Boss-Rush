@@ -25,6 +25,8 @@ signal died
 @export var swing_cooldown: float = 0.5
 @export var original_speed: int = 300
 @export var lunge_distance: int = 5
+@export var dmg_add: int = 0
+@export var speed: int = 400
 @export var original_health: int = 5
 
 const ARROW_SCN := preload("res://arrow.tscn")
@@ -52,6 +54,7 @@ var dodge_cooldown_left: float = 0.0
 
 var secondary_cooldown_left: float = 0.0
 var secondary_cooldown_total: float = 1.5
+var cool_down_mod: float = 1
 
 var hud: Node = null
 
@@ -127,6 +130,9 @@ var attacking = false
 func _ready() -> void:
 	max_health = original_health
 	health = max_health
+	cool_down_mod = 1
+	dmg_add = 0
+	hide()
 	speed = original_speed
 	#hide()
 	screen_size = get_viewport_rect().size
@@ -139,8 +145,8 @@ func refresh_ability_loadout() -> void:
 	if Global.player_class.has("stats"):
 		apply_class_stats(Global.player_class["stats"])
 	else:
-		swing_cooldown = AbilityKit.attack_cooldown(AbilityKit.normalize_ability_id(Global.active_primary_ability()))
-		secondary_cooldown_total = AbilityKit.secondary_cooldown(AbilityKit.normalize_ability_id(Global.active_secondary_ability()))
+		swing_cooldown = cool_down_mod * AbilityKit.attack_cooldown(AbilityKit.normalize_ability_id(Global.active_primary_ability()))
+		secondary_cooldown_total = cool_down_mod * AbilityKit.secondary_cooldown(AbilityKit.normalize_ability_id(Global.active_secondary_ability()))
 		_sync_companion_nodes()
 	refresh_secondary_hud_icon()
 	if hud and hud.has_method("configure_ability_pips"):
@@ -647,6 +653,7 @@ func take_damage(damage_amount: int) -> void:
 		return
 	var new_health: int = health - damage_amount
 	if new_health > max_health:
+		health = max_health
 		return
 	health = new_health
 	health_changed.emit(max_health, health)
@@ -664,7 +671,13 @@ func change_max_health(change: int) -> void:
 	else:
 		health = mini(health, max_health)
 	health_changed.emit(max_health, health)
+	print(health)
 
+func change_cooldown(change: float) -> void:
+	cool_down_mod = cool_down_mod * change
+
+func damage(change: int) -> void:
+	dmg_add = dmg_add + change
 
 func change_speed(change: int) -> void:
 	max_speed = max(1, max_speed + change)

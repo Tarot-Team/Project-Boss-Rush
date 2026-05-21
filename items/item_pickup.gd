@@ -22,6 +22,7 @@ func _on_interact() -> void:
 	var player := get_tree().get_first_node_in_group("player") as Player
 	if player == null:
 		return
+	print("yay")
 
 	_apply_to_player(player)
 	hide()
