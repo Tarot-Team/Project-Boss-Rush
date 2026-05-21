@@ -1,5 +1,10 @@
 [gd_scene format=3 uid="uid://dv1l8lukcsdc8"]
 
+[ext_resource type="PackedScene" uid="uid://di5768wov3v7b" path="res://player1.tscn" id="3_ykrsh"]
+
+[node name="Node2D" type="Node2D" unique_id=606754999]
+
+[node name="Player1" parent="." unique_id=644555451 instance=ExtResource("3_ykrsh")]
 [ext_resource type="PackedScene" uid="uid://di5768wov3v7b" path="res://player1.tscn" id="1_8uh7m"]
 [ext_resource type="PackedScene" uid="uid://bxrxrlpe5j24e" path="res://boss/boss.tscn" id="2_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://cf5qkctm0in18" path="res://death_stab.tscn" id="3_6uqi0"]

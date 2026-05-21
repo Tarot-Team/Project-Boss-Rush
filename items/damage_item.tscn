@@ -1,29 +1,29 @@
-[gd_scene format=3 uid="uid://dm5tr00f4tpl5"]
+[gd_scene format=3 uid="uid://bfmfr330gqsxs"]
 
-[ext_resource type="Script" uid="uid://b2c7y320xo1mn" path="res://items/health_item.gd" id="1_lno0b"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_1tiih"]
-[ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_ar2v4"]
+[ext_resource type="Script" uid="uid://8lcpe2xbn13p" path="res://items/damage_item.gd" id="1_ftjhh"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_5rx0e"]
+[ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_krflm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5rs43"]
 size = Vector2(14, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kg5e7"]
-radius = 45.01111
+radius = 42.047592
 
-[node name="health_item" type="Area2D" unique_id=1451157788]
+[node name="damage_item" type="Area2D" unique_id=1451157788 groups=["items"]]
 position = Vector2(377, 217)
-script = ExtResource("1_lno0b")
+script = ExtResource("1_ftjhh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=121434415]
 position = Vector2(7.6293945e-06, 0)
 scale = Vector2(0.10937514, 0.12500001)
-texture = ExtResource("2_1tiih")
+texture = ExtResource("2_5rx0e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773315857]
 position = Vector2(7.6293945e-06, 0)
 shape = SubResource("RectangleShape2D_5rs43")
 
-[node name="InteractionArea" parent="." unique_id=358332711 instance=ExtResource("3_ar2v4")]
+[node name="InteractionArea" parent="." unique_id=358332711 instance=ExtResource("3_krflm")]
 position = Vector2(7.6293945e-06, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=337489721]
