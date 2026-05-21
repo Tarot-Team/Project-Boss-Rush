@@ -46,7 +46,7 @@ func new_game():
 	$Player1.set_body_collision_enabled(true)
 	$LevelManager.setup_start_position()
 	$StartTimer.start()
-	$HUD.update_score(score)
+	#$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
 	$HUD.configure_ability_pips($Player1.has_ability(CharacterData.ABILITY_DODGE), true)
 	$Player1.refresh_secondary_hud_icon()
@@ -83,5 +83,7 @@ func _on_score_timer_timeout() -> void:
 
 func _on_start_timer_timeout() -> void:
 	$Player1.set_abilities_enabled(true)
-	$ScoreTimer.start()
+	#$ScoreTimer.start()
+	$HUD.show_message("Go!")
+	await get_tree().create_timer(0.7).timeout
 	$HUD.show_message("")
