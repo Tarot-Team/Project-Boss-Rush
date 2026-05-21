@@ -42,9 +42,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("8_ngmxm")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
-"speed": 10.0
+"speed": 14.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -76,11 +76,11 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 9.0
+"speed": 13.5
 }]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
-size = Vector2(34, 28)
+size = Vector2(110.58822, 96.470566)
 
 [sub_resource type="StyleBoxFlat" id="HealthBg"]
 bg_color = Color(0.12, 0.07, 0.08, 0.78)
@@ -108,16 +108,19 @@ max_health = 3
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=767839746]
 sprite_frames = SubResource("SpriteFrames_r8ddv")
 animation = &"run"
-frame_progress = 0.5823058
+frame_progress = 0.38103804
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1063479019]
 collision_layer = 2
 
 [node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1479359499]
+position = Vector2(-3.5294106, 1.0167852e-06)
+scale = Vector2(1.0000002, 1.0000002)
 shape = SubResource("BodyShape")
 
-[node name="CollisionPolygon2D" type="CollisionShape2D" parent="." unique_id=1062318182]
-shape = SubResource("BodyShape")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=892592999]
+visible = false
+polygon = PackedVector2Array(-9.411765, -37.64706, 18.82353, -37.64706, 56.47059, -18.82353, 56.47059, -9.411765, 37.64706, -9.411765, 37.64706, 9.411765, 56.47059, 47.058826, 28.235294, 56.47059, 18.82353, 56.47059, 9.411765, 28.235294, 0, 9.411765, -18.82353, 9.411765, -37.64706, 47.058826, -56.47059, 37.64706, -28.235294, 0, -56.47059, 18.82353, -47.058826, 0, -65.882355, -18.82353, -47.058826, -47.058826, -18.82353, -47.058826)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=18410132]
 visible = false

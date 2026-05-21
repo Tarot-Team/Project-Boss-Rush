@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bw6mxs5qlt7ey"]
+[gd_scene format=3 uid="uid://bw6mxs5qlt7ey"]
 
-[ext_resource type="Texture2D" path="res://assets/attacks/Slash.png" id="1_slash"]
-[ext_resource type="Script" path="res://swing.gd" id="1_v36oi"]
+[ext_resource type="Texture2D" uid="uid://2vo7pujxd6us" path="res://assets/attacks/Slash.png" id="1_slash"]
+[ext_resource type="Script" uid="uid://c2d3b0g72cp2d" path="res://swing.gd" id="1_v36oi"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wefpt"]
 animations = [{
@@ -18,17 +18,15 @@ animations = [{
 radius = 116.666664
 height = 260.0
 
-[node name="Swing" type="Area2D" groups=["swing"]]
+[node name="Swing" type="Area2D" unique_id=1332729972 groups=["swing"]]
 scale = Vector2(0.9, 0.9)
 collision_mask = 2
 script = ExtResource("1_v36oi")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-groups = ["swing"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=89185754]
 sprite_frames = SubResource("SpriteFrames_wefpt")
 animation = &"swing"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-groups = ["swing"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=470182380]
 position = Vector2(-1.1920929e-06, -29.999996)
 shape = SubResource("CapsuleShape2D_is03c")

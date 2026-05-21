@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://sfp1c8mm0pi6" path="res://water_bolt.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://bvo0qnka7336b" path="res://assets/attacks/Water Slash.png" id="2_tex"]
 
+
 [sub_resource type="RectangleShape2D" id="R"]
 size = Vector2(36, 20)
 

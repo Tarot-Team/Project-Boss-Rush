@@ -178,8 +178,21 @@ collision_layer = 4
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_c5mkm")
+max_speed = 200
+acceleration = null
+friction = null
+recoil_from_mob = null
+max_health = null
 attack_swing_scene = ExtResource("2_s33xd")
+moon_laser_scene = null
+moon_laser_emit_offset_px = null
+moon_charge_preview_line_width = null
+moon_charge_preview_line_color = null
+iFrame_duration = null
 swing_cooldown = 0.3
+lunge_distance = null
+speed = null
+original_health = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1482088666]
 scale = Vector2(1.5, 1.5)

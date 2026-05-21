@@ -19,7 +19,16 @@
 [ext_resource type="Texture2D" uid="uid://c541ndb8at03k" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0005.png" id="17_eckt4"]
 [ext_resource type="Texture2D" uid="uid://dpj6w76g885k8" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0006.png" id="18_kyiym"]
 [ext_resource type="Texture2D" uid="uid://8k008l3sjjxf" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0007.png" id="19_nt1ai"]
+[ext_resource type="Texture2D" uid="uid://3epufhg2uvuj" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0001.png" id="20_6tp1n"]
 [ext_resource type="Texture2D" uid="uid://dffp4qtubt54m" path="res://assets/Enemy/Basic/Skeleton Fighter/Summon/Skeleton Fighter Summon_0008.png" id="20_118da"]
+[ext_resource type="Texture2D" uid="uid://dpw75u0t2v38p" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0002.png" id="21_a4gsi"]
+[ext_resource type="Texture2D" uid="uid://ber4lkmhae7of" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0003.png" id="22_00fya"]
+[ext_resource type="Texture2D" uid="uid://mno8apefhbt7" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0004.png" id="23_uv0wp"]
+[ext_resource type="Texture2D" uid="uid://4ujtr46geolh" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0005.png" id="24_fjl63"]
+[ext_resource type="Texture2D" uid="uid://d2wfcha7qkelw" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0006.png" id="25_jykvc"]
+[ext_resource type="Texture2D" uid="uid://w62kw6wkuf6t" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0007.png" id="26_eckt4"]
+[ext_resource type="Texture2D" uid="uid://bkckbdqtqywfw" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0008.png" id="27_kyiym"]
+[ext_resource type="Texture2D" uid="uid://btu6hjb0alxfj" path="res://assets/Enemy/Basic/Skeleton Fighter/Walk/Skeleton Fighter_0009.png" id="28_nt1ai"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e3hct"]
 animations = [{
@@ -57,14 +66,70 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("12_a4gsi")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
-"speed": 9.0
+"speed": 16.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_118da")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_nt1ai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_kyiym")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_eckt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_jykvc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_fjl63")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_uv0wp")
+}],
+"loop": false,
+"name": &"death",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_6tp1n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_a4gsi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_00fya")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_uv0wp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_fjl63")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_jykvc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_eckt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_kyiym")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_nt1ai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_00fya")
+}],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -94,13 +159,13 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("20_118da")
 }],
-"loop": true,
+"loop": false,
 "name": &"summon",
-"speed": 10.0
+"speed": 15.0
 }]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
-size = Vector2(30, 40)
+size = Vector2(65, 117.14286)
 
 [sub_resource type="StyleBoxFlat" id="HealthBg"]
 bg_color = Color(0.12, 0.07, 0.08, 0.78)
@@ -128,16 +193,20 @@ max_health = 5
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=330478551]
 sprite_frames = SubResource("SpriteFrames_e3hct")
 animation = &"summon"
-frame_progress = 0.10352256
+frame = 8
+frame_progress = 1.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=435104847]
 collision_layer = 2
 
 [node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1857735773]
+position = Vector2(-1.0714265, 1.428566)
+scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("BodyShape")
 
-[node name="CollisionPolygon2D" type="CollisionShape2D" parent="." unique_id=1635512546]
-shape = SubResource("BodyShape")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1640571780]
+visible = false
+polygon = PackedVector2Array(2.8571427, -57.142853, 12.857142, -51.42857, 17.142857, -35.714283, 19.999998, -15.714285, 29.999998, 2.8571427, 48.571426, 18.571428, 39.999996, 19.999998, 21.42857, 8.571428, 24.285713, 22.857141, 15.714285, 44.285713, 24.285713, 52.85714, -25.714285, 61.428566, -18.571428, 29.999998, -19.999998, 12.857142, -32.85714, 11.428571, -41.42857, -7.1428566, -28.571426, 0, -27.142855, -14.285713, -14.285713, -41.42857)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1536868575]
 visible = false

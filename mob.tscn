@@ -94,7 +94,6 @@ collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_b3mxk")
 top_speed = 90
-max_health = 4
 flee_speed = 200
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=340976674]
@@ -111,7 +110,7 @@ shape = SubResource("RectangleShape2D_jbnni")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1767886761]
 polygon = PackedVector2Array(-14.444445, -2.2222223, -14.444445, -6.666667, -12.222223, -11.111112, -8.888889, -14.444445, -5.555556, -15.555556, -3.3333335, -16.666668, 3.3333335, -16.666668, 5.555556, -15.555556, 8.888889, -14.444445, 12.222223, -11.111112, 13.333334, -8.888889, 14.444445, -5.555556, 14.444445, -1.1111112, 5.555556, -1.1111112, 5.555556, 3.3333335, 6.666667, 4.4444447, 6.666667, 10, 5.555556, 12.222223, 8.888889, 12.222223, 8.888889, 15.555556, 3.3333335, 15.555556, 1.1111112, 12.222223, -3.3333335, 17.777779, -7.777778, 17.777779, -7.777778, 15.555556, -3.3333335, 12.222223, -4.4444447, 11.111112, -4.4444447, 10, -5.555556, 10, -5.555556, -1.1111112, -14.444445, -1.1111112)
 
-[node name="HealthBar" type="ProgressBar" parent="."]
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1857965526]
 visible = false
 offset_left = -18.0
 offset_top = -28.0
@@ -122,7 +121,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_health_fill")
 value = 4.0
 show_percentage = false
 
-[node name="HideTimer" type="Timer" parent="HealthBar"]
+[node name="HideTimer" type="Timer" parent="HealthBar" unique_id=589036510]
 one_shot = true
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]

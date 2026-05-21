@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cjxil6i7ph53s" path="res://arrow.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://camvyaj6l2t6d" path="res://assets/attacks/Arrow.png" id="2_tex"]
 
+
 [sub_resource type="RectangleShape2D" id="RectShape_arrow"]
 size = Vector2(32, 8)
 

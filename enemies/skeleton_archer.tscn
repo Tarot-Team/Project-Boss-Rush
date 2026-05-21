@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://v3dht0mwa62s" path="res://assets/Enemy/Basic/Skeleton Archer/Attack/Skeleton Archer Attack_0008.png" id="8_6tavg"]
 [ext_resource type="Texture2D" uid="uid://caa2s5bg6vptp" path="res://assets/Enemy/Basic/Skeleton Archer/Attack/Skeleton Archer Attack_0009.png" id="9_wbdyo"]
 [ext_resource type="Texture2D" uid="uid://dbokcigoilpod" path="res://assets/Enemy/Basic/Skeleton Archer/Attack/Skeleton Archer Attack_0010.png" id="10_y471o"]
-[ext_resource type="Texture2D" uid="uid://vsi28ec1qlbp" path="res://assets/Enemy/Basic/Skeleton Archer/Attack/Skeleton Archer Attack_0011.png" id="11_8nj7s"]
 [ext_resource type="Texture2D" uid="uid://c3c4ciibaldim" path="res://assets/Enemy/Basic/Skeleton Archer/Walk/Skeleton Archer_0001.png" id="12_gkdet"]
 [ext_resource type="Texture2D" uid="uid://bsyy08o4bg64c" path="res://assets/Enemy/Basic/Skeleton Archer/Walk/Skeleton Archer_0002.png" id="13_6junh"]
 [ext_resource type="Texture2D" uid="uid://q6udnuwclowt" path="res://assets/Enemy/Basic/Skeleton Archer/Walk/Skeleton Archer_0003.png" id="14_rymgh"]
@@ -60,11 +59,43 @@ animations = [{
 "texture": ExtResource("10_y471o")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_8nj7s")
+"texture": ExtResource("4_cw3gb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2tlpu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_2mfml")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
-"speed": 7.0
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_3ij1d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_g24xh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_pmd4l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_xsr55")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_81n2w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_6bypl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_hke64")
+}],
+"loop": false,
+"name": &"death",
+"speed": 16.0
 }, {
 "frames": [],
 "loop": true,
@@ -101,7 +132,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 9.0
+"speed": 11.5
 }, {
 "frames": [{
 "duration": 1.0,
@@ -128,13 +159,13 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("28_2oubo")
 }],
-"loop": true,
+"loop": false,
 "name": &"summon",
-"speed": 9.0
+"speed": 15.0
 }]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
-size = Vector2(28, 40)
+size = Vector2(45.882347, 81.17647)
 
 [sub_resource type="StyleBoxFlat" id="HealthBg"]
 bg_color = Color(0.12, 0.07, 0.08, 0.78)
@@ -162,16 +193,21 @@ attack_range = 44.0
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_kei2b")
 animation = &"summon"
-frame_progress = 0.597619
+frame = 7
+frame_progress = 1.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1116864028]
 collision_layer = 2
 
 [node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1191700019]
+position = Vector2(-0.5882337, 0.5882331)
+scale = Vector2(1.0000002, 1.0000002)
 shape = SubResource("BodyShape")
 
-[node name="CollisionPolygon2D" type="CollisionShape2D" parent="." unique_id=207800501]
-shape = SubResource("BodyShape")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1727459876]
+visible = false
+position = Vector2(-9.411765, -4.7058825)
+polygon = PackedVector2Array(10.588237, -35.294117, 16.470589, -32.941177, 17.64706, -22.352942, 23.529413, -18.82353, 31.764708, 8.235294, 22.352943, 23.529413, 27.058826, 42.352943, 16.470589, 43.529415, 9.536743e-07, 47.058826, -4.705881, 44.705883, -1.1764698, 25.882355, -21.17647, 11.764707, -20, -4.705882, -2.3529406, -16.470589, -10.588234, -28.235294, -3.5294113, -31.764706, 3.5294127, -22.352942, 5.8823543, -32.941177)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1456303099]
 visible = false
