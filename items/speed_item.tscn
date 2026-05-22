@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://by3jwxyym2nsh"]
+
+[ext_resource type="Script" uid="uid://db8h4kqdp2jw6" path="res://items/speed_item.gd" id="1_bbedw"]
+[ext_resource type="Texture2D" uid="uid://c42bjwval7ckn" path="res://assets/Power Ups/Speed Up.png" id="2_bbedw"]
+[ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_u7gbj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5rs43"]
+size = Vector2(14, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kg5e7"]
+radius = 42.047592
+
+[node name="speed_item" type="Area2D" unique_id=1451157788 groups=["items"]]
+position = Vector2(377, 217)
+script = ExtResource("1_bbedw")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=121434415]
+position = Vector2(2.0000153, 1.0000076)
+scale = Vector2(0.7187503, 0.7968751)
+texture = ExtResource("2_bbedw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773315857]
+position = Vector2(7.6293945e-06, 0)
+shape = SubResource("RectangleShape2D_5rs43")
+
+[node name="InteractionArea" parent="." unique_id=358332711 instance=ExtResource("3_u7gbj")]
+position = Vector2(7.6293945e-06, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=337489721]
+shape = SubResource("CircleShape2D_kg5e7")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

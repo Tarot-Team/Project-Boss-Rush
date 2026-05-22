@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://brpgd8mob116j" path="res://TD_pixel_dungeon_assets/Tiled_files/walls_floor.png" id="7_72yip"]
 [ext_resource type="Texture2D" uid="uid://bw4jeh437cxbh" path="res://TD_pixel_dungeon_assets/Tiled_files/doors_lever_chest_animation.png" id="8_32wda"]
 [ext_resource type="Script" uid="uid://c6uis5ads2oq" path="res://door.gd" id="9_512xw"]
-[ext_resource type="PackedScene" uid="uid://deufxpkpipg13" path="res://items/speed_change_item.tscn" id="10_wosa8"]
+[ext_resource type="PackedScene" uid="uid://by3jwxyym2nsh" path="res://items/speed_item.tscn" id="10_72yip"]
 [ext_resource type="PackedScene" uid="uid://cx7qjvpij1yvv" path="res://items/max_health_item.tscn" id="11_n2qeb"]
 [ext_resource type="PackedScene" uid="uid://dm5tr00f4tpl5" path="res://items/health_item.tscn" id="12_jknpl"]
 [ext_resource type="PackedScene" uid="uid://di5768wov3v7b" path="res://player1.tscn" id="13_n2qeb"]
@@ -954,6 +954,8 @@ shape = SubResource("RectangleShape2D_fih4n")
 position = Vector2(32, 0)
 shape = SubResource("RectangleShape2D_qru1g")
 
+[node name="speed_item" parent="Doors/EastDoor/WallPatch/CollisionShape2D" unique_id=1451157788 instance=ExtResource("10_72yip")]
+
 [node name="TileMapLayer" type="TileMapLayer" parent="Doors/EastDoor/WallPatch" unique_id=732233641]
 scale = Vector2(2, 2)
 tile_map_data = PackedByteArray("AAAAAP//AAABAAIAAAAAAAAAAAABAAIAAAABAP//AAACAAIAAAABAAAAAAACAAIAAAA=")
@@ -1046,9 +1048,6 @@ position = Vector2(182, 183)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1792542657]
 environment = SubResource("Environment_yp8xc")
 
-[node name="speed_item" parent="." unique_id=1451157788 instance=ExtResource("10_wosa8")]
-position = Vector2(287, 256)
-
 [node name="max_health_item" parent="." unique_id=1811526169 instance=ExtResource("11_n2qeb")]
 position = Vector2(415, 257)
 
@@ -1063,3 +1062,6 @@ position = Vector2(671, 260)
 
 [node name="max_health_item2" parent="." unique_id=2127568892 instance=ExtResource("15_72yip")]
 position = Vector2(801, 256)
+
+[node name="speed_item" parent="." unique_id=497120494 instance=ExtResource("10_72yip")]
+position = Vector2(283, 259)
