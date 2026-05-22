@@ -135,7 +135,7 @@ func lunge_attack():
 		swing.set_player_info(velocity, global_position)
 	add_child(swing)
 	swing.global_position = global_position
-	swing.rotation = direction.angle() + deg_to_rad(-90)
+	swing.rotation = direction.angle() + deg_to_rad(90)
 	swing.global_position += direction * offset
 	
 	attacking = true
@@ -175,7 +175,7 @@ func slash_attack():
 		swing.set_player_info(velocity, global_position)
 	add_child(swing)
 	swing.global_position = global_position
-	swing.rotation = direction.angle() + deg_to_rad(-90)
+	swing.rotation = direction.angle() + deg_to_rad(90)
 	swing.global_position += direction * offset
 	
 	attacking = true
