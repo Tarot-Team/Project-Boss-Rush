@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dn1it66r2716c"]
+
+[ext_resource type="PackedScene" uid="uid://bxrxrlpe5j24e" path="res://boss/boss.tscn" id="1_xiwxt"]
+[ext_resource type="PackedScene" uid="uid://di5768wov3v7b" path="res://player1.tscn" id="2_j55so"]
+
+[node name="Node2D" type="Node2D" unique_id=1620849592]
+
+[node name="boss" parent="." unique_id=1309360483 instance=ExtResource("1_xiwxt")]
+
+[node name="Player1" parent="." unique_id=644555451 instance=ExtResource("2_j55so")]

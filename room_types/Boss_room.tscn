@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://brpgd8mob116j" path="res://TD_pixel_dungeon_assets/Tiled_files/walls_floor.png" id="7_kjhra"]
 [ext_resource type="Texture2D" uid="uid://bw4jeh437cxbh" path="res://TD_pixel_dungeon_assets/Tiled_files/doors_lever_chest_animation.png" id="8_m4kca"]
 [ext_resource type="Script" uid="uid://c6uis5ads2oq" path="res://door.gd" id="9_y3h80"]
+[ext_resource type="PackedScene" uid="uid://bxrxrlpe5j24e" path="res://boss/boss.tscn" id="10_y528c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y7ss7"]
 texture = ExtResource("7_kjhra")
@@ -1039,3 +1040,6 @@ position = Vector2(182, 183)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1792542657]
 environment = SubResource("Environment_yp8xc")
+
+[node name="boss" parent="." unique_id=1309360483 instance=ExtResource("10_y528c")]
+position = Vector2(569, 355)

@@ -2,7 +2,7 @@ extends Area2D
 class_name InteractionArea
 
 @export var action_name: String = "Press [E]"
-@export var door_direction: String = "" # change to the door names in inspector later
+@export var door_direction: String = "" 
 
 var interact: Callable = Callable()
 

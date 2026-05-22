@@ -27,6 +27,7 @@ signal died
 @export var dmg_add: int = 0
 @export var speed: int = 400
 @export var original_health: int = 5
+@export var coins: int = 500
 
 const ARROW_SCN := preload("res://arrow.tscn")
 const POISON_FLASK_SCN := preload("res://poison_flask.tscn")

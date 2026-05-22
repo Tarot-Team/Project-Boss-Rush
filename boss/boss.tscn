@@ -46,8 +46,8 @@ signal setname(name)
 @export var acceleration = 800
 @export var friction = 600
 
-@export_group(\"Sun\")
-@export var boss_name := \"Sun\"
+@export_group(\"Death\")
+@export var boss_name := \"Death\"
 @export var max_health := 10
 @export var projectile_speed = 500
 
@@ -162,14 +162,37 @@ func ranged_attack():
 	await  $AnimatedSprite2D.animation_finished
 	attacking = false
 
+func slash_attack():
+	if player == null: return
+	if lunge_attack_scene == null: return
+	
+	var direction = (player.global_position - global_position).normalized()
+	$AnimatedSprite2D.flip_h = direction.x < 0
+	
+	var swing = lunge_attack_scene.instantiate()
+	var offset = 67
+	if swing.has_method(\"set_player_info\"):
+		swing.set_player_info(velocity, global_position)
+	add_child(swing)
+	swing.global_position = global_position
+	swing.rotation = direction.angle() + deg_to_rad(-90)
+	swing.global_position += direction * offset
+	
+	attacking = true
+	$AnimatedSprite2D.play(\"stab\")
+	await $AnimatedSprite2D.animation_finished
+	attacking = false
 
 func choose_attack():
 	if player == null: return
 	var distance = global_position.distance_to(player.global_position)
-	if distance > 300:
+	if distance > 1000:return
+	if distance > 400:
 		ranged_attack()
-	else:
+	elif distance > 200:
 		lunge_attack()
+	else:
+		slash_attack()
 "
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cixyi"]
