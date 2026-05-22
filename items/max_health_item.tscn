@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cx7qjvpij1yvv"]
 
 [ext_resource type="Script" uid="uid://pljfws35nj44" path="res://items/max_health_item.gd" id="1_ebkjn"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_vj7qd"]
+[ext_resource type="Texture2D" uid="uid://bwmp8upohwjjy" path="res://assets/Power Ups/Max Health Up.png" id="2_morsq"]
 [ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_3sbps"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5rs43"]
@@ -15,9 +15,9 @@ position = Vector2(377, 217)
 script = ExtResource("1_ebkjn")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=121434415]
-position = Vector2(7.6293945e-06, 0)
-scale = Vector2(0.10937514, 0.12500001)
-texture = ExtResource("2_vj7qd")
+position = Vector2(2.0000153, 1.0000076)
+scale = Vector2(0.7187503, 0.7968751)
+texture = ExtResource("2_morsq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773315857]
 position = Vector2(7.6293945e-06, 0)

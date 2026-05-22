@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://5g8uurw0kudc"]
 
 [ext_resource type="Script" uid="uid://c3sugr4noxnvq" path="res://items/cooldown_item.gd" id="1_ftjhh"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_5rx0e"]
+[ext_resource type="Texture2D" uid="uid://c4580ullxq5bl" path="res://items/Cooldown Up.png" id="2_x3xn5"]
 [ext_resource type="PackedScene" uid="uid://boflfn2driyep" path="res://interaction_area.tscn" id="3_krflm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5rs43"]
@@ -15,9 +15,9 @@ position = Vector2(377, 217)
 script = ExtResource("1_ftjhh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=121434415]
-position = Vector2(7.6293945e-06, 0)
-scale = Vector2(0.10937514, 0.12500001)
-texture = ExtResource("2_5rx0e")
+position = Vector2(2.9999962, 6.0000076)
+scale = Vector2(0.92968744, 0.9687501)
+texture = ExtResource("2_x3xn5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773315857]
 position = Vector2(7.6293945e-06, 0)
@@ -27,6 +27,7 @@ shape = SubResource("RectangleShape2D_5rs43")
 position = Vector2(7.6293945e-06, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=337489721]
+position = Vector2(2, 2)
 shape = SubResource("CircleShape2D_kg5e7")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
