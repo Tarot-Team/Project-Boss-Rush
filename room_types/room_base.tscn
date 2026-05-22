@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://brpgd8mob116j" path="res://TD_pixel_dungeon_assets/Tiled_files/walls_floor.png" id="2_y7ss7"]
 [ext_resource type="Script" uid="uid://c6uis5ads2oq" path="res://door.gd" id="4_ucmrq"]
 [ext_resource type="Texture2D" uid="uid://bw4jeh437cxbh" path="res://TD_pixel_dungeon_assets/Tiled_files/doors_lever_chest_animation.png" id="5_yp8xc"]
-[ext_resource type="PackedScene" path="res://enemies/lion_wolf.tscn" id="6_lion"]
-[ext_resource type="PackedScene" path="res://enemies/plague_doctor.tscn" id="7_plague"]
-[ext_resource type="PackedScene" path="res://enemies/skeleton_archer.tscn" id="8_archer"]
-[ext_resource type="PackedScene" path="res://enemies/skeleton_fighter.tscn" id="9_fighter"]
-[ext_resource type="PackedScene" path="res://enemies/spider.tscn" id="10_spider"]
+[ext_resource type="PackedScene" uid="uid://brlykc77obo0u" path="res://enemies/lion_wolf.tscn" id="6_lion"]
+[ext_resource type="PackedScene" uid="uid://dnelld115rhh0" path="res://enemies/plague_doctor.tscn" id="7_plague"]
+[ext_resource type="PackedScene" uid="uid://n76nrctgfbmi" path="res://enemies/skeleton_archer.tscn" id="8_archer"]
+[ext_resource type="PackedScene" uid="uid://cpj67isjs2kgr" path="res://enemies/skeleton_fighter.tscn" id="9_fighter"]
+[ext_resource type="PackedScene" uid="uid://s6k57q0pwy" path="res://enemies/spider.tscn" id="10_spider"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y7ss7"]
 texture = ExtResource("2_y7ss7")
@@ -1029,13 +1029,13 @@ tile_set = SubResource("TileSet_5tog5")
 [node name="EnemySpawnPoints" type="Node2D" parent="." unique_id=483688714]
 
 [node name="Marker2D" type="Marker2D" parent="EnemySpawnPoints" unique_id=2022462911]
-position = Vector2(919, 182)
+position = Vector2(825, 348)
 
 [node name="Marker2D2" type="Marker2D" parent="EnemySpawnPoints" unique_id=1881890219]
-position = Vector2(567, 353)
+position = Vector2(666, 353)
 
 [node name="Marker2D3" type="Marker2D" parent="EnemySpawnPoints" unique_id=1554817485]
-position = Vector2(182, 183)
+position = Vector2(435, 364)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1792542657]
 environment = SubResource("Environment_yp8xc")

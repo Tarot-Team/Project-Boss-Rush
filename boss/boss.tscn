@@ -111,7 +111,7 @@ func die():
 	queue_free()
 
 func _on_hitbox_entered(area: Area2D):
-	if area.is_in_group(\"swing\"):
+	if area.is_in_group(\"swing\") or area.is_in_group(\"player_proj\"):
 		take_damage(area.damage, area.player_pos_at_hit)
 
 func punchy_scale():
@@ -305,7 +305,7 @@ size = Vector2(79.999985, 114.444435)
 [node name="boss" type="CharacterBody2D" unique_id=1309360483 groups=["boss"]]
 position = Vector2(564, 169)
 scale = Vector2(0.9, 0.9)
-collision_layer = 2
+collision_layer = 7
 collision_mask = 7
 script = SubResource("GDScript_7ke2s")
 lunge_attack_scene = ExtResource("1_rbwa1")
@@ -313,21 +313,19 @@ ranged_attack_scene = ExtResource("2_eptv8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=340976674]
 sprite_frames = SubResource("SpriteFrames_cixyi")
-animation = &"stab"
-frame = 1
-frame_progress = 0.01965381
+animation = &"hit"
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=2134634239 groups=["boss"]]
 collision_layer = 2
 
 [node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1516502672 groups=["boss"]]
-position = Vector2(4.444458, 1.6666718)
+position = Vector2(1.5258789e-05, 1.1111159)
 shape = SubResource("RectangleShape2D_jbnni")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1767886761 groups=["boss"]]
-polygon = PackedVector2Array(-14.444445, -2.2222223, -14.444445, -6.666667, -12.222223, -11.111112, -8.888889, -14.444445, -5.555556, -15.555556, -3.3333335, -16.666668, 3.3333335, -16.666668, 5.555556, -15.555556, 8.888889, -14.444445, 12.222223, -11.111112, 13.333334, -8.888889, 14.444445, -5.555556, 14.444445, -1.1111112, 5.555556, -1.1111112, 5.555556, 3.3333335, 6.666667, 4.4444447, 6.666667, 10, 5.555556, 12.222223, 8.888889, 12.222223, 8.888889, 15.555556, 3.3333335, 15.555556, 1.1111112, 12.222223, -3.3333335, 17.777779, -7.777778, 17.777779, -7.777778, 15.555556, -3.3333335, 12.222223, -4.4444447, 11.111112, -4.4444447, 10, -5.555556, 10, -5.555556, -1.1111112, -14.444445, -1.1111112)
-
 [node name="boss_health_bar" parent="." unique_id=1669055965 instance=ExtResource("13_bfjv4")]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=141811339]
+polygon = PackedVector2Array(4.444458, -54.444443, 12.222229, -53.33333, 14.444458, -41.111115, 22.222229, -32.22223, 23.333374, -25.555557, 24.444458, -17.777771, 45.555542, 8.8888855, 45.555542, 16.666672, 41.111145, 25.555557, 36.666687, 14.444443, 25.555542, 20, 18.888916, 42.22223, 23.333374, 51.111115, 21.111145, 54.444443, 10, 44.444443, -6.666687, 44.444443, -6.666687, 56.66667, -15.555542, 56.66667, -11.111084, 25.555557, -28.888855, 16.666672, -54.444458, 33.33333, -61.111084, 32.22223, -47.77777, 18.888885, -44.444458, -15.555557, -17.777771, -26.666672, -11.111084, -42.22223, -4.444458, -40, -1.111084, -52.22223)
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_entered"]
 [connection signal="area_shape_entered" from="Hitbox" to="." method="_on_hitbox_area_shape_entered"]

@@ -1030,13 +1030,13 @@ tile_set = SubResource("TileSet_5tog5")
 [node name="EnemySpawnPoints" type="Node2D" parent="." unique_id=483688714]
 
 [node name="Marker2D" type="Marker2D" parent="EnemySpawnPoints" unique_id=2022462911]
-position = Vector2(919, 182)
+position = Vector2(852, 325)
 
 [node name="Marker2D2" type="Marker2D" parent="EnemySpawnPoints" unique_id=1881890219]
 position = Vector2(567, 353)
 
 [node name="Marker2D3" type="Marker2D" parent="EnemySpawnPoints" unique_id=1554817485]
-position = Vector2(182, 183)
+position = Vector2(237, 340)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1792542657]
 environment = SubResource("Environment_yp8xc")
